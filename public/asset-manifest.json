@@ -1,18 +1,16 @@
 {
-  "main.css": "/argon-dashboard-react/static/css/main.ca85be18.chunk.css",
-  "main.js": "/argon-dashboard-react/static/js/main.8bd5e5fd.chunk.js",
-  "main.js.map": "/argon-dashboard-react/static/js/main.8bd5e5fd.chunk.js.map",
+  "main.css": "/argon-dashboard-react/static/css/main.d3bea53a.chunk.css",
+  "main.js": "/argon-dashboard-react/static/js/main.f93f8e76.chunk.js",
+  "main.js.map": "/argon-dashboard-react/static/js/main.f93f8e76.chunk.js.map",
   "runtime~main.js": "/argon-dashboard-react/static/js/runtime~main.e1a1abba.js",
   "runtime~main.js.map": "/argon-dashboard-react/static/js/runtime~main.e1a1abba.js.map",
-  "static/js/2.fb4d87a7.chunk.js": "/argon-dashboard-react/static/js/2.fb4d87a7.chunk.js",
-  "static/js/2.fb4d87a7.chunk.js.map": "/argon-dashboard-react/static/js/2.fb4d87a7.chunk.js.map",
+  "static/js/2.b594b37e.chunk.js": "/argon-dashboard-react/static/js/2.b594b37e.chunk.js",
+  "static/js/2.b594b37e.chunk.js.map": "/argon-dashboard-react/static/js/2.b594b37e.chunk.js.map",
   "index.html": "/argon-dashboard-react/index.html",
-  "precache-manifest.ad1a2140ac225c719375e9305bab186c.js": "/argon-dashboard-react/precache-manifest.ad1a2140ac225c719375e9305bab186c.js",
+  "precache-manifest.4fa6c8fde08fc86d54718a311c4cea3b.js": "/argon-dashboard-react/precache-manifest.4fa6c8fde08fc86d54718a311c4cea3b.js",
   "service-worker.js": "/argon-dashboard-react/service-worker.js",
-  "static/css/main.ca85be18.chunk.css.map": "/argon-dashboard-react/static/css/main.ca85be18.chunk.css.map",
+  "static/css/main.d3bea53a.chunk.css.map": "/argon-dashboard-react/static/css/main.d3bea53a.chunk.css.map",
   "static/media/argon-react.png": "/argon-dashboard-react/static/media/argon-react.f38ddea9.png",
   "static/media/all.min.css": "/argon-dashboard-react/static/media/fa-solid-900.815694de.woff",
-  "static/media/nucleo.css": "/argon-dashboard-react/static/media/nucleo-icons.f82ec6ba.ttf",
-  "static/media/profile-cover.jpg": "/argon-dashboard-react/static/media/profile-cover.e2582654.jpg",
-  "static/media/team-4-800x800.jpg": "/argon-dashboard-react/static/media/team-4-800x800.23007132.jpg"
+  "static/media/nucleo.css": "/argon-dashboard-react/static/media/nucleo-icons.f82ec6ba.ttf"
 }
