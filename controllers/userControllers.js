@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const { createToken, createTokenU } = require('../config/jwt')
+const { sendEmail } = require('../config/nodemailer')
 
 
 exports.signup = (req, res, next) => {
@@ -8,9 +9,20 @@ exports.signup = (req, res, next) => {
         .catch(err => res.status(500).json({ err }))
 }
 exports.createUser = (req, res, next) => {
-    User.create({...req.body })
-        .then(user => { res.status(201).json({ user }) })
-        .catch(err => res.status(500).json({ err }))
+    const { name, email, msg, password } = req.body
+        User.register({...req.body }, req.body.password)
+        .then(user => {
+            sendEmail(email, name, msg, password)
+                .then(info => {
+                    res.status(200)
+                })
+                .catch(err => {
+
+                    res.send(err)
+                })
+            res.status(201).json({ user })
+        })
+    .catch(err => res.status(500).json({ err }))
 }
 
 exports.login = (req, res, next) => {

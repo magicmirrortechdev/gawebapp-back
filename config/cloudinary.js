@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = cloudinaryStorage({
     cloudinary,
     folder: 'ImagesGA',
-    allowedFormats: ['jpg', 'png', 'pdf'],
+    allowedFormats: ['jpg', 'png', 'pdf', 'docx', 'doc', 'xls', 'xlsx'],
     filename: (req, file, cb) => {
         cb(null, file.originalname)
     }
