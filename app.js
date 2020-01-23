@@ -55,13 +55,14 @@ const client = require('./routes/client');
 const post = require('./routes/post');
 const expense = require('./routes/expense');
 const job = require('./routes/job');
+const estimate = require('./routes/estimate');
 
 app.use('/', index);
 app.use('/', auth);
 app.use('/', client)
 app.use('/', post)
 app.use('/', expense)
-app.use('/', job)
+app.use('/', estimate)
     // Uncomment this line for production
     // app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 

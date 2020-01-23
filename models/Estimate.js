@@ -1,24 +1,40 @@
 const { Schema, model } = require('mongoose');
 
 const estimateSchema = new Schema({
-    nameClient: {
+    clientId: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "Client"
     },
     projectManager: String,
-    items: [String],
+    items: [{ itemName: String, description: String, quantity: Number, rate: Number, subTotal: Number }],
+    subTotal: Number,
+    tax: Number,
+    discount: Number,
+    paid: Number,
+    total: Number,
     jobName: String,
     dateStart: String,
     dateEnd: String,
+    comments: String,
+    img: [String],
+    dateCreate: String,
+    status: {
+        type: String,
+        enum: ['Unsent', 'Sent', 'Approve', 'Decline'],
+        default: 'Unsent'
+    },
     type: {
         type: String,
-        required: true,
-        enum: ['Invoice', 'Job', 'Estimate']
+        enum: ['Invoice', 'Job', 'Estimate'],
+        default: 'Estimate'
     },
     worker: String,
-    invoice: String,
-    expenses: String,
-    time: [{ userId: type: Schema.Types.ObjectId, ref: "User" }]
+
+    expenses: [String],
+    time: [{
+        userId: { type: Schema.Types.ObjectId, ref: "User" },
+        time: Number
+    }]
 
 }, {
     timestamps: true,

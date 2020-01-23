@@ -10,7 +10,7 @@ const userSchema = new Schema({
     mobile: Number,
     activity: String,
     type: String,
-    documents: [String],
+    img: [String],
     payment: Number,
     effective: Number,
     role: {
