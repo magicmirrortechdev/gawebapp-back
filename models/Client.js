@@ -10,7 +10,12 @@ const clientSchema = new Schema({
     website: String,
     tax: String,
     customPayment: String,
-    notes: String
+    notes: String,
+    estimatesId: [{
+        type: Schema.Types.ObjectId,
+        ref: "Estimate"
+    }]
+
 }, {
     timestamps: true,
     versionKey: false

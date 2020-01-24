@@ -6,15 +6,21 @@ const estimateSchema = new Schema({
         ref: "Client"
     },
     projectManager: String,
-    items: [{ itemName: String, description: String, quantity: Number, rate: Number, subTotal: Number }],
-    subTotal: Number,
+    items: [{ itemName: String, description: String, quantity: Number, rate: Number, subtotal: Number }],
+    subtotal: Number,
     tax: Number,
     discount: Number,
     paid: Number,
     total: Number,
     jobName: String,
-    dateStart: String,
-    dateEnd: String,
+    dateStart: {
+        type: String,
+        default: 'Update this field'
+    },
+    dateEnd: {
+        type: String,
+        default: 'Update this field'
+    },
     comments: String,
     img: [String],
     dateCreate: String,
@@ -28,12 +34,22 @@ const estimateSchema = new Schema({
         enum: ['Invoice', 'Job', 'Estimate'],
         default: 'Estimate'
     },
-    worker: String,
-
-    expenses: [String],
+    workers: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        default: 'Add Workers'
+    }],
+    expenses: [{
+        date: String,
+        merchant: String,
+        category: String,
+        description: String,
+        img: String,
+        total: String,
+    }],
     time: [{
         userId: { type: Schema.Types.ObjectId, ref: "User" },
-        time: Number
+        time: [Number]
     }]
 
 }, {
