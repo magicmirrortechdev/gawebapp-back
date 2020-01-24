@@ -53,7 +53,7 @@ exports.deleteAll = (req, res, next) => {
 exports.convertInvoice = (req, res, next) => {
     const { id } = req.params
     console.log(id)
-    Estimate.findByIdAndUpdate(id, { type: 'Invoice' }, { new: true })
+    Estimate.findByIdAndUpdate(id, { type: 'Invoice', status: 'Unpaid' }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -76,6 +76,31 @@ exports.addExpense = (req, res, next) => {
     const { id } = req.params
     console.log(id)
     Estimate.findByIdAndUpdate(id, { $push: { expenses: {...req.body } } }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.getOneEstimate = async(req, res, next) => {
+    const { id } = req.params
+    console.log(id)
+    Estimate.findById(id).populate('clientId')
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+
+}
+
+exports.estimateUpdate = (req, res, next) => {
+    const { id } = req.params
+    console.log(id)
+    Estimate.findByIdAndUpdate(id, {...req.body }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.paidInvoice = (req, res, next) => {
+    const { id } = req.params
+    console.log(id)
+    Estimate.findByIdAndUpdate(id, { status: 'Paid' }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }

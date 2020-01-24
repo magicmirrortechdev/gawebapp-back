@@ -26,7 +26,7 @@ const estimateSchema = new Schema({
     dateCreate: String,
     status: {
         type: String,
-        enum: ['Unsent', 'Sent', 'Approve', 'Decline'],
+        enum: ['Unsent', 'Sent', 'Approve', 'Decline', 'Unpaid', 'Paid'],
         default: 'Unsent'
     },
     type: {
@@ -35,9 +35,12 @@ const estimateSchema = new Schema({
         default: 'Estimate'
     },
     workers: [{
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        default: 'Add Workers'
+        workerId: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            default: 'Add Workers'
+        },
+        time: [Number]
     }],
     expenses: [{
         date: String,
@@ -45,12 +48,9 @@ const estimateSchema = new Schema({
         category: String,
         description: String,
         img: String,
-        total: String,
+        total: Number,
     }],
-    time: [{
-        userId: { type: Schema.Types.ObjectId, ref: "User" },
-        time: [Number]
-    }]
+
 
 }, {
     timestamps: true,
