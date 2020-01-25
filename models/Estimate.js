@@ -38,7 +38,7 @@ const estimateSchema = new Schema({
         workerId: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            default: 'Add Workers'
+            autopopulate: true
         },
         time: [Number]
     }],
@@ -57,5 +57,5 @@ const estimateSchema = new Schema({
     versionKey: false
 });
 
-
+estimateSchema.plugin(require('mongoose-autopopulate'))
 module.exports = model('Estimate', estimateSchema);

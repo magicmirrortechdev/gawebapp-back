@@ -13,15 +13,19 @@ exports.createEstimate = async(req, res, next) => {
     if (clientDb === null) {
         const newClient = await Client.create({ name, email: emailUser, address })
 
-        const estimate = await Estimate.create({...req.body,
-            clientId: newClient._id,
-            jobName: `${address}${name}`,
-            items: { subtotal: items.rate * items.quantity },
-            subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
-        })
+        Estimate.create({...req.body,
+                clientId: newClient._id,
+                jobName: `${address}${name}`,
+                items: { subtotal: items.rate * items.quantity },
+                subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
+            })
+            .then(estimate => res.status(200).json({ estimate }))
+            .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        const estimate = await Estimate.create({...req.body, clientId: clientDb._id, jobName: `${address}${name}` })
+        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${address}${name}` })
+            .then(estimate => res.status(200).json({ estimate }))
+            .catch(err => res.status(500).json({ err }))
     }
 
 }
@@ -37,7 +41,7 @@ exports.getAllInvoices = (req, res, next) => {
         .catch(err => res.status(500).json({ err }))
 }
 exports.getAllJobs = (req, res, next) => {
-    Estimate.find({ type: 'Job' }).populate('clientId')
+    Estimate.find({ type: 'Job' }).populate('clientId').populate({ path: 'workerId' })
         .then(jobs => res.status(200).json({ jobs }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -76,6 +80,14 @@ exports.addExpense = (req, res, next) => {
     const { id } = req.params
     console.log(id)
     Estimate.findByIdAndUpdate(id, { $push: { expenses: {...req.body } } }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+exports.addWorkers = (req, res, next) => {
+    const { id } = req.params
+    const { id2 } = req.body
+    console.log(id)
+    Estimate.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
