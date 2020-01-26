@@ -15,12 +15,16 @@ const userSchema = new Schema({
     effective: Number,
     role: {
         type: String,
-        enum: ['WORKER', 'ADMIN'],
+        enum: ['WORKER', 'ADMIN', 'PROJECT MANAGER'],
         default: 'WORKER'
     },
     works: [{
-        type: Schema.Types.ObjectId,
-        ref: "Job"
+        workId: {
+            type: Schema.Types.ObjectId,
+            ref: "Estimate",
+            autopopulate: true
+        },
+        time: [Number]
     }],
 
 }, {
@@ -29,5 +33,6 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(PLM, { usernameField: 'email' });
+userSchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = model('User', userSchema);

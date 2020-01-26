@@ -1,11 +1,10 @@
 const Client = require('../models/Client')
 const Estimate = require('../models/Estimate')
-
-
+const User = require('../models/User')
 
 exports.createEstimate = async(req, res, next) => {
     const emailUser = req.body.email
-    const name = req.body.clientName
+    const name = req.body.name
     const address = req.body.address
     const clientDb = await Client.findOne({ email: emailUser })
     const items = req.body.items
@@ -88,7 +87,22 @@ exports.addWorkers = (req, res, next) => {
     const { id2 } = req.body
     console.log(id)
     Estimate.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
-        .then(estimate => res.status(200).json({ estimate }))
+        .then(estimate =>
+            User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
+            .then(user => res.status(200).json({ estimate, user }))
+            .catch(err => res.status(500).json({ err })))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.addPM = (req, res, next) => {
+    const { id } = req.params
+    const { id2 } = req.body
+    console.log(id)
+    Estimate.findByIdAndUpdate(id, { $push: { projectManager: { projectId: id2 } } }, { new: true })
+        .then(estimate =>
+            User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
+            .then(user => res.status(200).json({ estimate, user }))
+            .catch(err => res.status(500).json({ err })))
         .catch(err => res.status(500).json({ err }))
 }
 

@@ -5,7 +5,6 @@ const estimateSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Client"
     },
-    projectManager: String,
     items: [{ itemName: String, description: String, quantity: Number, rate: Number, subtotal: Number }],
     subtotal: Number,
     tax: Number,
@@ -34,6 +33,15 @@ const estimateSchema = new Schema({
         enum: ['Invoice', 'Job', 'Estimate'],
         default: 'Estimate'
     },
+    projectManager: [{
+        projectId: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            autopopulate: true
+        },
+        time: [Number]
+    }],
+
     workers: [{
         workerId: {
             type: Schema.Types.ObjectId,
