@@ -33,6 +33,6 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(PLM, { usernameField: 'email' });
-userSchema.plugin(require('mongoose-autopopulate'))
+//userSchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = model('User', userSchema);

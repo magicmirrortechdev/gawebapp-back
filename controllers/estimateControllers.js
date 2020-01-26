@@ -130,3 +130,17 @@ exports.paidInvoice = (req, res, next) => {
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
+
+exports.addTime = (req, res, next) => {
+    const { id } = req.params
+    const { time } = req.body
+    const query = {
+        workers: {
+            $elemMatch: { _id: id }
+        }
+    }
+    console.log(query)
+    Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}

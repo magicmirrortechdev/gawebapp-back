@@ -56,23 +56,3 @@ exports.pmUsers = (req, res, next) => {
         .then(users => res.status(200).json({ users }))
         .catch(err => res.status(500).json({ err }))
 }
-
-exports.addHours = (req, res, next) => {
-    const { id2 } = req.body
-    const { id } = req.params
-    const time = req.body.time
-
-    User.findOneAndUpdate(({
-            $and: [{
-                "works._id": {
-                    $eq: id2
-                }
-            }]
-
-        }), {
-            $and: [{ "works._id": { $eq: id2 } }, { $push: { "works.time": time } }]
-        }, { new: true })
-        .then(user => res.status(200).json({ user }))
-        .catch(err => res.status(500).json({ err }))
-
-}

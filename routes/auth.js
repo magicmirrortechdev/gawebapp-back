@@ -12,8 +12,6 @@ router.get('/getusers', getAllUsers)
 router.get('/workers', workerUsers)
 router.get('/projectm', pmUsers)
 
-router.patch('/addtime/:id', addHours)
-
 router.get('/logout', (req, res, next) => {
     req.logout();
     res.status(200).json({ msg: 'Logged out' });
