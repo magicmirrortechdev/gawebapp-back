@@ -56,3 +56,25 @@ exports.pmUsers = (req, res, next) => {
         .then(users => res.status(200).json({ users }))
         .catch(err => res.status(500).json({ err }))
 }
+
+exports.oneWorker = (req, res, next) => {
+    const { id } = req.params
+    User.findById(id)
+        .then(user => res.status(200).json({ user }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.updateWorker = (req, res, next) => {
+    const { id } = req.params
+    User.findByIdAndUpdate(id, {...req.body }, { new: true })
+        .then(user => res.status(200).json({ user }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.deleteWorker = (req, res, next) => {
+    const { id } = req.params
+    console.log(id)
+    User.findByIdAndDelete(id)
+        .then(User => res.status(200).json({ User }))
+        .catch(err => res.status(500).json({ err }))
+}

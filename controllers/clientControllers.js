@@ -13,3 +13,24 @@ exports.getAllClients = (req, res, next) => {
         .then(clients => res.status(200).json({ clients }))
         .catch(err => res.status(500).json({ err }))
 }
+
+exports.oneClient = (req, res, next) => {
+    const { id } = req.params
+    Client.findById(id)
+        .then(client => res.status(200).json({ client }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.updateClient = (req, res, next) => {
+    const { id } = req.params
+    Client.findByIdAndUpdate(id, {...req.body }, { new: true })
+        .then(clients => res.status(200).json({ clients }))
+        .catch(err => res.status(500).json({ err }))
+}
+
+exports.deleteClient = (req, res, next) => {
+    const { id } = req.params
+    Client.findByIdAndDelete(id)
+        .then(client => res.status(200).json({ client }))
+        .catch(err => res.status(500).json({ err }))
+}

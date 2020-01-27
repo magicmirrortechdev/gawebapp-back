@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const passport = require('../config/passport')
-const { signup, login, addHours, createUser, workerUsers, pmUsers, getAllUsers } = require('../controllers/userControllers')
+const { signup, login, addHours, oneWorker, deleteWorker, updateWorker, createUser, workerUsers, pmUsers, getAllUsers } = require('../controllers/userControllers')
 
 router.post('/signup', signup);
 
@@ -11,6 +11,9 @@ router.post('/addworker', createUser)
 router.get('/getusers', getAllUsers)
 router.get('/workers', workerUsers)
 router.get('/projectm', pmUsers)
+router.get('/workerdetail/:id', oneWorker)
+router.patch('/updateworker/:id', updateWorker)
+router.delete('/deleteworker/:id', deleteWorker)
 
 router.get('/logout', (req, res, next) => {
     req.logout();

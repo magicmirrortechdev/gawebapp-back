@@ -8,7 +8,7 @@ const clientSchema = new Schema({
     phone: Number,
     mobile: Number,
     website: String,
-    tax: String,
+    tax: Number,
     customPayment: String,
     notes: String,
     estimatesId: [{
