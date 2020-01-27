@@ -75,6 +75,6 @@ exports.deleteWorker = (req, res, next) => {
     const { id } = req.params
     console.log(id)
     User.findByIdAndDelete(id)
-        .then(User => res.status(200).json({ User }))
+        .then(user => res.status(200).json({ user }))
         .catch(err => res.status(500).json({ err }))
 }
