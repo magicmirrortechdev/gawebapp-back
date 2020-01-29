@@ -1,6 +1,7 @@
 const Client = require('../models/Client')
 const Estimate = require('../models/Estimate')
 const User = require('../models/User')
+const Invoice = require('../models/Invoice')
 
 exports.createEstimate = async(req, res, next) => {
     const emailUser = req.body.email
@@ -40,7 +41,7 @@ exports.getAllInvoices = (req, res, next) => {
         .catch(err => res.status(500).json({ err }))
 }
 exports.getAllJobs = (req, res, next) => {
-    Estimate.find({ type: 'Job' }).populate('clientId').populate({ path: 'workerId' })
+    Estimate.find({ isJob: true }).populate('clientId').populate({ path: 'workerId' })
         .then(jobs => res.status(200).json({ jobs }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -53,17 +54,19 @@ exports.deleteAll = (req, res, next) => {
         .catch(err => res.status(500).json({ err }))
 }
 
-exports.convertInvoice = (req, res, next) => {
+exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
     console.log(id)
-    Estimate.findByIdAndUpdate(id, { type: 'Invoice', status: 'Unpaid' }, { new: true })
-        .then(estimate => res.status(200).json({ estimate }))
+    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, status: 'Unpaid' }, { new: true })
+    const { clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses } = estimate
+    Invoice.create({ clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses })
+        .then(invoice => res.status(200).json({ invoice }))
         .catch(err => res.status(500).json({ err }))
 }
 exports.convertJob = (req, res, next) => {
     const { id } = req.params
     console.log(id)
-    Estimate.findByIdAndUpdate(id, { type: 'Job', status: 'Approve' }, { new: true })
+    Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve' }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }

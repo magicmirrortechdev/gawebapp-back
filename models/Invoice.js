@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const estimateSchema = new Schema({
+const invoiceSchema = new Schema({
     clientId: {
         type: Schema.Types.ObjectId,
         ref: "Client"
@@ -23,14 +23,6 @@ const estimateSchema = new Schema({
     comments: String,
     img: [String],
     dateCreate: String,
-    isJob: {
-        type: Boolean,
-        default: false
-    },
-    isInvoice: {
-        type: Boolean,
-        default: false
-    },
     status: {
         type: String,
         enum: ['Unsent', 'Sent', 'Approve', 'Decline', 'Unpaid', 'Paid'],
@@ -60,12 +52,6 @@ const estimateSchema = new Schema({
     }],
     expenses: [{
         date: String,
-        workerId: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-            autopopulate: true
-        },
-        vendor: String,
         merchant: String,
         category: String,
         description: String,
@@ -79,5 +65,5 @@ const estimateSchema = new Schema({
     versionKey: false
 });
 
-estimateSchema.plugin(require('mongoose-autopopulate'))
-module.exports = model('Estimate', estimateSchema);
+invoiceSchema.plugin(require('mongoose-autopopulate'))
+module.exports = model('Invoice', invoiceSchema);

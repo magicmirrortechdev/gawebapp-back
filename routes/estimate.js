@@ -6,7 +6,6 @@ const { createEstimate, addPM, addTime, addWorkers, paidInvoice, estimateUpdate,
 
 router.post('/addestimate', createEstimate);
 router.get('/checkestimates', getAllEstimates);
-router.get('/checkinvoices', getAllInvoices);
 router.get('/checkjobs', getAllJobs);
 router.patch('/convertinvoice/:id', convertInvoice);
 router.patch('/convertjob/:id', convertJob);
