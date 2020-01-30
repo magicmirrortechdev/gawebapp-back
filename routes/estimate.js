@@ -17,7 +17,7 @@ router.patch('/estimateupdate/:id', estimateUpdate)
 router.patch('/paidinvoice/:id', paidInvoice)
 router.patch('/addworkers/:id', addWorkers)
 router.patch('/addpm/:id', addPM)
-router.patch('/addtime/:id', addTime)
+router.patch('/addtime/:id/:workerId', addTime)
 
 
 
