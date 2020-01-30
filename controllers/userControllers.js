@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Estimate = require('../models/Estimate')
 const { createToken, createTokenU } = require('../config/jwt')
 const { sendEmail } = require('../config/nodemailer')
 
@@ -46,8 +47,13 @@ exports.getAllUsers = (req, res, next) => {
 }
 
 exports.workerUsers = (req, res, next) => {
-    User.find({ role: 'WORKER' })
-        .then(users => res.status(200).json({ users }))
+    User.find({ role: 'WORKER' }).populate({
+        path: 'works.workId',
+        select: 'expenses jobName dateStart dateEnd'
+    })
+        .then(users => {
+            res.status(200).json({ users })
+        })
         .catch(err => res.status(500).json({ err }))
 }
 

@@ -21,8 +21,7 @@ const userSchema = new Schema({
     works: [{
         workId: {
             type: Schema.Types.ObjectId,
-            ref: "Estimate",
-            autopopulate: true
+            ref: "Estimate"
         },
         time: [Number]
     }],
@@ -33,6 +32,4 @@ const userSchema = new Schema({
 });
 
 userSchema.plugin(PLM, { usernameField: 'email' });
-//userSchema.plugin(require('mongoose-autopopulate'))
-
 module.exports = model('User', userSchema);
