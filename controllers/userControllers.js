@@ -48,9 +48,9 @@ exports.getAllUsers = (req, res, next) => {
 
 exports.workerUsers = (req, res, next) => {
     User.find({ role: 'WORKER' }).populate({
-        path: 'works.workId',
-        select: 'expenses jobName dateStart dateEnd'
-    })
+            path: 'works.workId',
+            select: 'expenses jobName dateStart dateEnd'
+        })
         .then(users => {
             res.status(200).json({ users })
         })
