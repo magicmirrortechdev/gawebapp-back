@@ -30,12 +30,12 @@ exports.login = (req, res, next) => {
     const { user } = req
     const [header, payload, signature] = createToken(user)
     res.cookie('headload', `${header}.${payload}.`, {
-        //maxAge: 1000 * 60 * 30,
-        //secure: true
+        maxAge: 1000 * 60 * 30,
+        secure: true
     })
     res.cookie('signature', signature, {
-        //httpOnly: true,
-        //secure: true
+        httpOnly: true,
+        secure: true
     })
     res.status(200).json({ user })
 }
