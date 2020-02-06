@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const passport = require('../config/passport')
-const { signup, login, addHours, oneWorker, deleteWorker, updateWorker, createUser, workerUsers, pmUsers, getAllUsers } = require('../controllers/userControllers')
+const { signup, login, addHours, logout, oneWorker, deleteWorker, updateWorker, createUser, workerUsers, pmUsers, getAllUsers } = require('../controllers/userControllers')
 
 router.post('/signup', signup);
 
@@ -15,10 +15,7 @@ router.get('/workerdetail/:id', oneWorker)
 router.patch('/updateworker/:id', updateWorker)
 router.delete('/deleteworker/:id', deleteWorker)
 
-router.get('/logout', (req, res, next) => {
-    req.logout();
-    res.status(200).json({ msg: 'Logged out' });
-});
+router.get('/logout', logout);
 
 router.get('/profile', isAuth, (req, res, next) => {
     User.findById(req.user._id)
