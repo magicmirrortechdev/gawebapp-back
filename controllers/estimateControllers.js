@@ -57,7 +57,7 @@ exports.deleteAll = (req, res, next) => {
 exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
     console.log(id)
-    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, isJob: true, status: 'Send' }, { new: true })
+    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, isJob: true, status: 'Sent' }, { new: true })
     const { clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses } = estimate
     Invoice.create({ clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses })
         .then(invoice => res.status(200).json({ invoice }))
