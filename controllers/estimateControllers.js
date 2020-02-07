@@ -57,7 +57,7 @@ exports.deleteAll = (req, res, next) => {
 exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
     console.log(id)
-    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, status: 'Unpaid' }, { new: true })
+    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, isJob: true, status: 'Send' }, { new: true })
     const { clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses } = estimate
     Invoice.create({ clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses })
         .then(invoice => res.status(200).json({ invoice }))
@@ -144,10 +144,10 @@ exports.addTime = (req, res, next) => {
     }
     Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
         .then(estimate => {
-            User.findOne({ _id: workerId }).exec(function (err, data) {
+            User.findOne({ _id: workerId }).exec(function(err, data) {
                 var arreglo = data.works;
-                for (var i = 0; i < arreglo.length ; i++){
-                    if(arreglo[i].workId.toString() == estimate._id.toString()){
+                for (var i = 0; i < arreglo.length; i++) {
+                    if (arreglo[i].workId.toString() == estimate._id.toString()) {
                         arreglo[i].time.push(time);
                     }
                 }
@@ -158,8 +158,7 @@ exports.addTime = (req, res, next) => {
                     res.status(500).send(err);
                 });
             });
-        }
-    )
-    .catch(err => res.status(500).json({ err }));
+        })
+        .catch(err => res.status(500).json({ err }));
 
 };
