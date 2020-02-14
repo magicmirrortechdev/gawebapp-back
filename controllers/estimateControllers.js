@@ -111,7 +111,6 @@ exports.addPM = (req, res, next) => {
 
 exports.getOneEstimate = async(req, res, next) => {
     const { id } = req.params
-    console.log(id)
     Estimate.findById(id).populate('clientId')
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))

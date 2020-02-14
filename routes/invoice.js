@@ -1,8 +1,9 @@
 const { Router } = require('express')
 const router = Router()
-const { getAllInvoices } = require('../controllers/invoiceControllers')
+const { getAllInvoices, deleteInvoice } = require('../controllers/invoiceControllers')
 
-router.get('/checkinvoices', getAllInvoices);
+router.get('/checkinvoices', getAllInvoices)
+router.delete('/deleteinvoice', deleteInvoice);
 
 
 module.exports = router;

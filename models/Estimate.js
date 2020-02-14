@@ -72,6 +72,22 @@ const estimateSchema = new Schema({
         img: String,
         total: Number,
     }],
+    invoices: [{
+        date: String,
+        workerId: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            autopopulate: true
+        },
+        total: Number,
+        paid: Number,
+        status: {
+            type: String,
+            enum: ['Unsent', 'Sent', 'Unpaid', 'Paid'],
+            default: 'Unpaid'
+        },
+        description: String
+    }],
 
 
 }, {
