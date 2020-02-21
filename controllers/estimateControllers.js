@@ -155,6 +155,7 @@ exports.addTime = (req, res, next) => {
             $elemMatch: { _id: id }
         }
     }
+    console.log(id, workerId)
     Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
         .then(estimate => {
             User.findOne({ _id: workerId }).exec(function(err, data) {
