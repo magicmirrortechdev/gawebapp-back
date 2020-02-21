@@ -158,7 +158,7 @@ exports.addTime = (req, res, next) => {
     console.log(id, workerId)
     Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
         .then(estimate => {
-            User.findOne({ _id: workerId }).exec(function(err, data) {
+            User.findById(workerId).exec(function(err, data) {
                 var arreglo = data.works;
                 for (var i = 0; i < arreglo.length; i++) {
                     if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
