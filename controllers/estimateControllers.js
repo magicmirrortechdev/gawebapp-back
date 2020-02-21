@@ -56,13 +56,27 @@ exports.deleteAll = (req, res, next) => {
 
 exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
-    console.log(id)
-    const estimate = await Estimate.findByIdAndUpdate(id, { isInvoice: true, isJob: true, status: 'Sent' }, { new: true })
-    const { clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses } = estimate
-    Invoice.create({ clientId, items, subtotal, tax, isInvoice, dateCreate, discount, paid, total, jobName, dateStart, dateEnd, comments, img, status, projectManager, workers, expenses })
-        .then(invoice => res.status(200).json({ invoice }))
+    console.log(req.body)
+    let date = new Date()
+
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    Estimate.findByIdAndUpdate(id, {
+            isJob: true,
+            status: 'Approve',
+            $push: { invoices: {...req.body } }
+        }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
+exports.createInvoice = (req, res, next) => {
+    const { id } = req.params
+    Estimate.findByIdAndUpdate(id, { $push: { invoices: {...req.body } } }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+
 exports.convertJob = (req, res, next) => {
     const { id } = req.params
     console.log(id)
