@@ -161,7 +161,7 @@ exports.addTime = (req, res, next) => {
             User.findOne({ _id: workerId }).exec(function(err, data) {
                 var arreglo = data.works;
                 for (var i = 0; i < arreglo.length; i++) {
-                    if (arreglo[i].workId.toString() == estimate._id.toString()) {
+                    if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
                         arreglo[i].time.push(time);
                     }
                 }
