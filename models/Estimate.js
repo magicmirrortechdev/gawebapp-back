@@ -80,10 +80,7 @@ const estimateSchema = new Schema({
             autopopulate: true
         },
         total: Number,
-        paid: [{
-            total: Number,
-            description: String
-        }],
+        paid: [Number],
         status: {
             type: String,
             enum: ['Unsent', 'Sent', 'Unpaid', 'Paid'],

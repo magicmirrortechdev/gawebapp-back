@@ -155,7 +155,6 @@ exports.addTime = (req, res, next) => {
             $elemMatch: { _id: id }
         }
     }
-    console.log(id, workerId)
     Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
         .then(estimate => {
             User.findById(workerId).exec(function(err, data) {
@@ -172,6 +171,22 @@ exports.addTime = (req, res, next) => {
                     res.status(500).send(err);
                 });
             });
+        })
+        .catch(err => res.status(500).json({ err }));
+
+};
+
+exports.acceptPayment = (req, res, next) => {
+    const { id } = req.params
+    const { paid } = req.body
+    const query = {
+        invoices: {
+            $elemMatch: { _id: id }
+        }
+    }
+    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.paid": paid } }, { new: true })
+        .then(estimate => {
+            res.status(200).json({ estimate })
         })
         .catch(err => res.status(500).json({ err }));
 
