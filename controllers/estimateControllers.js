@@ -72,7 +72,8 @@ exports.convertInvoice = async(req, res, next) => {
 }
 exports.createInvoice = (req, res, next) => {
     const { id } = req.params
-    Estimate.findByIdAndUpdate(id, { $push: { invoices: {...req.body } } }, { new: true })
+    const { date, description, total } = req.body
+    Estimate.findByIdAndUpdate(id, { $push: { invoices: date, description, total } }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
