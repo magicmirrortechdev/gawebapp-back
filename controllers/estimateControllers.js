@@ -70,10 +70,12 @@ exports.convertInvoice = async(req, res, next) => {
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
-exports.createInvoice = (req, res, next) => {
+exports.createInvoice = async(req, res, next) => {
     const { id } = req.params
     const { date, description, total } = req.body
-    Estimate.findByIdAndUpdate(id, { $push: { invoices: date, description, total } }, { new: true })
+    console.log(req.body)
+
+    Estimate.findByIdAndUpdate(id, { $push: { invoices: { date, total, description } } }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -179,13 +181,28 @@ exports.addTime = (req, res, next) => {
 
 exports.acceptPayment = (req, res, next) => {
     const { id } = req.params
-    const { paid } = req.body
+    const { paid, date } = req.body
     const query = {
         invoices: {
             $elemMatch: { _id: id }
         }
     }
-    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.paid": paid } }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": { paid, date } } }, { new: true })
+        .then(estimate => {
+            res.status(200).json({ estimate })
+        })
+        .catch(err => res.status(500).json({ err }));
+
+};
+
+exports.deleteInvoice = (req, res, next) => {
+    const { id, estimateId } = req.params
+    const query = {
+        invoices: {
+            $elemMatch: { _id: id }
+        }
+    }
+    Estimate.findOneAndUpdate(estimateId, { $pull: { invoices: { _id: id } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
         })
