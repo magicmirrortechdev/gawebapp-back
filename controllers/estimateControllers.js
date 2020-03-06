@@ -15,7 +15,7 @@ exports.createEstimate = async(req, res, next) => {
 
         Estimate.create({...req.body,
                 clientId: newClient._id,
-                jobName: `${address}${name}`,
+                jobName: `${name} - ${address}`,
                 items: { subtotal: items.rate * items.quantity },
                 subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
             })
@@ -23,7 +23,7 @@ exports.createEstimate = async(req, res, next) => {
             .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${address}${name}` })
+        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${name} - ${address}` })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
@@ -75,7 +75,11 @@ exports.createInvoice = async(req, res, next) => {
     const { date, description, total } = req.body
     console.log(req.body)
 
-    Estimate.findByIdAndUpdate(id, { $push: { invoices: { date, total, description } } }, { new: true })
+    Estimate.findByIdAndUpdate(id, {
+            isJob: true,
+            status: 'Approve',
+            $push: { invoices: { date, total, description } }
+        }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -97,8 +101,10 @@ exports.decline = (req, res, next) => {
 
 exports.addExpense = (req, res, next) => {
     const { id } = req.params
+    const { date, vendor, category, description, img, total } = req.body
+
     console.log(id)
-    Estimate.findByIdAndUpdate(id, { $push: { expenses: {...req.body } } }, { new: true })
+    Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total } } }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -203,6 +209,54 @@ exports.deleteInvoice = (req, res, next) => {
         }
     }
     Estimate.findOneAndUpdate(estimateId, { $pull: { invoices: { _id: id } } }, { new: true })
+        .then(estimate => {
+            res.status(200).json({ estimate })
+        })
+        .catch(err => res.status(500).json({ err }));
+
+};
+exports.updateInvoice = (req, res, next) => {
+    const { invoiceId, estimateId } = req.params
+    const query = {
+        invoices: {
+            $elemMatch: { _id: invoiceId }
+        }
+    }
+    const { date, description, total } = req.body
+    Estimate.findOneAndUpdate(query, { query, $set: { "invoices.$": { date, description, total } } }, { new: true })
+        .then(estimate => {
+
+            res.status(200).json(estimate)
+        })
+        .catch(err => res.status(500).json({ err }));
+
+}
+
+exports.updateExpense = (req, res, next) => {
+    const { expenseId, estimateId } = req.params
+    const query = {
+        expenses: {
+            $elemMatch: { _id: expenseId }
+        }
+    }
+    const { date, vendor, category, description, img, total } = req.body
+    Estimate.findOneAndUpdate(query, { query, $set: { "expenses.$": { date, vendor, category, description, img, total } } }, { new: true })
+        .then(estimate => {
+
+            res.status(200).json(estimate)
+        })
+        .catch(err => res.status(500).json({ err }));
+
+}
+
+exports.deleteExpense = (req, res, next) => {
+    const { expenseId, estimateId } = req.params
+    const query = {
+        expenses: {
+            $elemMatch: { _id: expenseId }
+        }
+    }
+    Estimate.findOneAndUpdate(estimateId, { $pull: { expenses: { _id: expenseId } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
         })

@@ -70,7 +70,12 @@ app.use('/', post)
 app.use('/', expense)
 app.use('/', estimate)
 app.use('/', invoice)
-    // Uncomment this line for production
-    //app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+require('./routes/forgotPassword')(app);
+require('./routes/resetPassword')(app);
+require('./routes/updatePasswordViaEmail')(app);
+
+
+// Uncomment this line for production
+//app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 module.exports = app;
