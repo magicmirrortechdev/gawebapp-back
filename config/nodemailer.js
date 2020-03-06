@@ -22,4 +22,55 @@ exports.sendEmail = (email, name, msg, password) => {
         `
 
     })
-  }
+}
+
+exports.sendEstimate = (email, name, items, total, comments) => {
+    const nameItems = items.map((e, i) => {
+        return e.itemName
+    })
+    const description = items.map((e, i) => {
+        return e.description
+    })
+    const quantity = items.map((e, i) => {
+        return e.quantity
+    })
+    const rate = items.map((e, i) => {
+        return e.rate
+    })
+    const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+    return transporter.sendMail({
+        from: '"Green Acorn" <contact@greenacorn.com>',
+        to: email,
+        subject: 'Your Estimate',
+        html: `<h2>Hello ${name}</h2>
+        <p>
+        This email contains the estimate information you requested from Green Acorn
+        </p>
+        <h4>Comments:</h4> 
+        <p>${comments}</p>
+        <h4>Total Estimate:</h4> <p>$ ${total} USD</p>
+        `
+
+    })
+}
+
+exports.sendInvoice = (email, name, date, total, description) => {
+
+    return transporter.sendMail({
+        from: '"Green Acorn" <contact@greenacorn.com>',
+        to: email,
+        subject: 'Your Invoice',
+        html: `<h2>Hello ${name}</h2>
+        <p>
+        Date: ${date}
+        </p>
+        <p>
+        This email contains the details of the invoice for the work done
+        </p>
+        <h4>Description:</h4> 
+        <p>${description}</p>
+        <h4>Total Invoice:</h4> <p>$ ${total} USD</p>
+        `
+
+    })
+}

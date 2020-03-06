@@ -43,10 +43,10 @@ module.exports = (app) => {
                     from: 'info@greenacorn.com',
                     to: `${user.email}`,
                     subject: 'Reset Password',
-                    text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                        'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n' +
-                        `http://localhost:3001/reset/${token}\n\n` +
-                        'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+                    html: `You are receiving this because you (or someone else) have requested the reset of the password for your account. <br/>
+                           Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: <br/> 
+                        <a href="http://localhost:3001/reset/${token}"> Click here</a> <br/>
+                        If you did not request this, please ignore this email and your password will remain unchanged.`,
                 };
 
                 console.log('sending mail');

@@ -2,6 +2,8 @@ const Client = require('../models/Client')
 const Estimate = require('../models/Estimate')
 const User = require('../models/User')
 const Invoice = require('../models/Invoice')
+const { sendEstimate, sendInvoice } = require('../config/nodemailer')
+
 
 exports.createEstimate = async(req, res, next) => {
     const emailUser = req.body.email
@@ -263,3 +265,43 @@ exports.deleteExpense = (req, res, next) => {
         .catch(err => res.status(500).json({ err }));
 
 };
+
+exports.sendEstimate = (req, res, next) => {
+    const {
+        email,
+        name,
+        items,
+        total,
+        comments
+    } = req.body
+    sendEstimate(email,
+            name,
+            items,
+            total,
+            comments)
+        .then(info => {
+            res.send('Email sent')
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
+}
+
+exports.sendInvoice = (req, res, next) => {
+    const {
+        email,
+        name,
+        date,
+        total,
+        description
+    } = req.body
+    sendInvoice(email, name, date, total, description)
+        .then(info => {
+            res.send('Email sent')
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
+}
