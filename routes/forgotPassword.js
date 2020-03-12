@@ -4,6 +4,10 @@ const User = require('../models/User')
 
 const nodemailer = require('nodemailer');
 
+const URL = {
+    staging: 'https://gaweb.netlify.com',
+    local: 'http://localhost:3001'
+}
 module.exports = (app) => {
     app.post('/forgotpassword', (req, res) => {
         console.log(req.body.email)
@@ -45,7 +49,7 @@ module.exports = (app) => {
                     subject: 'Reset Password',
                     html: `You are receiving this because you (or someone else) have requested the reset of the password for your account. <br/>
                            Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: <br/> 
-                        <a href="https://gaweb.netlify.com/reset/${token}"> Click here</a> <br/>
+                        <a href="${URL.local}/reset/${token}"> Click here</a> <br/>
                         If you did not request this, please ignore this email and your password will remain unchanged.`,
                 };
 
