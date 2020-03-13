@@ -24,7 +24,10 @@ exports.sendEmail = (email, name, msg, password) => {
     })
 }
 
-exports.sendEstimate = (email, name, items, total, comments) => {
+exports.sendEstimate = (name, items, total, comments, tags) => {
+    let addresses = tags.map((e, i) => {
+        return e.id
+    })
     const nameItems = items.map((e, i) => {
         return e.itemName
     })
@@ -38,6 +41,10 @@ exports.sendEstimate = (email, name, items, total, comments) => {
         return e.rate
     })
     const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+
+    let email = addresses.map((e, i) => {
+        return e
+    })
     return transporter.sendMail({
         from: '"Green Acorn" <contact@greenacorn.com>',
         to: email,
@@ -52,10 +59,16 @@ exports.sendEstimate = (email, name, items, total, comments) => {
         `
 
     })
+
 }
 
-exports.sendInvoice = (email, name, date, total, description) => {
-
+exports.sendInvoice = (name, date, total, description, tags) => {
+    let addresses = tags.map((e, i) => {
+        return e.id
+    })
+    let email = addresses.map((e, i) => {
+        return e
+    })
     return transporter.sendMail({
         from: '"Green Acorn" <contact@greenacorn.com>',
         to: email,
@@ -71,6 +84,5 @@ exports.sendInvoice = (email, name, date, total, description) => {
         <p>${description}</p>
         <h4>Total Invoice:</h4> <p>$ ${total} USD</p>
         `
-
     })
 }

@@ -268,17 +268,13 @@ exports.deleteExpense = (req, res, next) => {
 
 exports.sendEstimate = (req, res, next) => {
     const {
-        email,
         name,
         items,
         total,
-        comments
+        comments,
+        tags
     } = req.body
-    sendEstimate(email,
-            name,
-            items,
-            total,
-            comments)
+    sendEstimate(name, items, total, comments, tags)
         .then(info => {
             res.send('Email sent')
         })
@@ -290,13 +286,13 @@ exports.sendEstimate = (req, res, next) => {
 
 exports.sendInvoice = (req, res, next) => {
     const {
-        email,
         name,
         date,
         total,
-        description
+        description,
+        tags
     } = req.body
-    sendInvoice(email, name, date, total, description)
+    sendInvoice(name, date, total, description, tags)
         .then(info => {
             res.send('Email sent')
         })
