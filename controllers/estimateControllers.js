@@ -203,20 +203,7 @@ exports.acceptPayment = (req, res, next) => {
 
 };
 
-exports.deleteInvoice = (req, res, next) => {
-    const { id, estimateId } = req.params
-    const query = {
-        invoices: {
-            $elemMatch: { _id: id }
-        }
-    }
-    Estimate.findOneAndUpdate(estimateId, { $pull: { invoices: { _id: id } } }, { new: true })
-        .then(estimate => {
-            res.status(200).json({ estimate })
-        })
-        .catch(err => res.status(500).json({ err }));
 
-};
 exports.updateInvoice = (req, res, next) => {
     const { invoiceId, estimateId } = req.params
     const query = {
@@ -250,6 +237,21 @@ exports.updateExpense = (req, res, next) => {
         .catch(err => res.status(500).json({ err }));
 
 }
+exports.deleteInvoice = (req, res, next) => {
+    const { id, estimateId } = req.params
+    const query = {
+        invoices: {
+            $elemMatch: { _id: id }
+        }
+    }
+    console.log('invoiceId', id, 'EstimateId', estimateId)
+    Estimate.findOneAndUpdate(query, { query, $pull: { invoices: { _id: id } } }, { new: true })
+        .then(estimate => {
+            res.status(200).json({ estimate })
+        })
+        .catch(err => res.status(500).json({ err }));
+
+};
 
 exports.deleteExpense = (req, res, next) => {
     const { expenseId, estimateId } = req.params
@@ -258,7 +260,7 @@ exports.deleteExpense = (req, res, next) => {
             $elemMatch: { _id: expenseId }
         }
     }
-    Estimate.findOneAndUpdate(estimateId, { $pull: { expenses: { _id: expenseId } } }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, $pull: { expenses: { _id: expenseId } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
         })
