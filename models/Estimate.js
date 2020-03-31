@@ -74,6 +74,10 @@ const estimateSchema = new Schema({
     }],
     invoices: [{
         date: String,
+        argyleChargeId: {
+            type: String,
+            default: ""
+        },
         workerId: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -91,8 +95,6 @@ const estimateSchema = new Schema({
         },
         description: String
     }],
-
-
 }, {
     timestamps: true,
     versionKey: false
