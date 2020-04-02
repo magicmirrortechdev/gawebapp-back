@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { createEstimate, updateExpense, sendInvoice, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense } = require('../controllers/estimateControllers')
+const { createEstimate, updateExpense, sendInvoice, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense, addArgyleCharge } = require('../controllers/estimateControllers')
 
 
 
@@ -26,6 +26,6 @@ router.patch('/addpm/:id', addPM)
 router.patch('/addtime/:id/:workerId', addTime)
 router.patch('/pay-invoice/:id/:invoiceId', acceptPayment)
 
-
+router.patch('/invoice/addArgyleCharge/:invoiceId', addArgyleCharge)
 
 module.exports = router;
