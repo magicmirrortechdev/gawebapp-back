@@ -150,7 +150,7 @@ exports.sendEstimate = (name, items, total, comments, tags) => {
 
 }
 
-exports.sendInvoice = (name, date, total, description, tags) => {
+exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
     let addresses = tags.map((e, i) => {
         return e.id
     })
