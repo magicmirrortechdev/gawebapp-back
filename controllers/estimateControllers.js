@@ -93,6 +93,13 @@ exports.convertJob = (req, res, next) => {
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
+exports.closeJob = (req, res, next) => {
+    const { id } = req.params
+    Estimate.findByIdAndUpdate(id, { status: 'Closed' }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+
 exports.decline = (req, res, next) => {
     const { id } = req.params
     console.log(id)
@@ -189,14 +196,13 @@ exports.addTime = (req, res, next) => {
 
 exports.acceptPayment = (req, res, next) => {
     const { id } = req.params
-    const { paid, date, argyleChargeId, argyleChargeUrl } = req.body
+    const { paid, date } = req.body
     const query = {
         invoices: {
             $elemMatch: { _id: id }
         }
     }
-
-    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": { paid, date, argyleChargeId, argyleChargeUrl } } }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": { paid, date } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
         })
@@ -293,10 +299,9 @@ exports.sendInvoice = (req, res, next) => {
         date,
         total,
         description,
-        tags,
-        urlPay
+        tags
     } = req.body
-    sendInvoice(name, date, total, description, tags, urlPay)
+    sendInvoice(name, date, total, description, tags)
         .then(info => {
             res.send('Email sent')
         })
@@ -307,25 +312,20 @@ exports.sendInvoice = (req, res, next) => {
 }
 
 exports.addArgyleCharge = (req, res, next) => {
-    const { invoiceId, paymentId } = req.params;
-    const { argyleChargeId, argyleChargeUrl } = req.body;
+    const { invoiceId } = req.params;
+    const { argyleChargeId } = req.body;
 
     const query = {
         invoices: {
             $elemMatch: { _id: invoiceId}
-        },
-        payment: {
-            $elemMatch: { _id: paymentId}
         }
     }
 
-    Estimate.findOneAndUpdate(query, { query, "invoices.$.payment.argyleChargeId": argyleChargeId}, { new: true })
+    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId":  argyleChargeId   }, { new: true })
         .then(estimate => {
-            Estimate.findOneAndUpdate(query, { query, "invoices.$.payment.argyleChargeUrl": argyleChargeUrl}, { new: true })
-                .then(estimate => {
-                    res.status(200).json(estimate)
-                })
-                .catch(err => res.status(500).json({ err }));
+            res.status(200).json(estimate)
         })
         .catch(err => res.status(500).json({ err }));
+
+
 }
