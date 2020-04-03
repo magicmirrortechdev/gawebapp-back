@@ -328,9 +328,10 @@ exports.sendInvoice = (req, res, next) => {
         date,
         total,
         description,
-        tags
+        tags,
+        urlPay
     } = req.body
-    sendInvoice(name, date, total, description, tags)
+    sendInvoice(name, date, total, description, tags, urlPay)
         .then(info => {
             res.send('Email sent')
         })
@@ -346,11 +347,11 @@ exports.addArgyleCharge = (req, res, next) => {
 
     const query = {
         invoices: {
-            $elemMatch: { _id: invoiceId }
+            $elemMatch: { _id: invoiceId}
         }
     }
 
-    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId": argyleChargeId }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId":  argyleChargeId   }, { new: true })
         .then(estimate => {
             res.status(200).json(estimate)
         })

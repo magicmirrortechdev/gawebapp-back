@@ -74,10 +74,6 @@ const estimateSchema = new Schema({
     }],
     invoices: [{
         date: String,
-        argyleChargeId: {
-            type: String,
-            default: ""
-        },
         workerId: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -85,6 +81,17 @@ const estimateSchema = new Schema({
         },
         total: Number,
         payment: [{
+            argyleChargeId: {
+                type: String,
+                default: ""
+            },
+            argyleChargeUrl: {
+                type: String,
+                default: ""
+            },
+            argyleStatus:{
+                type: Boolean
+            },
             paid: Number,
             date: String
         }],
