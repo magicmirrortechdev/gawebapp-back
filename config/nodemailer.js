@@ -241,7 +241,7 @@ exports.sendInvoice = (name, date, total, description, tags) => {
         </div>
         <br>
         <div>
-            <button style="border: none; font-family: Arial, Helvetica, sans-serif; width: 300px; height: 70px; background-color: rgb(34, 161, 242); color: white; font-size: 18px;">Pay Online</button>
+            <a href="${urlPay}" style="border: none; font-family: Arial, Helvetica, sans-serif; width: 300px; height: 70px; background-color: rgb(34, 161, 242); color: white; font-size: 18px;">Pay Online</a>
         </div>
         <br>
 
