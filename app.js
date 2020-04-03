@@ -9,7 +9,11 @@ const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('./config/passport');
-const compression = require('compression')
+const compression = require('compression');
+
+const worker = require('./worker/queueArgyle');
+
+worker.start('k6lRPA.cucUtg:XLmTdAyYrblIBpKP', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared');
 
 mongoose
     .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
