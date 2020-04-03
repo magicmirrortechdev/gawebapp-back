@@ -13,7 +13,7 @@ exports.createEstimate = async(req, res, next) => {
     const items = req.body.items
 
     if (clientDb === null) {
-        const newClient = await Client.create({ name, email: emailUser, address })
+        const newClient = await Client.create({ name, email: emailUser })
 
         Estimate.create({...req.body,
                 clientId: newClient._id,
@@ -26,6 +26,35 @@ exports.createEstimate = async(req, res, next) => {
 
     } else if (clientDb) {
         Estimate.create({...req.body, clientId: clientDb._id, jobName: `${name} - ${address}` })
+            .then(estimate => res.status(200).json({ estimate }))
+            .catch(err => res.status(500).json({ err }))
+    }
+
+}
+
+exports.createJob = async(req, res, next) => {
+    const emailUser = req.body.email
+    const name = req.body.name
+    const address = req.body.address
+    const dateStart = req.body.dateStart
+    const dateEnd = req.body.dateEnd
+    const clientDb = await Client.findOne({ email: emailUser })
+
+    if (clientDb === null) {
+        const newClient = await Client.create({ name, email: emailUser })
+
+        Estimate.create({...req.body,
+                clientId: newClient._id,
+                jobName: `${name} - ${address}`,
+                isJob: true,
+                dateStart,
+                dateEnd
+            })
+            .then(estimate => res.status(200).json({ estimate }))
+            .catch(err => res.status(500).json({ err }))
+
+    } else if (clientDb) {
+        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
