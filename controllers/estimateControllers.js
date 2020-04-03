@@ -189,13 +189,14 @@ exports.addTime = (req, res, next) => {
 
 exports.acceptPayment = (req, res, next) => {
     const { id } = req.params
-    const { paid, date } = req.body
+    const { paid, date, argyleChargeId, argyleChargeUrl } = req.body
     const query = {
         invoices: {
             $elemMatch: { _id: id }
         }
     }
-    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": { paid, date } } }, { new: true })
+
+    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": { paid, date, argyleChargeId, argyleChargeUrl } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
         })
@@ -292,9 +293,10 @@ exports.sendInvoice = (req, res, next) => {
         date,
         total,
         description,
-        tags
+        tags,
+        urlPay
     } = req.body
-    sendInvoice(name, date, total, description, tags)
+    sendInvoice(name, date, total, description, tags, urlPay)
         .then(info => {
             res.send('Email sent')
         })
@@ -305,20 +307,25 @@ exports.sendInvoice = (req, res, next) => {
 }
 
 exports.addArgyleCharge = (req, res, next) => {
-    const { invoiceId } = req.params;
-    const { argyleChargeId } = req.body;
+    const { invoiceId, paymentId } = req.params;
+    const { argyleChargeId, argyleChargeUrl } = req.body;
 
     const query = {
         invoices: {
             $elemMatch: { _id: invoiceId}
+        },
+        payment: {
+            $elemMatch: { _id: paymentId}
         }
     }
 
-    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId":  argyleChargeId   }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, "invoices.$.payment.argyleChargeId": argyleChargeId}, { new: true })
         .then(estimate => {
-            res.status(200).json(estimate)
+            Estimate.findOneAndUpdate(query, { query, "invoices.$.payment.argyleChargeUrl": argyleChargeUrl}, { new: true })
+                .then(estimate => {
+                    res.status(200).json(estimate)
+                })
+                .catch(err => res.status(500).json({ err }));
         })
         .catch(err => res.status(500).json({ err }));
-
-
 }
