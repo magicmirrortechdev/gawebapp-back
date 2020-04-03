@@ -93,6 +93,13 @@ exports.convertJob = (req, res, next) => {
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
+exports.closeJob = (req, res, next) => {
+    const { id } = req.params
+    Estimate.findByIdAndUpdate(id, { status: 'Closed' }, { new: true })
+        .then(estimate => res.status(200).json({ estimate }))
+        .catch(err => res.status(500).json({ err }))
+}
+
 exports.decline = (req, res, next) => {
     const { id } = req.params
     console.log(id)
@@ -310,11 +317,11 @@ exports.addArgyleCharge = (req, res, next) => {
 
     const query = {
         invoices: {
-            $elemMatch: { _id: invoiceId}
+            $elemMatch: { _id: invoiceId }
         }
     }
 
-    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId":  argyleChargeId   }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId": argyleChargeId }, { new: true })
         .then(estimate => {
             res.status(200).json(estimate)
         })

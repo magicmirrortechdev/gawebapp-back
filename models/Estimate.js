@@ -33,7 +33,7 @@ const estimateSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['Unsent', 'Sent', 'Approve', 'Decline', 'Unpaid', 'Paid'],
+        enum: ['Unsent', 'Sent', 'Approve', 'Decline', 'Unpaid', 'Paid', 'Closed'],
         default: 'Unsent'
     },
     type: {

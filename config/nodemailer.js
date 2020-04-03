@@ -50,77 +50,100 @@ exports.sendEstimate = (name, items, total, comments, tags) => {
         to: email,
         subject: 'Your Estimate',
         html: `
-        <div style="width:100%; display: flex; flex-direction: column; align-items: center; padding-top:40px; padding-bottom: 40px;">
-        <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" />
-        <div style="width: 522px;">
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Hello, ${name}</p>
-            <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                This e-mail contains the estimate information that you requested from Green Acorn
+        <div style="width: 100%; text-align: center; position: absolute;">
+        <div style="background-color: white; width: 100%;">
+            <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" alt="logo">
+            <p style="color: rgb(34, 161, 242); font-size: 30px; font-family: Arial, Helvetica, sans-serif; margin-top: 0;">Sent you an estimate</p>
+        </div>
+        <div style="display: table; width:100%;">
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-left: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; ">
+                    To:
+                </p>
+                <p style="padding-left: 60%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold;">
+                    ${name}
+                </p>
+                <p style="padding-left: 60%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    direcc
+                </p>
+            </div>
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-right: 40%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    From:
+                </p>
+                <p style="padding-right: 40%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold;">
+                    Green Acorn Contracting LLC
+                </p>
+                <p style="padding-right: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    514 Daniels St, #217 <br> Raleigh, NC 27605
+                </p>
+            </div>
+        </div>
+        <br>
+        <div style="display: table; width:100%;">
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-left: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; ">
+                    Description of work:
+                </p>
+            </div>
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-right:60%; margin-bottom: 0px;font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    Total Estimate:
+                </p>
+                <p style="padding-right:60%; margin-top: 0px;  font-family:Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold; color:rgb(34, 161, 242)">
+                    $ ${total} USD
+                </p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div style="display: table; width:100%; ">
+            <table style="border-collapse:collapse; margin-left: 40%">
+                <thead>
+                    <tr style="font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
+                        <th style="border: 0.5px black solid;">Qty</th>
+                        <th style="border: 0.5px black solid;">Name</th>
+                        <th style="border: 0.5px black solid;">Description</th>
+                        <th style="border: 0.5px black solid;">Rate</th>
+                        <th style="border: 0.5px black solid;">Amount</th>
+                        <th style="border: 0.5px black solid;">Tax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="font-family:Arial, Helvetica, sans-serif;">
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;">NON</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+                If this estimate meets your approval, please click the "Approve" button below.<br> Otherwise, you can reply to this email with any questions.
             </p>
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Comments:</p>
-            <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                ${comments}
-            </p>
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Total Estimate:</p>
+        </div>
+        <br>
+        <div>
+            <button style="border: none; font-family: Arial, Helvetica, sans-serif; width: 300px; height: 70px; background-color: rgb(34, 161, 242); color: white; font-size: 18px;">Approve Estimate</button>
+        </div>
+        <br>
+        <br>
+        <hr style="width:45%">
+        <div>
+            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; ">          
+              THANK YOU
+          </span>
+            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: rgb(34, 161, 242); ">for considering Green Acorn Contracting LLC</span>
+        </div>
+        <hr style="width:45%">
 
-            <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                ${total} USD
-            </p>
-        </div>
-        <hr style="width: 400px; border: 1px solid #DDDDDD; opacity: 1;">
-        <div style="margin-top:0px">
-            <p style="text-decoration: none; color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px" href="http://">Want to make another estimate?</p>
-
-        </div>
-        <div style="width: 490px;">
-            <p style="letter-spacing: 0;
-            color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                Click on the following button to send us a request for another estimate.
-            </p>
-        </div>
-        <button onclick="window.location.href='https://www.greenacorn.com/'" style="background-color: #00A863; font-size: 20px; color: white; border-radius: 4px; width: 214px; height: 43px;">Get free quote</button>
-        <br>
-        <br>
-        <br>
-        <hr style="width: 400px; border: 1px solid #DDDDDD; opacity: 1;">
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; align-content: space-around; ">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_2_snkfws.png" alt="elite">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_3_gveepq.png" alt="houzz">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_4_zkdowq.png" alt="accredited">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_5_uapttm.png" alt="accredited">
-
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; align-content: space-around; ">
-            <a href="https://www.facebook.com/GreenAcornContracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_6_tdwknw.png" alt="elite">
-            </a>
-            <a href="https://www.instagram.com/greenacorncontracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_7_oozhoi.png" alt="houzz">
-            </a>
-            <a href="https://twitter.com/GreenAcornC/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_8_t6zdai.png" alt="accredited">
-            </a>
-            <a href="https://www.pinterest.com.mx/greenacorncontracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297018/ImagesGA/assets/Imagen_9_o7ixka.png" alt="accredited">
-            </a>
-        </div>
-        <br>
-        <br>
-        <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; flex-direction: column; width: 230px; display: flex; justify-content: center; align-items: center; align-content: center;">
-            <p style="font-size: 12px; color:#707070;">Green Acorn</p>
-            <p style="font-size: 12px; color:#707070;">809 N. West St</p>
-            <p style="font-size: 12px; color:#707070;">Raleigh, NC 27603 (919) 600-0199</p>
-            <p style="font-size: 12px; color:#707070;"><a href="https://www.greenacorn.com/privacy-policy">Privacy Policy</a> | <a href="https://www.greenacorn.com/terms">Terms of Use</a> </p>
-            <p style="font-size: 12px; color:#707070;">©2020 Green Acorn</p>
-        </div>
 
     </div>
-
         `
 
     })
@@ -139,79 +162,104 @@ exports.sendInvoice = (name, date, total, description, tags) => {
         to: email,
         subject: 'Your Invoice',
         html: `
-        
-        <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-        Date: ${date}
-        </p>
-        <div style="width:100%; display: flex; flex-direction: column;align-items: center; padding-top:40px; padding-bottom: 40px;">
-        <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" />
-        <div style="width: 522px;">
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Hello, ${name}</p>
-            <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                This e-mail contains the details of the invoice for the work done.
+        <div style="width: 100%; text-align: center; position: absolute;">
+        <div style="background-color: white; width: 100%;">
+            <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" alt="logo">
+            <p style="color: rgb(34, 161, 242); font-size: 30px; font-family: Arial, Helvetica, sans-serif; margin-top: 0;">Sent you an Invoice</p>
+        </div>
+        <div style="display: table; width:100%;">
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-left: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; ">
+                    To:
+                </p>
+                <p style="padding-left: 60%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold;">
+                    ${name}
+                </p>
+                <p style="padding-left: 60%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    direcc
+                </p>
+            </div>
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-right: 40%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    From:
+                </p>
+                <p style="padding-right: 40%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold;">
+                    Green Acorn Contracting LLC
+                </p>
+                <p style="padding-right: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    514 Daniels St, #217 <br> Raleigh, NC 27605
+                </p>
+            </div>
+        </div>
+        <br>
+        <div style="display: table; width:100%;">
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-left: 50%; font-family:Arial, Helvetica, sans-serif; font-size: 14px; ">
+                    Description of work:
+                </p>
+            </div>
+            <div style="display: table-cell; width: 25%;">
+                <p style="padding-right:60%; margin-bottom: 0px;font-family:Arial, Helvetica, sans-serif; font-size: 14px">
+                    Total Due:
+                </p>
+                <p style="padding-right:60%; margin-top: 0px;  font-family:Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold; color:rgb(34, 161, 242)">
+                    $ ${total} USD
+                </p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div style="display: table; width:100%; ">
+            <table style="border-collapse:collapse; margin-left: 40%">
+                <thead>
+                    <tr style="font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
+                        <th style="border: 0.5px black solid;">Qty</th>
+                        <th style="border: 0.5px black solid;">Name</th>
+                        <th style="border: 0.5px black solid;">Description</th>
+                        <th style="border: 0.5px black solid;">Rate</th>
+                        <th style="border: 0.5px black solid;">Amount</th>
+                        <th style="border: 0.5px black solid;">Tax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="font-family:Arial, Helvetica, sans-serif;">
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;"></td>
+                        <td style="border: 0.5px solid black;">NON</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+                You may pay your invoice here
             </p>
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Comments:</p>
-            <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                ${description}
-            </p>
-            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Total Invoice:</p>
-
-            <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                ${total} USD
-            </p>
         </div>
-        <hr style="width: 400px; border: 1px solid #DDDDDD; opacity: 1;">
-        <div style="margin-top:0px">
-            <p style="text-decoration: none; color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px" href="http://">Want to quote another job?</p>
-
+        <br>
+        <div>
+            <button style="border: none; font-family: Arial, Helvetica, sans-serif; width: 300px; height: 70px; background-color: rgb(34, 161, 242); color: white; font-size: 18px;">Pay Online</button>
         </div>
-        <div style="width: 490px;">
-            <p style="letter-spacing: 0;
-            color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                Click on the following button to send us a request for another estimate.
+        <br>
+
+        <div>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+                Questions or concerns? Call us at or reply to this email.
             </p>
         </div>
-        <button onclick="window.location.href='https://www.greenacorn.com/'" style="background-color: #00A863; font-size: 20px; color: white; border-radius: 4px; width: 214px; height: 43px;">Get free quote</button>
         <br>
         <br>
-        <br>
-        <hr style="width: 400px; border: 1px solid #DDDDDD; opacity: 1;">
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; align-content: space-around; ">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_2_snkfws.png" alt="elite">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_3_gveepq.png" alt="houzz">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_4_zkdowq.png" alt="accredited">
-            <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_5_uapttm.png" alt="accredited">
-
+        <hr style="width:45%">
+        <div>
+            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 30px; ">          
+              THANK YOU
+            </span>
+            <span style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: rgb(34, 161, 242); ">for considering Green Acorn Contracting LLC</span>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around; align-content: space-around; ">
-            <a href="https://www.facebook.com/GreenAcornContracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_6_tdwknw.png" alt="elite">
-            </a>
-            <a href="https://www.instagram.com/greenacorncontracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_7_oozhoi.png" alt="houzz">
-            </a>
-            <a href="https://twitter.com/GreenAcornC/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_8_t6zdai.png" alt="accredited">
-            </a>
-            <a href="https://www.pinterest.com.mx/greenacorncontracting/">
-                <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297018/ImagesGA/assets/Imagen_9_o7ixka.png" alt="accredited">
-            </a>
-        </div>
-        <br>
-        <br>
-        <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; flex-direction: column; width: 230px; display: flex; justify-content: center; align-items: center; align-content: center;">
-            <p style="font-size: 12px; color:#707070;">Green Acorn</p>
-            <p style="font-size: 12px; color:#707070;">809 N. West St</p>
-            <p style="font-size: 12px; color:#707070;">Raleigh, NC 27603 (919) 600-0199</p>
-            <p style="font-size: 12px; color:#707070;"><a href="https://www.greenacorn.com/privacy-policy">Privacy Policy</a> | <a href="https://www.greenacorn.com/terms">Terms of Use</a> </p>
-            <p style="font-size: 12px; color:#707070;">©2020 Green Acorn</p>
-        </div>
-
+        <hr style="width:45%">
     </div>
         `
     })
