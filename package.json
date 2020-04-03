@@ -8,6 +8,8 @@
     "dev-windows": "nodemon ./bin/www"
   },
   "dependencies": {
+    "ably": "^1.1.24",
+    "amqplib": "^0.5.5",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.18.1",
     "compression": "^1.7.4",
