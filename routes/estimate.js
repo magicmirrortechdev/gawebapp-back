@@ -28,6 +28,4 @@ router.patch('/addpm/:id', addPM)
 router.patch('/addtime/:id/:workerId', addTime)
 router.patch('/pay-invoice/:id/:invoiceId', acceptPayment)
 
-router.patch('/invoice/addArgyleCharge/:invoiceId', addArgyleCharge)
-
 module.exports = router;

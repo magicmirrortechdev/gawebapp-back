@@ -2,6 +2,7 @@
 
 const amqp = require('amqplib/callback_api');
 const Ably = require('ably');
+const Estimate = require('../models/Estimate')
 
 /* Start the worker that consumes from the AMQP QUEUE */
 exports.start = function(apiKey, channelName, queueName, queueEndpoint) {
@@ -28,18 +29,29 @@ exports.start = function(apiKey, channelName, queueName, queueEndpoint) {
                 const decodedEnvelope = JSON.parse(item.content);
                 const messages = Ably.Realtime.Message.fromEncodedArray(decodedEnvelope.messages);
                 messages.forEach((message) => {
-                    console.log("estado del pago ", message.data);
+                    console.log("estado del pago ", message);
+                    console.log("", message.data.response);
                     //actualizar el pago llega un JSON con los siguientes datos
-                    /*
-                    {
-                    "jobId":"5e32179a3aa1cc44ff661edb",
-                    "workerId":"5e29d23597b3114f659141c8",
-                    "invoiceId":"5e837253b3c2cc77e84283e7",
-                    "status": success / fail
-                    "chargeId": "5e837253d5eb211d2f501a7a"
-                    "amount": 00.00 // cantidad pagada
+
+                    const query = {
+                        invoices: {
+                            $elemMatch: { _id: message.data.response.invoiceId }
+                        }
                     }
-                     */
+                    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": {
+                        paid: message.data.response.amount,
+                        date: message.data.response.date,
+                        argyleChargeId: message.data.response.chargeId,
+                        argyleChargeUrl: message.data.response.recipient,
+                        argyleStatus: message.data.response.status
+                    } } }, { new: true })
+                        .then(estimate => {
+                            console.log("creado");
+                        })
+                        .catch(err => {
+                                console.log(err);
+                            }
+                        );
                 });
                 ch.ack(item);
             });
