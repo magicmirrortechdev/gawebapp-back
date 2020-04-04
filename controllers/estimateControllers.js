@@ -311,22 +311,3 @@ exports.sendInvoice = (req, res, next) => {
             res.send(err)
         })
 }
-
-exports.addArgyleCharge = (req, res, next) => {
-    const { invoiceId } = req.params;
-    const { argyleChargeId } = req.body;
-
-    const query = {
-        invoices: {
-            $elemMatch: { _id: invoiceId}
-        }
-    }
-
-    Estimate.findOneAndUpdate(query, { query, "invoices.$.argyleChargeId":  argyleChargeId   }, { new: true })
-        .then(estimate => {
-            res.status(200).json(estimate)
-        })
-        .catch(err => res.status(500).json({ err }));
-
-
-}
