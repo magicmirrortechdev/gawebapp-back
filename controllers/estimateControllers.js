@@ -46,6 +46,7 @@ exports.createJob = async(req, res, next) => {
         Estimate.create({...req.body,
                 clientId: newClient._id,
                 jobName: `${name} - ${address}`,
+                subtotal: 0,
                 isJob: true,
                 dateStart,
                 dateEnd
@@ -54,7 +55,7 @@ exports.createJob = async(req, res, next) => {
             .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
+        Estimate.create({...req.body, clientId: clientDb._id, subtotal: 0, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
@@ -196,19 +197,20 @@ exports.paidInvoice = (req, res, next) => {
 
 exports.addTime = (req, res, next) => {
     const { id, workerId } = req.params
-    const { time } = req.body
+    const { time, date } = req.body
     const query = {
         workers: {
             $elemMatch: { _id: id }
         }
     }
-    Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time } }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time, "workers.$.date": date } }, { new: true })
         .then(estimate => {
             User.findById(workerId).exec(function(err, data) {
                 var arreglo = data.works;
                 for (var i = 0; i < arreglo.length; i++) {
                     if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
                         arreglo[i].time.push(time);
+                        arreglo[i].date.push(date);
                     }
                 }
 
@@ -310,9 +312,10 @@ exports.sendEstimate = (req, res, next) => {
         items,
         total,
         comments,
-        tags
+        tags,
+        address
     } = req.body
-    sendEstimate(name, items, total, comments, tags)
+    sendEstimate(name, items, total, comments, tags, address)
         .then(info => {
             res.send('Email sent')
         })

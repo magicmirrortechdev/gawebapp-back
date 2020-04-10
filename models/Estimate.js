@@ -56,7 +56,8 @@ const estimateSchema = new Schema({
             ref: "User",
             autopopulate: true
         },
-        time: [Number]
+        time: [Number],
+        date: [String]
     }],
     expenses: [{
         date: String,
@@ -89,7 +90,7 @@ const estimateSchema = new Schema({
                 type: String,
                 default: ""
             },
-            argyleStatus:{
+            argyleStatus: {
                 type: Boolean
             },
             paid: Number,

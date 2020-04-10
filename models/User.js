@@ -23,7 +23,8 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Estimate"
         },
-        time: [Number]
+        time: [Number],
+        date: [String]
     }],
     resetPasswordToken: String,
     resetPasswordExpires: Date,

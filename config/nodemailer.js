@@ -24,32 +24,36 @@ exports.sendEmail = (email, name, msg, password) => {
     })
 }
 
-exports.sendEstimate = (name, items, total, comments, tags) => {
-    let addresses = tags.map((e, i) => {
-        return e.id
-    })
-    const nameItems = items.map((e, i) => {
-        return e.itemName
-    })
-    const description = items.map((e, i) => {
-        return e.description
-    })
-    const quantity = items.map((e, i) => {
-        return e.quantity
-    })
-    const rate = items.map((e, i) => {
-        return e.rate
-    })
-    const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+exports.sendEstimate = (name, items, total, comments, tags, address) => {
+        let addresses = tags.map((e, i) => {
+            return e.id
+        })
+        const nameItems = items.map((e, i) => {
+            return e.itemName
+        })
+        const description = items.map((e, i) => {
+            return e.description
+        })
+        const quantity = items.map((e, i) => {
+            return e.quantity
+        })
+        const rate = items.map((e, i) => {
+            return e.rate
+        })
+        const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
 
-    let email = addresses.map((e, i) => {
-        return e
-    })
-    return transporter.sendMail({
-        from: '"Green Acorn" <contact@greenacorn.com>',
-        to: email,
-        subject: 'Your Estimate',
-        html: `
+        let email = addresses.map((e, i) => {
+            return e
+        })
+        const nameOne = nameItems.map((e, i) => {
+            return e
+        })
+        console.log('ElName', nameOne)
+        return transporter.sendMail({
+                    from: '"Green Acorn" <contact@greenacorn.com>',
+                    to: email,
+                    subject: 'Your Estimate',
+                    html: `
         <div style="width: 100%; text-align: center; position: absolute;">
         <div style="background-color: white; width: 100%;">
             <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" alt="logo">
@@ -64,7 +68,7 @@ exports.sendEstimate = (name, items, total, comments, tags) => {
                     ${name}
                 </p>
                 <p style="padding-left: 60%; font-family:Arial, Helvetica, sans-serif; font-size: 14px">
-                    direcc
+                    ${address}
                 </p>
             </div>
             <div style="display: table-cell; width: 25%;">
@@ -98,7 +102,7 @@ exports.sendEstimate = (name, items, total, comments, tags) => {
         <br>
         <br>
         <div style="display: table; width:100%; ">
-            <table style="border-collapse:collapse; margin-left: 40%">
+            <table style="border-collapse:collapse; margin-left: 30%">
                 <thead>
                     <tr style="font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
                         <th style="border: 0.5px black solid;">Qty</th>
@@ -109,16 +113,18 @@ exports.sendEstimate = (name, items, total, comments, tags) => {
                         <th style="border: 0.5px black solid;">Tax</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr style="font-family:Arial, Helvetica, sans-serif;">
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;">NON</td>
-                    </tr>
+                ${items.map((e,i) => 
+                `<tbody>
+                 <tr style="border: 0.5px solid black;">
+                    <td style="border: 0.5px solid black;">${e.quantity}</td>
+                    <td style="border: 0.5px solid black;">${e.itemName}</td>
+                    <td style="border: 0.5px solid black;">${e.description}</td>
+                    <td style="border: 0.5px solid black;">${e.rate}</td>
+                    <td style="border: 0.5px solid black;">${e.rate*e.quantity}</td>
+                    <td style="border: 0.5px solid black;"> - - - </td>
+                 </tr>
                 </tbody>
+                `)}
             </table>
         </div>
         <br>
