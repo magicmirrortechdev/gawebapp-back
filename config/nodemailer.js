@@ -113,9 +113,9 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                         <th style="border: 0.5px black solid;">Tax</th>
                     </tr>
                 </thead>
+                <tbody>
                 ${items.map((e,i) => 
-                `<tbody>
-                 <tr style="border: 0.5px solid black;">
+                `<tr style="border: 0.5px solid black;">
                     <td style="border: 0.5px solid black;">${e.quantity}</td>
                     <td style="border: 0.5px solid black;">${e.itemName}</td>
                     <td style="border: 0.5px solid black;">${e.description}</td>
@@ -123,8 +123,8 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                     <td style="border: 0.5px solid black;">${e.rate*e.quantity}</td>
                     <td style="border: 0.5px solid black;"> - - - </td>
                  </tr>
-                </tbody>
                 `)}
+                </tbody>
             </table>
         </div>
         <br>
