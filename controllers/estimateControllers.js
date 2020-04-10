@@ -77,6 +77,16 @@ exports.getAllJobs = (req, res, next) => {
         .then(jobs => res.status(200).json({ jobs }))
         .catch(err => res.status(500).json({ err }))
 }
+exports.getJobsOpen = (req, res, next) => {
+    Estimate.find({ isJob: true, status: "Approve" }).populate('clientId').populate({ path: 'workerId' })
+        .then(jobs => res.status(200).json({ jobs }))
+        .catch(err => res.status(500).json({ err }))
+}
+exports.getJobsClose = (req, res, next) => {
+    Estimate.find({ isJob: true, status: "Closed" }).populate('clientId').populate({ path: 'workerId' })
+        .then(jobs => res.status(200).json({ jobs }))
+        .catch(err => res.status(500).json({ err }))
+}
 
 exports.deleteAll = (req, res, next) => {
     const { id } = req.params
