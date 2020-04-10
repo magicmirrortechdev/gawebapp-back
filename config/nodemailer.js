@@ -49,11 +49,25 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
             return e
         })
         console.log('ElName', nameOne)
-        return transporter.sendMail({
-                    from: '"Green Acorn" <contact@greenacorn.com>',
-                    to: email,
-                    subject: 'Your Estimate',
-                    html: `
+
+        let dataTable = "";
+        items.map((e,i) => {
+            dataTable +=`
+            <tr style="border: 0.5px solid black;">
+                <td style="border: 0.5px solid black;">${e.quantity}</td>
+                <td style="border: 0.5px solid black;">${e.itemName}</td>
+                <td style="border: 0.5px solid black;">${e.description}</td>
+                <td style="border: 0.5px solid black;">${e.rate}</td>
+                <td style="border: 0.5px solid black;">${e.rate*e.quantity}</td>
+                <td style="border: 0.5px solid black;"> - - - </td>
+            </tr>`;
+        });
+
+    return transporter.sendMail({
+        from: '"Green Acorn" <contact@greenacorn.com>',
+        to: email,
+        subject: 'Your Estimate',
+        html: `
         <div style="width: 100%; text-align: center; position: absolute;">
         <div style="background-color: white; width: 100%;">
             <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" alt="logo">
@@ -113,18 +127,9 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                         <th style="border: 0.5px black solid;">Tax</th>
                     </tr>
                 </thead>
-                ${items.map((e,i) => 
-                `<tbody>
-                 <tr style="border: 0.5px solid black;">
-                    <td style="border: 0.5px solid black;">${e.quantity}</td>
-                    <td style="border: 0.5px solid black;">${e.itemName}</td>
-                    <td style="border: 0.5px solid black;">${e.description}</td>
-                    <td style="border: 0.5px solid black;">${e.rate}</td>
-                    <td style="border: 0.5px solid black;">${e.rate*e.quantity}</td>
-                    <td style="border: 0.5px solid black;"> - - - </td>
-                 </tr>
+                <tbody>
+                   ${dataTable}
                 </tbody>
-                `)}
             </table>
         </div>
         <br>
