@@ -25,34 +25,34 @@ exports.sendEmail = (email, name, msg, password) => {
 }
 
 exports.sendEstimate = (name, items, total, comments, tags, address) => {
-        let addresses = tags.map((e, i) => {
-            return e.id
-        })
-        const nameItems = items.map((e, i) => {
-            return e.itemName
-        })
-        const description = items.map((e, i) => {
-            return e.description
-        })
-        const quantity = items.map((e, i) => {
-            return e.quantity
-        })
-        const rate = items.map((e, i) => {
-            return e.rate
-        })
-        const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+    let addresses = tags.map((e, i) => {
+        return e.id
+    })
+    const nameItems = items.map((e, i) => {
+        return e.itemName
+    })
+    const description = items.map((e, i) => {
+        return e.description
+    })
+    const quantity = items.map((e, i) => {
+        return e.quantity
+    })
+    const rate = items.map((e, i) => {
+        return e.rate
+    })
+    const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
 
-        let email = addresses.map((e, i) => {
-            return e
-        })
-        const nameOne = nameItems.map((e, i) => {
-            return e
-        })
-        console.log('ElName', nameOne)
+    let email = addresses.map((e, i) => {
+        return e
+    })
+    const nameOne = nameItems.map((e, i) => {
+        return e
+    })
+    console.log('ElName', nameOne)
 
-        let dataTable = "";
-        items.map((e,i) => {
-            dataTable +=`
+    let dataTable = "";
+    items.map((e, i) => {
+        dataTable += `
             <tr style="border: 0.5px solid black;">
                 <td style="border: 0.5px solid black;">${e.quantity}</td>
                 <td style="border: 0.5px solid black;">${e.itemName}</td>
@@ -61,7 +61,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                 <td style="border: 0.5px solid black;">${e.rate*e.quantity}</td>
                 <td style="border: 0.5px solid black;"> - - - </td>
             </tr>`;
-        });
+    });
 
     return transporter.sendMail({
         from: '"Green Acorn" <contact@greenacorn.com>',
@@ -221,28 +221,10 @@ exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
         <br>
         <br>
         <div style="display: table; width:100%; ">
-            <table style="border-collapse:collapse; margin-left: 40%">
-                <thead>
-                    <tr style="font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
-                        <th style="border: 0.5px black solid;">Qty</th>
-                        <th style="border: 0.5px black solid;">Name</th>
-                        <th style="border: 0.5px black solid;">Description</th>
-                        <th style="border: 0.5px black solid;">Rate</th>
-                        <th style="border: 0.5px black solid;">Amount</th>
-                        <th style="border: 0.5px black solid;">Tax</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="font-family:Arial, Helvetica, sans-serif;">
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;"></td>
-                        <td style="border: 0.5px solid black;">NON</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3>Description:</h3>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 18px;">
+            ${description}
+            </p>
         </div>
         <br>
         <div>

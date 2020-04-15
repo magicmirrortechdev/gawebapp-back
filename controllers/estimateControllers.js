@@ -150,10 +150,9 @@ exports.decline = (req, res, next) => {
 
 exports.addExpense = (req, res, next) => {
     const { id } = req.params
-    const { date, vendor, category, description, img, total } = req.body
+    const { date, vendor, category, description, img, total, workerId } = req.body
 
-    console.log(id)
-    Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total } } }, { new: true })
+    Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total, workerId } } }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
