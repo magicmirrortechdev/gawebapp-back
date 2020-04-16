@@ -82,6 +82,9 @@ exports.getJobsOpen = (req, res, next) => {
         .then(jobs => res.status(200).json({ jobs }))
         .catch(err => res.status(500).json({ err }))
 }
+
+
+
 exports.getJobsClose = (req, res, next) => {
     Estimate.find({ isJob: true, status: "Closed" }).populate('clientId').populate({ path: 'workerId' })
         .then(jobs => res.status(200).json({ jobs }))
@@ -276,7 +279,8 @@ exports.updateExpense = (req, res, next) => {
         }
     }
     const { date, vendor, category, description, img, total } = req.body
-    Estimate.findOneAndUpdate(query, { query, $set: { "expenses.$": { date, vendor, category, description, img, total } } }, { new: true })
+    const date2 = new Date(date)
+    Estimate.findOneAndUpdate(query, { query, $set: { "expenses.$": { date: date2, vendor, category, description, img, total } } }, { new: true })
         .then(estimate => {
 
             res.status(200).json(estimate)
@@ -284,6 +288,67 @@ exports.updateExpense = (req, res, next) => {
         .catch(err => res.status(500).json({ err }));
 
 }
+
+exports.filterDate = async(req, res, next) => {
+
+    let { startDate, endDate } = req.body
+    let start = new Date(startDate)
+    let end = new Date(endDate)
+        // const query = {
+        //     expenses: {
+        //         $elemMatch: {
+        //             date: { $gte: startDate, $lt: endDate }
+        //         }
+        //     }
+        // }
+
+    // Estimate.find(query)
+    //     .then(jobs => res.status(200).json({ jobs }))
+    //     .catch(err => res.status(500).json({ err }))
+    const result = await Estimate.aggregate([{
+            "$match": {
+                "status": "Approve"
+            }
+        },
+        {
+            "$project": {
+                "name": 1,
+                "jobName": "$jobName",
+                "items": "$items",
+                "invoices": {
+                    "$filter": {
+                        "input": "$invoices",
+                        "cond": {
+                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }]
+                        }
+                    }
+                },
+                "clientId": "$clientId",
+                "workers": "$workers",
+                "expenses": {
+                    "$filter": {
+                        "input": "$expenses",
+                        "cond": {
+                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }]
+                        }
+                    }
+                }
+            }
+        }
+    ])
+
+    Estimate.populate(result, {
+            path: "workers.workerId"
+        })
+        .then(jobs => {
+
+            res.status(200).json({ jobs })
+        })
+        .catch(err => res.status(500).json({ err }));
+}
+
+
+
 exports.deleteInvoice = (req, res, next) => {
     const { id, estimateId } = req.params
     const query = {

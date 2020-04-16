@@ -60,7 +60,7 @@ const estimateSchema = new Schema({
         date: [String]
     }],
     expenses: [{
-        date: String,
+        date: Date,
         workerId: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -74,7 +74,7 @@ const estimateSchema = new Schema({
         total: Number,
     }],
     invoices: [{
-        date: String,
+        date: Date,
         workerId: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -107,6 +107,7 @@ const estimateSchema = new Schema({
     timestamps: true,
     versionKey: false
 });
+
 
 estimateSchema.plugin(require('mongoose-autopopulate'))
 module.exports = model('Estimate', estimateSchema);
