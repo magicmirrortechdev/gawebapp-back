@@ -310,7 +310,6 @@ exports.filterDate = async(req, res, next) => {
                 "status": "Approve"
             },
         },
-        { "$unwind": "$workers" },
         {
             "$project": {
                 "name": 1,
@@ -326,9 +325,30 @@ exports.filterDate = async(req, res, next) => {
                 },
                 "workers": {
                     "$filter": {
-                        "input": "$workers.time",
-                        "cond": { "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }] }
-                    }
+                        "input": {
+                            "$map": {
+                                "input": "$workers",
+                                "as": "workers",
+                                "in": {
+                                    "workerId": "$$workers.workerId",
+                                    "time": {
+                                        "$filter": {
+                                            "input": "$$workers.time",
+                                            "as": "time",
+                                            "cond": { "$and" :
+                                                    [
+                                                        {"$gte": [ "$$time.date", start ]},
+                                                        {"$lte": [ "$$time.date", end ]}
+                                                    ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "as": "workers",
+                        "cond": { "$gt": [ { "$size": "$$workers.time" }, 0 ] }
+                    },
                 },
                 "clientId": "$clientId",
                 "expenses": {
@@ -341,13 +361,11 @@ exports.filterDate = async(req, res, next) => {
                 }
             }
         }
-    ])
-
+    ]);
     Estimate.populate(result, {
-            path: "workers.workerId"
-        })
+        path: "workers.workerId"
+    })
         .then(jobs => {
-
             res.status(200).json({ jobs })
         })
         .catch(err => res.status(500).json({ err }));
