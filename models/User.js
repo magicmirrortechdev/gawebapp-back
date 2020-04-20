@@ -23,8 +23,10 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Estimate"
         },
-        time: [Number],
-        date: [String]
+        time: [{
+            hours: Number,
+            date: Date
+        }]
     }],
     expenses: [{
         expensesId: {

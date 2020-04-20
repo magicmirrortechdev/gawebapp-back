@@ -215,14 +215,14 @@ exports.addTime = (req, res, next) => {
             $elemMatch: { _id: id }
         }
     }
-    Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": time, "workers.$.date": date } }, { new: true })
+    Estimate.findOneAndUpdate(query, { query, $push: { "workers.$.time": { hours: time, date }, "workers.$.date": date } }, { new: true })
         .then(estimate => {
             User.findById(workerId).exec(function(err, data) {
                 var arreglo = data.works;
                 for (var i = 0; i < arreglo.length; i++) {
                     if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
-                        arreglo[i].time.push(time);
-                        arreglo[i].date.push(date);
+                        arreglo[i].time.push({ hours: time, date });
+
                     }
                 }
 
@@ -308,8 +308,9 @@ exports.filterDate = async(req, res, next) => {
     const result = await Estimate.aggregate([{
             "$match": {
                 "status": "Approve"
-            }
+            },
         },
+        { "$unwind": "$workers" },
         {
             "$project": {
                 "name": 1,
@@ -323,8 +324,13 @@ exports.filterDate = async(req, res, next) => {
                         }
                     }
                 },
+                "workers": {
+                    "$filter": {
+                        "input": "$workers.time",
+                        "cond": { "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }] }
+                    }
+                },
                 "clientId": "$clientId",
-                "workers": "$workers",
                 "expenses": {
                     "$filter": {
                         "input": "$expenses",

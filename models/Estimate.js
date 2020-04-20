@@ -56,8 +56,10 @@ const estimateSchema = new Schema({
             ref: "User",
             autopopulate: true
         },
-        time: [Number],
-        date: [String]
+        time: [{
+            hours: Number,
+            date: Date
+        }],
     }],
     expenses: [{
         date: Date,
