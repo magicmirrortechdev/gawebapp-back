@@ -294,17 +294,50 @@ exports.filterDate = async(req, res, next) => {
     let { startDate, endDate } = req.body
     let start = new Date(startDate)
     let end = new Date(endDate)
-        // const query = {
-        //     expenses: {
-        //         $elemMatch: {
-        //             date: { $gte: startDate, $lt: endDate }
-        //         }
-        //     }
-        // }
 
-    // Estimate.find(query)
-    //     .then(jobs => res.status(200).json({ jobs }))
-    //     .catch(err => res.status(500).json({ err }))
+    const resultWorkers = await User.aggregate([
+        { "$match": {"role": "WORKER" }},
+        { "$project": {
+                "name": 1,
+                "expenses": {
+                    "$filter": {
+                        "input": "$expenses",
+                        "cond": {
+                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }]
+                        }
+                    }
+                },
+                "works": {
+                    "$filter": {
+                        "input": {
+                            "$map": {
+                                "input": "$works",
+                                "as": "works",
+                                "in": {
+                                    "workId": "$$works.workId",
+                                    "time": {
+                                        "$filter": {
+                                            "input": "$$works.time",
+                                            "as": "time",
+                                            "cond": {
+                                                "$and" :
+                                                    [
+                                                        {"$gte": [ "$$time.date", start ]},
+                                                        {"$lte": [ "$$time.date", end ]}
+                                                    ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "as": "works",
+                        "cond": { "$gt": [ { "$size": "$$works.time" }, 0 ] }
+                    },
+                },
+            }}
+        ]);
+
     const result = await Estimate.aggregate([{
             "$match": {
                 "status": "Approve"
@@ -364,11 +397,14 @@ exports.filterDate = async(req, res, next) => {
     ]);
     Estimate.populate(result, {
         path: "workers.workerId"
-    })
-        .then(jobs => {
-            res.status(200).json({ jobs })
-        })
-        .catch(err => res.status(500).json({ err }));
+    }).then(jobs => {
+        User.populate(resultWorkers, {
+            path: 'works.workId',
+            select: 'expenses jobName dateStart dateEnd'
+        }).then(workers => {
+            res.status(200).json({ "jobs": jobs, "workers": workers })
+        }).catch(err => res.status(500).json({ err }));
+    }).catch(err => res.status(500).json({ err }));
 }
 
 
