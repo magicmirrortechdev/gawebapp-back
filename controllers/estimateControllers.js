@@ -47,6 +47,7 @@ exports.createJob = async(req, res, next) => {
                 clientId: newClient._id,
                 jobName: `${name} - ${address}`,
                 subtotal: 0,
+                status: "Approve",
                 isJob: true,
                 dateStart,
                 dateEnd
@@ -55,7 +56,7 @@ exports.createJob = async(req, res, next) => {
             .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        Estimate.create({...req.body, clientId: clientDb._id, subtotal: 0, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
+        Estimate.create({...req.body, clientId: clientDb._id, status: "Approve", subtotal: 0, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
@@ -294,17 +295,7 @@ exports.filterDate = async(req, res, next) => {
     let { startDate, endDate } = req.body
     let start = new Date(startDate)
     let end = new Date(endDate)
-        // const query = {
-        //     expenses: {
-        //         $elemMatch: {
-        //             date: { $gte: startDate, $lt: endDate }
-        //         }
-        //     }
-        // }
 
-    // Estimate.find(query)
-    //     .then(jobs => res.status(200).json({ jobs }))
-    //     .catch(err => res.status(500).json({ err }))
     const result = await Estimate.aggregate([{
             "$match": {
                 "status": "Approve"
@@ -335,11 +326,11 @@ exports.filterDate = async(req, res, next) => {
                                         "$filter": {
                                             "input": "$$workers.time",
                                             "as": "time",
-                                            "cond": { "$and" :
-                                                    [
-                                                        {"$gte": [ "$$time.date", start ]},
-                                                        {"$lte": [ "$$time.date", end ]}
-                                                    ]
+                                            "cond": {
+                                                "$and": [
+                                                    { "$gte": ["$$time.date", start] },
+                                                    { "$lte": ["$$time.date", end] }
+                                                ]
                                             }
                                         }
                                     }
@@ -347,7 +338,7 @@ exports.filterDate = async(req, res, next) => {
                             }
                         },
                         "as": "workers",
-                        "cond": { "$gt": [ { "$size": "$$workers.time" }, 0 ] }
+                        "cond": { "$gt": [{ "$size": "$$workers.time" }, 0] }
                     },
                 },
                 "clientId": "$clientId",
@@ -363,8 +354,8 @@ exports.filterDate = async(req, res, next) => {
         }
     ]);
     Estimate.populate(result, {
-        path: "workers.workerId"
-    })
+            path: "workers.workerId"
+        })
         .then(jobs => {
             res.status(200).json({ jobs })
         })

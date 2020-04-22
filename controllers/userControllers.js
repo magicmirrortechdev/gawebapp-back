@@ -52,7 +52,7 @@ exports.getAllUsers = (req, res, next) => {
 }
 
 exports.workerUsers = (req, res, next) => {
-    User.find({ role: 'WORKER' }).populate({
+    User.find({ role: 'WORKER' } || { role: 'PROJECT MANAGER' }).populate({
             path: 'works.workId',
             select: 'expenses jobName dateStart dateEnd'
         })
