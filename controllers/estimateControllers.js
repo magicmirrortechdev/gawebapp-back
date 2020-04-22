@@ -296,6 +296,119 @@ exports.filterDate = async(req, res, next) => {
     let start = new Date(startDate)
     let end = new Date(endDate)
 
+    const resultWorkers = await User.aggregate([
+        { "$match": { "role": "WORKER" } },
+        {
+            "$project": {
+                "name": 1,
+                "effective": 1,
+                "payment": 1,
+                "works": {
+                    "$filter": {
+                        "input": {
+                            "$map": {
+                                "input": "$works",
+                                "as": "works",
+                                "in": {
+                                    "workId": "$$works.workId",
+                                    "time": {
+                                        "$filter": {
+                                            "input": "$$works.time",
+                                            "as": "time",
+                                            "cond": {
+                                                "$and": [
+                                                    { "$gte": ["$$time.date", start] },
+                                                    { "$lte": ["$$time.date", end] }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "as": "works",
+                        "cond": { "$gte": [{ "$size": "$$works.time" }, 0] }
+                    },
+                },
+            }
+        },
+        {
+            "$unwind": {
+                "path": "$works"
+            }
+        },
+        {
+            "$lookup": {
+                "from": "estimates",
+                "localField": 'works.workId',
+                "foreignField": "_id",
+                "as": "works.workId"
+            }
+        },
+        {
+            "$project": {
+                "name": 1,
+                "effective": 1,
+                "payment": 1,
+                "works.time": 1,
+                "works.workId": {
+                    "$filter": {
+                        "input": {
+                            "$map": {
+                                "input": "$works.workId",
+                                "as": "expenses",
+                                "in": {
+                                    "jobName": "$$expenses.jobName",
+                                    "dateStart": "$$expenses.dateStart",
+                                    "dateEnd": "$$expenses.dateEnd",
+                                    "expenses": {
+                                        "$filter": {
+                                            "input": "$$expenses.expenses",
+                                            "as": "expenses",
+                                            "cond": {
+                                                "$and": [
+                                                    { "$gte": ["$$expenses.date", start] },
+                                                    { "$lte": ["$$expenses.date", end] }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "as": "expenses",
+                        "cond": { "$gte": [{ "$size": "$$expenses.expenses" }, 0] }
+                    }
+                }
+            }
+        },
+        {
+            "$project": {
+                "name": 1,
+                "effective": 1,
+                "payment": 1,
+                "works": 1
+            }
+        },
+        {
+            "$group": {
+                "_id": "$_id",
+                "effective": {
+                    "$first": "$effective"
+                },
+                "payment": {
+                    "$first": "$payment"
+                },
+                "name": {
+                    "$first": "$name"
+                },
+                "works": {
+                    "$push": "$works"
+                }
+            }
+        }
+    ]);
+
     const result = await Estimate.aggregate([{
             "$match": {
                 "status": "Approve"
@@ -354,15 +467,11 @@ exports.filterDate = async(req, res, next) => {
         }
     ]);
     Estimate.populate(result, {
-            path: "workers.workerId"
-        })
-        .then(jobs => {
-            res.status(200).json({ jobs })
-        })
-        .catch(err => res.status(500).json({ err }));
+        path: "workers.workerId"
+    }).then(jobs => {
+        res.status(200).json({ "jobs": jobs, "workers": resultWorkers })
+    }).catch(err => res.status(500).json({ err }));
 }
-
-
 
 exports.deleteInvoice = (req, res, next) => {
     const { id, estimateId } = req.params
