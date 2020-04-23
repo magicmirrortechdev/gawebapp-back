@@ -1,11 +1,17 @@
 const Client = require('../models/Client')
 
 
-exports.createClient = (req, res, next) => {
+exports.createClient = async(req, res, next) => {
+    const emailUser = req.body.email
+    const clientDb = await Client.findOne({ email: emailUser })
+    if (clientDb === null) {
 
-    Client.create({...req.body })
-        .then(client => res.status(201).json({ client }))
-        .catch(err => res.status(500).json({ err }))
+        Client.create({...req.body })
+            .then(client => res.status(201).json({ client }))
+            .catch(err => res.status(500).json({ err }))
+    } else if (clientDb) {
+        res.status(500).json({ message: 'A client with the given email is already registered' })
+    }
 }
 
 exports.getAllClients = (req, res, next) => {
