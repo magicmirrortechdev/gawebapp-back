@@ -272,6 +272,8 @@ exports.updateInvoice = (req, res, next) => {
 
 }
 
+
+
 exports.updateExpense = (req, res, next) => {
     const { expenseId, estimateId } = req.params
     const query = {
@@ -488,6 +490,37 @@ exports.deleteInvoice = (req, res, next) => {
         .catch(err => res.status(500).json({ err }));
 
 };
+
+exports.deleteWorker = (req, res, next) => {
+    const { workerId, estimateId } = req.params
+
+    const { worker } = req.body
+    console.log(req.body)
+    const query = {
+        workers: {
+            $elemMatch: { _id: workerId }
+        }
+    }
+    Estimate.findOneAndUpdate(query, { query, $pull: { workers: { _id: workerId } } }, { new: true })
+        .then(estimate => {
+            User.findById(worker).exec(function(err, data) {
+                var arreglo = data.works;
+                for (var i = 0; i < arreglo.length; i++) {
+                    if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
+                        arreglo.pull(arreglo[i]._id);
+
+                    }
+                }
+
+                data.save().then(function(savedPost) {
+                    res.status(200).json({ estimate });
+                }).catch(function(err) {
+                    res.status(500).send(err);
+                });
+            });
+        })
+        .catch(err => res.status(500).json({ err }));
+}
 
 exports.deleteExpense = (req, res, next) => {
     const { expenseId, estimateId } = req.params

@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { createEstimate, filterDate, createJob, getJobsClose, getJobsOpen, updateExpense, closeJob, sendInvoice, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense, addArgyleCharge } = require('../controllers/estimateControllers')
+const { createEstimate, deleteWorker, filterDate, createJob, getJobsClose, getJobsOpen, updateExpense, closeJob, sendInvoice, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense, addArgyleCharge } = require('../controllers/estimateControllers')
 
 
 
@@ -20,6 +20,7 @@ router.patch('/invoicedelete/:estimateId/:id', deleteInvoice)
 router.patch('/invoiceupdate/:estimateId/:invoiceId', updateInvoice)
 router.patch('/expenseupdate/:estimateId/:expenseId', updateExpense)
 router.patch('/expensedelete/:estimateId/:expenseId', deleteExpense)
+router.patch('/workerdelete/:estimateId/:workerId', deleteWorker)
 router.patch('/addexpense/:id', addExpense)
 router.post('/sendestimate', sendEstimate);
 router.post('/sendinvoice', sendInvoice);
