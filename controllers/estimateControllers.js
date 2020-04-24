@@ -16,6 +16,9 @@ exports.createEstimate = async(req, res, next) => {
         const newClient = await Client.create({ name, email: emailUser })
 
         Estimate.create({...req.body,
+                addressEstimate: address,
+                nameEstimate: name,
+                emailEstimate: emailUser,
                 clientId: newClient._id,
                 jobName: `${name} - ${address}`,
                 items: { subtotal: items.rate * items.quantity },
@@ -25,7 +28,14 @@ exports.createEstimate = async(req, res, next) => {
             .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        Estimate.create({...req.body, clientId: clientDb._id, jobName: `${name} - ${address}` })
+        Estimate.create({
+                ...req.body,
+                addressEstimate: address,
+                nameEstimate: name,
+                emailEstimate: emailUser,
+                clientId: clientDb._id,
+                jobName: `${name} - ${address}`
+            })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
@@ -44,6 +54,9 @@ exports.createJob = async(req, res, next) => {
         const newClient = await Client.create({ name, email: emailUser })
 
         Estimate.create({...req.body,
+                addressEstimate: address,
+                nameEstimate: name,
+                emailEstimate: emailUser,
                 clientId: newClient._id,
                 jobName: `${name} - ${address}`,
                 subtotal: 0,
@@ -56,7 +69,19 @@ exports.createJob = async(req, res, next) => {
             .catch(err => res.status(500).json({ err }))
 
     } else if (clientDb) {
-        Estimate.create({...req.body, clientId: clientDb._id, status: "Approve", subtotal: 0, jobName: `${name} - ${address}`, isJob: true, dateStart, dateEnd })
+        Estimate.create({
+                ...req.body,
+                addressEstimate: address,
+                nameEstimate: name,
+                emailEstimate: emailUser,
+                clientId: clientDb._id,
+                status: "Approve",
+                subtotal: 0,
+                jobName: `${name} - ${address}`,
+                isJob: true,
+                dateStart,
+                dateEnd
+            })
             .then(estimate => res.status(200).json({ estimate }))
             .catch(err => res.status(500).json({ err }))
     }
@@ -194,8 +219,14 @@ exports.getOneEstimate = async(req, res, next) => {
 
 exports.estimateUpdate = (req, res, next) => {
     const { id } = req.params
-    console.log(id)
-    Estimate.findByIdAndUpdate(id, {...req.body }, { new: true })
+    const emailUser = req.body.email
+    const name = req.body.name
+    const address = req.body.address
+    Estimate.findByIdAndUpdate(id, {...req.body,
+            addressEstimate: address,
+            nameEstimate: name,
+            emailEstimate: emailUser
+        }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
