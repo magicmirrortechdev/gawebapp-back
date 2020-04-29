@@ -115,49 +115,59 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
 <body>
     <div class="main">
         <img src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585294569/ImagesGA/Captura_de_pantalla_2020-03-24_a_la_s_19.26.09_dtiixu.png" />
-        <div class="secondary">
-            <p class="title1">Hello, ${name}!</p>
-            <p class="subtitle1">
-                This e-mail contains the estimate information that you requested from Green Acorn
+        <div style="width: 522px;">
+            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Hello, ${name}</p>
+            <p style="color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
+                This e-mail contains the details of the invoice for the work done.
             </p>
-            <p class="title1">Description:</p>
-            <table style="border-collapse:collapse; margin-left: 20%">
+            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Description:</p>
+            <table style="width: 522px;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse; margin-left: 20%">
                 <thead>
-                    <tr style="font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
-                        <th style="border: 0.5px black solid;">Qty</th>
-                        <th style="border: 0.5px black solid;">Name</th>
-                        <th style="border: 0.5px black solid;">Description</th>
-                        <th style="border: 0.5px black solid;">Rate</th>
-                        <th style="border: 0.5px black solid;">Amount</th>
-                        <th style="border: 0.5px black solid;">Tax</th>
+                    <tr style=" border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
+                        <th style="font-weight:normal;">Qty</th>
+                        <th style="font-weight:normal;">Name</th>
+                        <th style="font-weight:normal;">Description</th>
+                        <th style="font-weight:normal;">Rate</th>
+                        <th style="font-weight:normal;">Amount</th>
+                        <th style="font-weight:normal;">Tax</th>
                     </tr>
                 </thead>
+                ${dataTable}
                 <tbody>
-                    ${dataTable}
                 </tbody>
             </table>
-            <p class="title1">Total Estimate:</p>
+            <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Total Invoice:</p>
             <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
                 ${total} USD
             </p>
         </div>
+        <br>
 
-        <div style="margin-top:0px">
-            <br/>
-            <p style="text-decoration: none; color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px" href="http://">Want to make another estimate?</p>
-        </div>
-        <div style="width: 490px;">
-            <p style="letter-spacing: 0; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                Click on the following button to send us a request for another estimate.
+        <div style="width: 522px;">
+            <a href="${urlPay}" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Pay Invoice</a>
+            <br>
+            <p style="margin-top: 25px; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 13px">
+                You may pay your invoice here. If you have any questions, please reply to this e-mail or call us at: (919) 600-0199
             </p>
         </div>
-        <button onclick="window.location.href='https://www.greenacorn.com/'" style="background-color: #00A863; margin-left:100px; font-size: 20px; color: white; border-radius: 4px; width: 214px; height: 43px;">Get free quote</button>
         <br>
         <br>
-        <br>
+        <div style="margin-top:0px">
+            <p style=" margin-left:60px; text-decoration: none; color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px" href="http://">Want to make another estimate?</p>
+        </div>
+        <div style="width: 490px;">
+            <p style="letter-spacing: 0;
+        color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
+                Click on the following button to send us a request for another estimate.
+            </p>
 
+        </div>
+        <br>
+        <a href="https://www.greenacorn.com/" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Get free quote</a>
+        <br>
+        <br>
+        <br>
         <div>
-            <br>
             <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_2_snkfws.png" alt="elite">
             <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_3_gveepq.png" alt="houzz">
             <img style="margin-left: 20px;" src="https://res.cloudinary.com/ironhackjorge/image/upload/v1585297019/ImagesGA/assets/Imagen_4_zkdowq.png" alt="accredited">
