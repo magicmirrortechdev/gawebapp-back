@@ -54,12 +54,12 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
     items.map((e, i) => {
         dataTable += `
             <tr>
-                <td>${e.quantity}</td>
-                <td>${e.itemName}</td>
-                <td>${e.description}</td>
-                <td>${e.rate}</td>
-                <td>${e.rate*e.quantity}</td>
-                <td> - - - </td>
+                <td style="text-align:center;">${e.quantity}</td>
+                <td style="text-align:center;">${e.itemName}</td>
+                <td style="text-align:center;">${e.description}</td>
+                <td style="text-align:center;">${e.rate}</td>
+                <td style="text-align:center;">${e.rate*e.quantity}</td>
+                <td style="text-align:center;"> - - - </td>
             </tr>`;
     });
 
@@ -121,15 +121,15 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                 This e-mail contains the estimate information that you requested from Green Acorn
             </p>
             <p class="title1">Description:</p>
-            <table style="width: 100%;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse; margin-left: 20%">
+            <table style="text-align:center; width: 100%;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse;">
                 <thead>
-                    <tr style=" border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
-                        <th style="font-weight:normal;">Qty</th>
-                        <th style="font-weight:normal;">Name</th>
-                        <th style="font-weight:normal;">Description</th>
-                        <th style="font-weight:normal;">Rate</th>
-                        <th style="font-weight:normal;">Amount</th>
-                        <th style="font-weight:normal;">Tax</th>
+                    <tr style="text-align:center; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
+                        <th style="text-align:center; font-weight:normal;">Qty</th>
+                        <th style="text-align:center; font-weight:normal;">Name</th>
+                        <th style="text-align:center; font-weight:normal;">Description</th>
+                        <th style="text-align:center; font-weight:normal;">Rate</th>
+                        <th style="text-align:center; font-weight:normal;">Amount</th>
+                        <th style="text-align:center; font-weight:normal;">Tax</th>
                     </tr>
                 </thead>       
                 <tbody>
