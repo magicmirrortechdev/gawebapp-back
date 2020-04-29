@@ -121,7 +121,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                 This e-mail contains the estimate information that you requested from Green Acorn
             </p>
             <p class="title1">Description:</p>
-            <table style="width: 522px;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse; margin-left: 20%">
+            <table style="width: 100%;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse; margin-left: 20%">
                 <thead>
                     <tr style=" border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
                         <th style="font-weight:normal;">Qty</th>
@@ -131,9 +131,9 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                         <th style="font-weight:normal;">Amount</th>
                         <th style="font-weight:normal;">Tax</th>
                     </tr>
-                </thead>
-                ${dataTable}
+                </thead>       
                 <tbody>
+                ${dataTable}
                 </tbody>
             </table>
             <p class="title1">Total Estimate:</p>
