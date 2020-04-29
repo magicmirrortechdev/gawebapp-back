@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 const URL = {
     staging: 'https://gaweb.netlify.app',
     local: 'http://localhost:3001',
-    prod: 'https://green-acorn.netlify.app
+    prod: 'https://green-acorn.netlify.app',
     prodR: 'https://green-acorn-app.netlify.app'
 }
 module.exports = (app) => {
