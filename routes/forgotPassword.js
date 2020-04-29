@@ -5,9 +5,10 @@ const User = require('../models/User')
 const nodemailer = require('nodemailer');
 
 const URL = {
-    staging: 'https://gaweb.netlify.com',
+    staging: 'https://gaweb.netlify.app',
     local: 'http://localhost:3001',
-    prod: 'https://green-acorn.netlify.com'
+    prod: 'https://green-acorn.netlify.app
+    prodR: 'https://green-acorn-app.netlify.app'
 }
 module.exports = (app) => {
     app.post('/forgotpassword', (req, res) => {
@@ -50,7 +51,7 @@ module.exports = (app) => {
                     subject: 'Reset Password',
                     html: `You are receiving this because you (or someone else) have requested the reset of the password for your account. <br/>
                            Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: <br/> 
-                        <a href="${URL.staging}/reset/${token}"> Click here</a> <br/>
+                        <a href="${URL.prodR}/reset/${token}"> Click here</a> <br/>
                         If you did not request this, please ignore this email and your password will remain unchanged.`,
                 };
 
