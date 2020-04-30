@@ -138,7 +138,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
             </table>
             <p class="title1">Total Estimate:</p>
             <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                ${total} USD
+               $ ${total} USD
             </p>
         </div>
 
@@ -269,7 +269,7 @@ exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
                 </p>
                 <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Total Invoice:</p>
                 <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                    ${total} USD
+                    $ ${total} USD
                 </p>
             </div>
             <br>

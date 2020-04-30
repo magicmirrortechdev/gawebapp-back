@@ -43,6 +43,7 @@ exports.createEstimate = async(req, res, next) => {
 }
 
 exports.createJob = async(req, res, next) => {
+
     const emailUser = req.body.email
     const name = req.body.name
     const address = req.body.address
@@ -128,14 +129,18 @@ exports.deleteAll = (req, res, next) => {
 exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
     console.log(req.body)
-    let date = new Date()
-
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
+    var fecha = new Date();
+    var mes = fecha.getMonth() + 1;
+    var dia = fecha.getDate();
+    var ano = fecha.getFullYear();
+    if (dia < 10)
+        dia = '0' + dia; //agrega cero si es menor de 10
+    if (mes < 10)
+        mes = '0' + mes //agrega cero si es menor de 10
     Estimate.findByIdAndUpdate(id, {
             isJob: true,
             status: 'Approve',
+            dateStart: `${ano}-${mes}-${dia}`,
             $push: { invoices: {...req.body } }
         }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
@@ -144,11 +149,19 @@ exports.convertInvoice = async(req, res, next) => {
 exports.createInvoice = async(req, res, next) => {
     const { id } = req.params
     const { date, description, total } = req.body
-    console.log(req.body)
+    var fecha = new Date();
+    var mes = fecha.getMonth() + 1;
+    var dia = fecha.getDate();
+    var ano = fecha.getFullYear();
+    if (dia < 10)
+        dia = '0' + dia; //agrega cero si es menor de 10
+    if (mes < 10)
+        mes = '0' + mes //agrega cero si es menor de 10
 
     Estimate.findByIdAndUpdate(id, {
             isJob: true,
             status: 'Approve',
+            dateStart: `${ano}-${mes}-${dia}`,
             $push: { invoices: { date, total, description } }
         }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
@@ -157,8 +170,15 @@ exports.createInvoice = async(req, res, next) => {
 
 exports.convertJob = (req, res, next) => {
     const { id } = req.params
-    console.log(id)
-    Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve' }, { new: true })
+    var fecha = new Date();
+    var mes = fecha.getMonth() + 1;
+    var dia = fecha.getDate();
+    var ano = fecha.getFullYear();
+    if (dia < 10)
+        dia = '0' + dia; //agrega cero si es menor de 10
+    if (mes < 10)
+        mes = '0' + mes //agrega cero si es menor de 10
+    Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
 }
@@ -177,12 +197,13 @@ exports.decline = (req, res, next) => {
         .catch(err => res.status(500).json({ err }))
 }
 
-exports.addExpense = (req, res, next) => {
+exports.addExpense = async(req, res, next) => {
     const { id } = req.params
     const { date, vendor, category, description, img, total, workerId } = req.body
 
-    Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total, workerId } } }, { new: true })
-        .then(estimate => res.status(200).json({ estimate }))
+    const estimate = await Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total, workerId } } }, { new: true })
+    User.findByIdAndUpdate(workerId, { $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } } }, { new: true })
+        .then(user => res.status(200).json({ estimate, user }))
         .catch(err => res.status(500).json({ err }))
 }
 exports.addWorkers = (req, res, next) => {
@@ -336,6 +357,15 @@ exports.filterDate = async(req, res, next) => {
                 "name": 1,
                 "effective": 1,
                 "payment": 1,
+                "expenses": {
+                    "$filter": {
+                        "input": "$expenses",
+                        "cond": {
+                            "$and": [{ "$gte": ["$$expenses.date", start] }, { "$lt": ["$$expenses.date", end] }]
+                        },
+                        "as": "expenses"
+                    }
+                },
                 "works": {
                     "$filter": {
                         "input": {
@@ -378,49 +408,51 @@ exports.filterDate = async(req, res, next) => {
                 "as": "works.workId"
             }
         },
+        // {
+        //     "$project": {
+        //         "name": 1,
+        //         "effective": 1,
+        //         "payment": 1,
+        //         "works.time": 1,
+        //         "works.workId": {
+        //             "$filter": {
+        //                 "input": {
+        //                     "$map": {
+        //                         "input": "$works.workId",
+        //                         "as": "expenses",
+        //                         "in": {
+        //                             "jobName": "$$expenses.jobName",
+        //                             "dateStart": "$$expenses.dateStart",
+        //                             "dateEnd": "$$expenses.dateEnd",
+        //                             "expenses": {
+        //                                 "$filter": {
+        //                                     "input": "$$expenses.expenses",
+        //                                     "as": "expenses",
+        //                                     "cond": {
+        //                                         "$and": [
+        //                                             { "$gte": ["$$expenses.date", start] },
+        //                                             { "$lte": ["$$expenses.date", end] }
+        //                                         ]
+        //                                     }
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 },
+        //                 "as": "expenses",
+        //                 "cond": { "$gte": [{ "$size": "$$expenses.expenses" }, 0] }
+        //             }
+        //         }
+        //     }
+        // },
         {
             "$project": {
                 "name": 1,
                 "effective": 1,
                 "payment": 1,
-                "works.time": 1,
-                "works.workId": {
-                    "$filter": {
-                        "input": {
-                            "$map": {
-                                "input": "$works.workId",
-                                "as": "expenses",
-                                "in": {
-                                    "jobName": "$$expenses.jobName",
-                                    "dateStart": "$$expenses.dateStart",
-                                    "dateEnd": "$$expenses.dateEnd",
-                                    "expenses": {
-                                        "$filter": {
-                                            "input": "$$expenses.expenses",
-                                            "as": "expenses",
-                                            "cond": {
-                                                "$and": [
-                                                    { "$gte": ["$$expenses.date", start] },
-                                                    { "$lte": ["$$expenses.date", end] }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "as": "expenses",
-                        "cond": { "$gte": [{ "$size": "$$expenses.expenses" }, 0] }
-                    }
-                }
-            }
-        },
-        {
-            "$project": {
-                "name": 1,
-                "effective": 1,
-                "payment": 1,
-                "works": 1
+                "works": 1,
+                "expenses": 1
+
             }
         },
         {
@@ -437,7 +469,11 @@ exports.filterDate = async(req, res, next) => {
                 },
                 "works": {
                     "$push": "$works"
+                },
+                "expenses": {
+                    "$first": "$expenses"
                 }
+
             }
         }
     ]);

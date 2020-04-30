@@ -29,12 +29,14 @@ const userSchema = new Schema({
         }]
     }],
     expenses: [{
-        expensesId: {
-            type: Schema.Types.ObjectId,
-            ref: "Estimate.expenses"
-        },
-        time: [Number],
-        date: [String]
+        jobName: String,
+        date: Date,
+        vendor: String,
+        category: String,
+        description: String,
+        img: String,
+        total: Number
+
     }],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
