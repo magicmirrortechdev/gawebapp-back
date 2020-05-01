@@ -13,7 +13,7 @@ router.post('/filterdate', filterDate)
 router.get('/closejobs', getJobsClose);
 router.patch('/closejob/:id', closeJob);
 router.patch('/convertinvoice/:id', createInvoice);
-router.patch('/convertjob/:id', convertJob);
+router.get('/convertjob/:id', convertJob);
 router.patch('/estimatedecline/:id', decline);
 router.delete('/estimatedelete/:id', deleteAll)
 router.patch('/invoicedelete/:estimateId/:id', deleteInvoice)

@@ -179,7 +179,8 @@ exports.convertJob = (req, res, next) => {
     if (mes < 10)
         mes = '0' + mes //agrega cero si es menor de 10
     Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
-        .then(estimate => res.status(200).json({ estimate }))
+        .then(estimate =>
+            res.send('Your estimate has already been approved, thanks'))
         .catch(err => res.status(500).json({ err }))
 }
 exports.closeJob = (req, res, next) => {
@@ -611,9 +612,10 @@ exports.sendEstimate = (req, res, next) => {
         total,
         comments,
         tags,
-        address
+        address,
+        estimateId
     } = req.body
-    sendEstimate(name, items, total, comments, tags, address)
+    sendEstimate(name, items, total, comments, tags, address, estimateId)
         .then(info => {
             res.send('Email sent')
         })

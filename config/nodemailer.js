@@ -9,6 +9,13 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+const URL = {
+    local: 'http://localhost:3000',
+    prod: "https://green-acorn-production.herokuapp.com/",
+    staging: "https://greenacorn.herokuapp.com/",
+    prodR: "https://green-acorn-app.herokuapp.com/",
+
+}
 exports.sendEmail = (email, name, msg, password) => {
     return transporter.sendMail({
         from: '"Green Acorn" <contact@greenacorn.com>',
@@ -24,7 +31,7 @@ exports.sendEmail = (email, name, msg, password) => {
     })
 }
 
-exports.sendEstimate = (name, items, total, comments, tags, address) => {
+exports.sendEstimate = (name, items, total, comments, tags, address, estimateId) => {
     let addresses = tags.map((e, i) => {
         return e.id
     })
@@ -48,7 +55,6 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
     const nameOne = nameItems.map((e, i) => {
         return e
     })
-    console.log('ElName', nameOne)
 
     let dataTable = "";
     items.map((e, i) => {
@@ -138,7 +144,17 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
             </table>
             <p class="title1">Total Estimate:</p>
             <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-               $ ${total} USD
+               $ ${total}
+            </p>
+        </div>
+        <div style="margin-top:0px, width: 490px;">
+            <br/>
+            <a href="${URL.staging}/convertjob/${estimateId}" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Approve Estimate</a>
+        </div>
+        <div style="margin-top:0px, width: 490px;">
+            <br/>
+            <p style="letter-spacing: 0; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 14px">
+            If this estimate meets your approval, please click the button below. Otherwise, you <br> can reply this email with any question.
             </p>
         </div>
 
@@ -151,7 +167,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address) => {
                 Click on the following button to send us a request for another estimate.
             </p>
         </div>
-        <button onclick="window.location.href='https://www.greenacorn.com/'" style="background-color: #00A863; margin-left:100px; font-size: 20px; color: white; border-radius: 4px; width: 214px; height: 43px;">Get free quote</button>
+        <a href="https://www.greenacorn.com/" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Get free quote</a>
         <br>
         <br>
         <br>
@@ -269,7 +285,7 @@ exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
                 </p>
                 <p style="font-weight: bold; color: #707070; font-family: Arial, Helvetica, sans-serif; font-size: 22px">Total Invoice:</p>
                 <p style="color: #00A863; font-family: Arial, Helvetica, sans-serif; font-size: 20px">
-                    $ ${total} USD
+                    $ ${total}
                 </p>
             </div>
             <br>
