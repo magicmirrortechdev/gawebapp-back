@@ -149,7 +149,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address, estimateId)
         </div>
         <div style="margin-top:0px, width: 490px;">
             <br/>
-            <a href="${URL.staging}/convertjob/${estimateId}" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Approve Estimate</a>
+            <a href="${URL.prodR}/convertjob/${estimateId}" style=" margin-left:150px;padding: 20px;text-decoration: none;border: none; font-family: Arial, Helvetica, sans-serif; border-radius: 4px;  background-color: #00A863; color: white; font-size: 18px;">Approve Estimate</a>
         </div>
         <div style="margin-top:0px, width: 490px;">
             <br/>
