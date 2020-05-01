@@ -11,9 +11,9 @@ const transporter = nodemailer.createTransport({
 
 const URL = {
     local: 'http://localhost:3000',
-    prod: "https://green-acorn-production.herokuapp.com/",
-    staging: "https://greenacorn.herokuapp.com/",
-    prodR: "https://green-acorn-app.herokuapp.com/",
+    prod: "https://green-acorn-production.herokuapp.com",
+    staging: "https://greenacorn.herokuapp.com",
+    prodR: "https://green-acorn-app.herokuapp.com",
 
 }
 exports.sendEmail = (email, name, msg, password) => {
