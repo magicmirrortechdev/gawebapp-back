@@ -81,7 +81,7 @@ exports.sendEstimate = (name, items, total, comments, tags, address, estimateId)
     <style>
         .main {
             position: absolute;
-            padding-left: 25%;
+            padding-left: 10%;
             width: 100%;
             padding-top: 40px;
             padding-bottom: 40px;
@@ -124,9 +124,9 @@ exports.sendEstimate = (name, items, total, comments, tags, address, estimateId)
         <div class="secondary">
             <p class="title1">Hello, ${name}!</p>
             <p class="subtitle1">
-                This e-mail contains the estimate information that you requested from Green Acorn
+            ${comments}
             </p>
-            <p class="title1">Description:</p>
+            <p class="title1">Details:</p>
             <table style="text-align:center; width: 100%;border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;  border-collapse:collapse;">
                 <thead>
                     <tr style="text-align:center; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; font-family:Arial, Helvetica, sans-serif; background-color: rgb(243, 243, 243);">
@@ -234,7 +234,7 @@ exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
         <style>
             .main {
                 position: absolute;
-                padding-left: 25%;
+                padding-left: 10%;
                 width: 100%;
                 padding-top: 40px;
                 padding-bottom: 40px;

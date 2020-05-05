@@ -615,12 +615,19 @@ exports.sendEstimate = (req, res, next) => {
         address,
         estimateId
     } = req.body
+
+
+
     sendEstimate(name, items, total, comments, tags, address, estimateId)
         .then(info => {
-            res.send('Email sent')
+            Estimate.findByIdAndUpdate(estimateId, { status: 'Sent' }, { new: true })
+                .then(estimate => {
+                    res.send('Email sent')
+                })
+                .catch(err => res.status(500).json({ err }));
+
         })
         .catch(err => {
-            console.log(err)
             res.send(err)
         })
 }
