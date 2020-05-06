@@ -47,7 +47,6 @@ exports.start = function(apiKey, channelName, queueName, queueEndpoint) {
                                     argyleChargeId: message.data.response.chargeId,
                                     argyleChargeUrl: message.data.response.recipient,
                                     argyleStatus: message.data.response.status,
-                                    status: 'Paid'
                                 }
                             }
                         }, { new: true })
