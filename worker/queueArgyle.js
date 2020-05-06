@@ -38,20 +38,25 @@ exports.start = function(apiKey, channelName, queueName, queueEndpoint) {
                             $elemMatch: { _id: message.data.response.invoiceId }
                         }
                     }
-                    Estimate.findOneAndUpdate(query, { query, $push: { "invoices.$.payment": {
-                        paid: message.data.response.amount,
-                        date: message.data.response.date,
-                        argyleChargeId: message.data.response.chargeId,
-                        argyleChargeUrl: message.data.response.recipient,
-                        argyleStatus: message.data.response.status
-                    } } }, { new: true })
+                    Estimate.findOneAndUpdate(query, {
+                            query,
+                            $push: {
+                                "invoices.$.payment": {
+                                    paid: message.data.response.amount,
+                                    date: message.data.response.date,
+                                    argyleChargeId: message.data.response.chargeId,
+                                    argyleChargeUrl: message.data.response.recipient,
+                                    argyleStatus: message.data.response.status,
+                                    status: 'Paid'
+                                }
+                            }
+                        }, { new: true })
                         .then(estimate => {
                             console.log("creado");
                         })
                         .catch(err => {
-                                console.log(err);
-                            }
-                        );
+                            console.log(err);
+                        });
                 });
                 ch.ack(item);
             });
