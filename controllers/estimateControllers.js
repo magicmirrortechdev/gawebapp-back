@@ -255,7 +255,6 @@ exports.estimateUpdate = (req, res, next) => {
 
 exports.paidInvoice = (req, res, next) => {
     const { id } = req.params
-    console.log(id)
     Estimate.findByIdAndUpdate(id, { status: 'Paid' }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
@@ -550,7 +549,6 @@ exports.deleteInvoice = (req, res, next) => {
             $elemMatch: { _id: id }
         }
     }
-    console.log('invoiceId', id, 'EstimateId', estimateId)
     Estimate.findOneAndUpdate(query, { query, $pull: { invoices: { _id: id } } }, { new: true })
         .then(estimate => {
             res.status(200).json({ estimate })
