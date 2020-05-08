@@ -180,7 +180,7 @@ exports.convertJob = (req, res, next) => {
         mes = '0' + mes //agrega cero si es menor de 10
     Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
         .then(estimate =>
-            res.send('Your estimate has already been approved, thanks'))
+            res.render('approve.hbs'))
         .catch(err => res.status(500).json({ err }))
 }
 exports.closeJob = (req, res, next) => {
@@ -361,7 +361,7 @@ exports.filterDate = async(req, res, next) => {
                     "$filter": {
                         "input": "$expenses",
                         "cond": {
-                            "$and": [{ "$gte": ["$$expenses.date", start] }, { "$lt": ["$$expenses.date", end] }]
+                            "$and": [{ "$gte": ["$$expenses.date", start] }, { "$lte": ["$$expenses.date", end] }]
                         },
                         "as": "expenses"
                     }
@@ -492,7 +492,7 @@ exports.filterDate = async(req, res, next) => {
                     "$filter": {
                         "input": "$invoices",
                         "cond": {
-                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }]
+                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lte": ["$$this.date", end] }]
                         }
                     }
                 },
@@ -528,7 +528,7 @@ exports.filterDate = async(req, res, next) => {
                     "$filter": {
                         "input": "$expenses",
                         "cond": {
-                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lt": ["$$this.date", end] }]
+                            "$and": [{ "$gte": ["$$this.date", start] }, { "$lte": ["$$this.date", end] }]
                         }
                     }
                 }
@@ -630,18 +630,33 @@ exports.sendEstimate = (req, res, next) => {
         })
 }
 
-exports.sendInvoice = (req, res, next) => {
+exports.sendInvoice2 = (req, res, next) => {
     const {
         name,
         date,
         total,
         description,
         tags,
-        urlPay
+        urlPay,
+        invoiceId
     } = req.body
+    const query = {
+        invoices: {
+            $elemMatch: { _id: invoiceId }
+        }
+    }
+
+
     sendInvoice(name, date, total, description, tags, urlPay)
         .then(info => {
-            res.send('Email sent')
+            Estimate.findByIdAndUpdate(query, { query, $set: { "invoices.$": { status: 'Sent' } } }, { new: true })
+                .then(estimate => {
+                    res.status(200).json({ msg: 'Email Sent', estimate })
+
+                })
+                .catch(err => {
+                    res.send(err)
+                })
         })
         .catch(err => {
             console.log(err)
