@@ -50,7 +50,10 @@ const estimateSchema = new Schema({
             ref: "User",
             autopopulate: true
         },
-        time: [Number]
+        time: [{
+            hours: Number,
+            date: Date
+        }]
     }],
 
     workers: [{
