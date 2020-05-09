@@ -42,7 +42,7 @@ exports.start = function(apiKey, channelName, queueName, queueEndpoint) {
                             query,
                             $push: {
                                 "invoices.$.payment": {
-                                    paid: message.data.response.amount ? message.data.response.amount : 0,
+                                    paid: message.data.response.amount,
                                     date: message.data.response.date,
                                     argyleChargeId: message.data.response.chargeId,
                                     argyleChargeUrl: message.data.response.recipient,
