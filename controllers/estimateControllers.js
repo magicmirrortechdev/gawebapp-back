@@ -638,20 +638,22 @@ exports.sendInvoice2 = (req, res, next) => {
         description,
         tags,
         urlPay,
-        invoiceId
+        invoiceId,
+        jobId
     } = req.body
     const query = {
         invoices: {
             $elemMatch: { _id: invoiceId }
         }
     }
+    console.log('invoiceId', invoiceId)
 
 
     sendInvoice(name, date, total, description, tags, urlPay)
         .then(info => {
-            Estimate.findByIdAndUpdate(query, { query, $set: { "invoices.$": { status: 'Sent' } } }, { new: true })
+            Estimate.findOneAndUpdate(query, { query, $set: { "invoices.$.status": 'Sent' } }, { new: true })
                 .then(estimate => {
-                    res.status(200).json({ msg: 'Email Sent', estimate })
+                    res.send('Email sent')
 
                 })
                 .catch(err => {
@@ -659,7 +661,6 @@ exports.sendInvoice2 = (req, res, next) => {
                 })
         })
         .catch(err => {
-            console.log(err)
             res.send(err)
         })
 }
