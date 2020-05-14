@@ -20,7 +20,12 @@ const worker = require('./worker/queueArgyle')
 //worker.start('k6lRPA.cucUtg:XLmTdAyYrblIBpKP', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared');
 
 //production
-//worker.start('W7Josg.fLykxw:lZzlEJw-VacfxEX3', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared');
+worker.start(
+  'W7Josg.fLykxw:lZzlEJw-VacfxEX3',
+  'GA:payments',
+  'GA',
+  'us-east-1-a-queue.ably.io:5671/shared'
+)
 
 mongoose
   .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -87,8 +92,5 @@ app.use('/', invoice)
 require('./routes/forgotPassword')(app)
 require('./routes/resetPassword')(app)
 require('./routes/updatePasswordViaEmail')(app)
-
-// Uncomment this line for production
-//app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 module.exports = app
