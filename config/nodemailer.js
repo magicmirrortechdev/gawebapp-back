@@ -2,78 +2,76 @@ require('dotenv').config()
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
-    service: 'SendGrid',
-    auth: {
-        user: process.env.SGUSER,
-        pass: process.env.SGPASSWORD
-    }
+  service: 'SendGrid',
+  auth: {
+    user: process.env.SGUSER,
+    pass: process.env.SGPASSWORD,
+  },
 })
 
 const URL = {
-    local: 'http://localhost:3000',
-    prod: "https://green-acorn-production.herokuapp.com",
-    staging: "https://greenacorn.herokuapp.com",
-    prodR: "https://green-acorn-app.herokuapp.com",
-
+  local: 'http://localhost:3000',
+  prod: 'https://green-acorn-production.herokuapp.com',
+  staging: 'https://greenacorn.herokuapp.com',
+  prodR: 'https://green-acorn-app.herokuapp.com',
 }
 exports.sendEmail = (email, name, msg, password) => {
-    return transporter.sendMail({
-        from: '"Green Acorn" <contact@greenacorn.com>',
-        to: email,
-        subject: 'Welcome to Green Acorn App',
-        html: `<h1>Hello ${name}</h1>
+  return transporter.sendMail({
+    from: '"Green Acorn" <contact@greenacorn.com>',
+    to: email,
+    subject: 'Welcome to Green Acorn App',
+    html: `<h1>Hello ${name}</h1>
         <p>
         Ryan has added you to the Green Acorn application. 
         Click below to access your account
         </p>
-        `
-
-    })
+        `,
+  })
 }
 
 exports.sendEstimate = (name, items, total, comments, tags, address, estimateId) => {
-    let addresses = tags.map((e, i) => {
-        return e.id
-    })
-    const nameItems = items.map((e, i) => {
-        return e.itemName
-    })
-    const description = items.map((e, i) => {
-        return e.description
-    })
-    const quantity = items.map((e, i) => {
-        return e.quantity
-    })
-    const rate = items.map((e, i) => {
-        return e.rate
-    })
-    const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+  let addresses = tags.map((e, i) => {
+    return e.id
+  })
+  const nameItems = items.map((e, i) => {
+    return e.itemName
+  })
+  const description = items.map((e, i) => {
+    return e.description
+  })
+  const quantity = items.map((e, i) => {
+    return e.quantity
+  })
+  const rate = items.map((e, i) => {
+    return e.rate
+  })
+  const subtotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
 
-    let email = addresses.map((e, i) => {
-        return e
-    })
-    const nameOne = nameItems.map((e, i) => {
-        return e
-    })
+  let email = addresses.map((e, i) => {
+    return e
+  })
+  const nameOne = nameItems.map((e, i) => {
+    return e
+  })
 
-    let dataTable = "";
-    items.map((e, i) => {
-        dataTable += `
+  let dataTable = ''
+  items.map((e, i) => {
+    dataTable += `
             <tr>
                 <td style="text-align:center;">${e.quantity}</td>
                 <td style="text-align:center;">${e.itemName}</td>
                 <td style="text-align:center;">${e.description}</td>
                 <td style="text-align:center;">${e.rate}</td>
-                <td style="text-align:center;">${e.rate*e.quantity}</td>
+                <td style="text-align:center;">${e.rate * e.quantity}</td>
                 <td style="text-align:center;"> - - - </td>
-            </tr>`;
-    });
+            </tr>`
+  })
 
-    return transporter.sendMail({
-        from: '"Green Acorn" <contact@greenacorn.com>',
-        to: email,
-        subject: 'Your Estimate',
-        html: `
+  return transporter.sendMail({
+    from: '"Green Acorn" <contact@greenacorn.com>',
+    to: email,
+    subject: 'Your Estimate',
+    html: `
         <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -209,24 +207,22 @@ exports.sendEstimate = (name, items, total, comments, tags, address, estimateId)
     </div>
 
 </body>
-        `
-
-    })
-
+        `,
+  })
 }
 
 exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
-    let addresses = tags.map((e, i) => {
-        return e.id
-    })
-    let email = addresses.map((e, i) => {
-        return e
-    })
-    return transporter.sendMail({
-        from: '"Green Acorn" <contact@greenacorn.com>',
-        to: email,
-        subject: 'Your Invoice',
-        html: `
+  let addresses = tags.map((e, i) => {
+    return e.id
+  })
+  let email = addresses.map((e, i) => {
+    return e
+  })
+  return transporter.sendMail({
+    from: '"Green Acorn" <contact@greenacorn.com>',
+    to: email,
+    subject: 'Your Invoice',
+    html: `
         <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -350,6 +346,6 @@ exports.sendInvoice = (name, date, total, description, tags, urlPay) => {
         </div>
     
     </body>
-        `
-    })
+        `,
+  })
 }
