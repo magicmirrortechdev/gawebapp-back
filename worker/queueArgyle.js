@@ -7,6 +7,7 @@ const Estimate = require('../models/Estimate')
 /* Start the worker that consumes from the AMQP QUEUE */
 exports.start = function (apiKey, channelName, queueName, queueEndpoint) {
   const appId = apiKey.split('.')[0] /* API Keys are in format appId.keyId:secret */
+
   const queue = appId + ':' + queueName
   const endpoint = queueEndpoint
   const url = 'amqps://' + apiKey + '@' + endpoint
@@ -28,6 +29,7 @@ exports.start = function (apiKey, channelName, queueName, queueEndpoint) {
       ch.consume(queue, item => {
         const decodedEnvelope = JSON.parse(item.content)
         const messages = Ably.Realtime.Message.fromEncodedArray(decodedEnvelope.messages)
+
         messages.forEach(message => {
           console.log('estado del pago ', message)
           console.log('', message.data.response)
