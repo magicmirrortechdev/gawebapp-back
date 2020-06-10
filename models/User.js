@@ -35,8 +35,8 @@ const userSchema = new Schema({
         category: String,
         description: String,
         img: String,
-        total: Number
-
+        total: Number,
+        estimateId: String
     }],
     resetPasswordToken: String,
     resetPasswordExpires: Date,

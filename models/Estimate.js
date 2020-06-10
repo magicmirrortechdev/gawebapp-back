@@ -79,7 +79,7 @@ const estimateSchema = new Schema({
         category: String,
         description: String,
         img: String,
-        total: Number,
+        total: Number
     }],
     invoices: [{
         date: Date,

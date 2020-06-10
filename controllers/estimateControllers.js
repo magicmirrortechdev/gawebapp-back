@@ -203,8 +203,10 @@ exports.addExpense = async(req, res, next) => {
     const { date, vendor, category, description, img, total, workerId } = req.body
 
     const estimate = await Estimate.findByIdAndUpdate(id, { $push: { expenses: { date, vendor, category, description, img, total, workerId } } }, { new: true })
+
     User.findByIdAndUpdate(workerId, { $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } } }, { new: true })
-        .then(user => res.status(200).json({ estimate, user }))
+
+    .then(user => res.status(200).json({ estimate, user }))
         .catch(err => res.status(500).json({ err }))
 }
 exports.addWorkers = (req, res, next) => {
@@ -561,7 +563,6 @@ exports.deleteWorker = (req, res, next) => {
     const { workerId, estimateId } = req.params
 
     const { worker } = req.body
-    console.log(req.body)
     const query = {
         workers: {
             $elemMatch: { _id: workerId }
@@ -613,8 +614,6 @@ exports.sendEstimate = (req, res, next) => {
         address,
         estimateId
     } = req.body
-
-
 
     sendEstimate(name, items, total, comments, tags, address, estimateId)
         .then(info => {
