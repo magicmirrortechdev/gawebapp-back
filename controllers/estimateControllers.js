@@ -350,7 +350,8 @@ exports.filterDate = async(req, res, next) => {
     let end = new Date(endDate)
 
     const resultWorkers = await User.aggregate([
-        { $match: { role: 'WORKER' } },
+        { $match: { role: {$in : ['WORKER', 'PROJECT MANAGER']} }
+        },
         {
             $project: {
                 name: 1,
@@ -386,68 +387,9 @@ exports.filterDate = async(req, res, next) => {
                             },
                         },
                         as: 'works',
-                        cond: { $gte: [{ $size: '$$works.time' }, 0] },
+                        cond: { $gte: [{ $size: '$$works.time' }, 1] },
                     },
                 },
-            },
-        },
-        {
-            $unwind: {
-                path: '$works',
-            },
-        },
-        {
-            $lookup: {
-                from: 'estimates',
-                localField: 'works.workId',
-                foreignField: '_id',
-                as: 'works.workId',
-            },
-        },
-        // {
-        //     "$project": {
-        //         "name": 1,
-        //         "effective": 1,
-        //         "payment": 1,
-        //         "works.time": 1,
-        //         "works.workId": {
-        //             "$filter": {
-        //                 "input": {
-        //                     "$map": {
-        //                         "input": "$works.workId",
-        //                         "as": "expenses",
-        //                         "in": {
-        //                             "jobName": "$$expenses.jobName",
-        //                             "dateStart": "$$expenses.dateStart",
-        //                             "dateEnd": "$$expenses.dateEnd",
-        //                             "expenses": {
-        //                                 "$filter": {
-        //                                     "input": "$$expenses.expenses",
-        //                                     "as": "expenses",
-        //                                     "cond": {
-        //                                         "$and": [
-        //                                             { "$gte": ["$$expenses.date", start] },
-        //                                             { "$lte": ["$$expenses.date", end] }
-        //                                         ]
-        //                                     }
-        //                                 }
-        //                             }
-        //                         }
-        //                     }
-        //                 },
-        //                 "as": "expenses",
-        //                 "cond": { "$gte": [{ "$size": "$$expenses.expenses" }, 0] }
-        //             }
-        //         }
-        //     }
-        // },
-        {
-            $project: {
-                name: 1,
-                effective: 1,
-                payment: 1,
-                works: 1,
-                expenses: 1,
             },
         },
         {
@@ -463,7 +405,7 @@ exports.filterDate = async(req, res, next) => {
                     $first: '$name',
                 },
                 works: {
-                    $push: '$works',
+                    $first: '$works',
                 },
                 expenses: {
                     $first: '$expenses',
