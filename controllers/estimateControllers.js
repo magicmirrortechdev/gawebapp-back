@@ -453,7 +453,7 @@ exports.filterDate = async(req, res, next) => {
                             },
                         },
                         as: 'workers',
-                        cond: { $gt: [{ $size: '$$workers.time' }, 0] },
+                        cond: { $gt: [{ $size: '$$workers.time' }, 1] },
                     },
                 },
                 clientId: '$clientId',
