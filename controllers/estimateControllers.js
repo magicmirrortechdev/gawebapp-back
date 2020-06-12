@@ -393,27 +393,7 @@ exports.filterDate = async(req, res, next) => {
             },
         },
 
-        {
-            $group: {
-                _id: '$_id',
-                effective: {
-                    $first: '$effective',
-                },
-                expenses: {
-                    $first: '$expenses',
-                },
-                payment: {
-                    $first: '$payment',
-                },
-                name: {
-                    $first: '$name',
-                },
-                works: {
-                    $first: '$works',
-                },
 
-            },
-        },
     ])
 
     const result = await Estimate.aggregate([{
@@ -470,11 +450,12 @@ exports.filterDate = async(req, res, next) => {
             },
         },
     ])
+    const resultFinal = await User.populate(resultWorkers, { path: 'works.workId' })
     Estimate.populate(result, {
             path: 'workers.workerId',
         })
         .then(jobs => {
-            res.status(200).json({ jobs: jobs, workers: resultWorkers })
+            res.status(200).json({ jobs: jobs, workers: resultFinal })
         })
         .catch(err => res.status(500).json({ err }))
 }
