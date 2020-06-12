@@ -350,21 +350,12 @@ exports.filterDate = async(req, res, next) => {
     let end = new Date(endDate)
 
     const resultWorkers = await User.aggregate([
-        { $match: { role: 'WORKER' } },
+        { $match: { $or: [{ role: "WORKER" }, { role: "PROJECT MANAGER" }] } },
         {
             $project: {
                 name: 1,
                 effective: 1,
                 payment: 1,
-                expenses: {
-                    $filter: {
-                        input: '$expenses',
-                        cond: {
-                            $and: [{ $gte: ['$$expenses.date', start] }, { $lte: ['$$expenses.date', end] }],
-                        },
-                        as: 'expenses',
-                    },
-                },
                 works: {
                     $filter: {
                         input: {
@@ -389,8 +380,18 @@ exports.filterDate = async(req, res, next) => {
                         cond: { $gte: [{ $size: '$$works.time' }, 0] },
                     },
                 },
+                expenses: {
+                    $filter: {
+                        input: '$expenses',
+                        cond: {
+                            $and: [{ $gte: ['$$expenses.date', start] }, { $lte: ['$$expenses.date', end] }],
+                        },
+                        as: 'expenses',
+                    },
+                },
             },
         },
+
         {
             $unwind: {
                 path: '$works',
@@ -456,6 +457,9 @@ exports.filterDate = async(req, res, next) => {
                 effective: {
                     $first: '$effective',
                 },
+                expenses: {
+                    $first: '$expenses',
+                },
                 payment: {
                     $first: '$payment',
                 },
@@ -465,9 +469,7 @@ exports.filterDate = async(req, res, next) => {
                 works: {
                     $push: '$works',
                 },
-                expenses: {
-                    $first: '$expenses',
-                },
+
             },
         },
     ])
