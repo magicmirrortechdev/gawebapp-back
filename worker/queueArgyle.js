@@ -14,7 +14,7 @@ exports.start = function (apiKey, channelName, queueName, queueEndpoint) {
 
   console.log('ably ', apiKey, channelName, queue, queueEndpoint)
 
-  amqp.connect(url, (err, conn) => {
+  amqp.connect(url + '?heartbeat=60', (err, conn) => {
     if (err) {
       return console.error('worker:', 'Queue error!', err)
     }
