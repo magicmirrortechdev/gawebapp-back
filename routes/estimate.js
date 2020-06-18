@@ -1,13 +1,16 @@
 const { Router } = require('express')
 const router = Router()
-const { createEstimate, deleteWorker, filterDate, createJob, getJobsClose, getJobsOpen, updateExpense, closeJob, sendInvoice2, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense, addArgyleCharge } = require('../controllers/estimateControllers')
+const { createEstimate, getJobsUser, getUserEstimate, deleteWorker, filterDate, createJob, getJobsClose, getJobsOpen, updateExpense, closeJob, sendInvoice2, sendEstimate, updateInvoice, deleteExpense, acceptPayment, deleteInvoice, createInvoice, addPM, oneJob, addTime, addWorkers, paidInvoice, estimateUpdate, deleteAll, getOneEstimate, getAllEstimates, getAllInvoices, getAllJobs, convertInvoice, convertJob, decline, addExpense, addArgyleCharge } = require('../controllers/estimateControllers')
 
 
 
 router.post('/addestimate', createEstimate);
 router.post('/createjob', createJob);
 router.get('/checkestimates', getAllEstimates);
+router.get('/checkestimates/:id', getUserEstimate);
 router.get('/checkjobs', getAllJobs);
+router.get('/checkjobs/:id', getJobsUser);
+
 router.get('/openjobs', getJobsOpen);
 router.post('/filterdate', filterDate)
 router.get('/closejobs', getJobsClose);

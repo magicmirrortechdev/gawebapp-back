@@ -1,7 +1,6 @@
 const Client = require('../models/Client')
 const Estimate = require('../models/Estimate')
 const User = require('../models/User')
-const Invoice = require('../models/Invoice')
 const { sendEstimate, sendInvoice } = require('../config/nodemailer')
 
 exports.createEstimate = async(req, res, next) => {
@@ -91,6 +90,22 @@ exports.getAllEstimates = (req, res, next) => {
         .then(estimates => res.status(200).json({ estimates }))
         .catch(err => res.status(500).json({ err }))
 }
+
+
+exports.getUserEstimate = (req, res, next) => {
+    const { id } = req.params
+    const query = {
+        workers: {
+            $elemMatch: { workerId: id },
+        },
+    }
+    Estimate.find(query)
+        .then(estimates => {
+            res.status(200).json({ estimates })
+        })
+        .catch(err => res.status(500).json({ err }))
+}
+
 exports.getAllInvoices = (req, res, next) => {
     Estimate.find({ type: 'Invoice' })
         .populate('clientId')
@@ -99,6 +114,20 @@ exports.getAllInvoices = (req, res, next) => {
 }
 exports.getAllJobs = (req, res, next) => {
     Estimate.find({ isJob: true })
+        .populate('clientId')
+        .populate({ path: 'workerId' })
+        .then(jobs => res.status(200).json({ jobs }))
+        .catch(err => res.status(500).json({ err }))
+}
+exports.getJobsUser = (req, res, next) => {
+    const { id } = req.params
+    const query = {
+        isJob: true,
+        workers: {
+            $elemMatch: { workerId: id },
+        },
+    }
+    Estimate.find(query)
         .populate('clientId')
         .populate({ path: 'workerId' })
         .then(jobs => res.status(200).json({ jobs }))
@@ -122,7 +151,6 @@ exports.getJobsClose = (req, res, next) => {
 
 exports.deleteAll = (req, res, next) => {
     const { id } = req.params
-    console.log(id)
     Estimate.findByIdAndDelete(id)
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
@@ -130,7 +158,6 @@ exports.deleteAll = (req, res, next) => {
 
 exports.convertInvoice = async(req, res, next) => {
     const { id } = req.params
-    console.log(req.body)
     var fecha = new Date()
     var mes = fecha.getMonth() + 1
     var dia = fecha.getDate()
@@ -191,7 +218,6 @@ exports.closeJob = (req, res, next) => {
 
 exports.decline = (req, res, next) => {
     const { id } = req.params
-    console.log(id)
     Estimate.findByIdAndUpdate(id, { status: 'Decline' }, { new: true })
         .then(estimate => res.status(200).json({ estimate }))
         .catch(err => res.status(500).json({ err }))
@@ -213,7 +239,6 @@ exports.addExpense = async(req, res, next) => {
 exports.addWorkers = (req, res, next) => {
     const { id } = req.params
     const { id2 } = req.body
-    console.log(id)
     Estimate.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
         .then(estimate =>
             User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
@@ -226,7 +251,6 @@ exports.addWorkers = (req, res, next) => {
 exports.addPM = (req, res, next) => {
     const { id } = req.params
     const { id2 } = req.body
-    console.log(id)
     Estimate.findByIdAndUpdate(id, { $push: { projectManager: { projectId: id2 } } }, { new: true })
         .then(estimate =>
             User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
@@ -476,9 +500,7 @@ exports.deleteInvoice = (req, res, next) => {
 
 exports.deleteWorker = (req, res, next) => {
     const { workerId, estimateId } = req.params
-
     const { worker } = req.body
-    console.log(req.body)
     const query = {
         workers: {
             $elemMatch: { _id: workerId },
@@ -544,7 +566,6 @@ exports.sendInvoice2 = (req, res, next) => {
             $elemMatch: { _id: invoiceId },
         },
     }
-    console.log('invoiceId', invoiceId)
 
     sendInvoice(name, date, total, description, tags, urlPay)
         .then(info => {

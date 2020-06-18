@@ -13,11 +13,11 @@ const userSchema = new Schema({
     img: [String],
     payment: Number,
     effective: Number,
-    // level: {
-    //     type: Number,
-    //     enum: [1, 2, 3, 4, 5],
-    //     default: 1
-    // },
+    level: {
+        type: Number,
+        enum: [1, 2, 3, 4, 5],
+        default: 1
+    },
     role: {
         type: String,
         enum: ['WORKER', 'ADMIN', 'PROJECT MANAGER'],
