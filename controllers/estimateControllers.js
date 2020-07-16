@@ -630,11 +630,8 @@ exports.deleteTime = (req, res, next) => {
     { _id: estimateId },
     {
       $pull: {
-        'workers.$[].time.$[i]._id': timeId,
+        'workers.$[].time': { _id: timeId },
       },
-    },
-    {
-      arrayFilters: [{ 'i._id': timeId }],
     }
   )
     .then(response => {
