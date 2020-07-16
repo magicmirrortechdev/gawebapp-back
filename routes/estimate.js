@@ -33,6 +33,7 @@ const {
   addExpense,
   addArgyleCharge,
   updateTime,
+  deleteTime,
 } = require('../controllers/estimateControllers')
 
 router.post('/addestimate', createEstimate)
@@ -62,6 +63,7 @@ router.patch('/addworkers/:id', addWorkers)
 router.patch('/addpm/:id', addPM)
 router.patch('/addtime/:id/:workerId', addTime)
 router.patch('/updatetime/:estimateId/:timeId', updateTime)
+router.patch('/deletetime/:estimateId/:timeId', deleteTime)
 router.patch('/pay-invoice/:id/:invoiceId', acceptPayment)
 
 module.exports = router

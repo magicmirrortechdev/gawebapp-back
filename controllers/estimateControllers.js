@@ -680,3 +680,31 @@ exports.updateTime = (req, res, next) => {
       })
     })
 }
+
+exports.deleteTime = (req, res, next) => {
+  const { estimateId, timeId } = req.params
+  const { time, date } = req.body
+  Estimate.updateOne(
+    {
+      _id: estimateId,
+    },
+    {
+      $pull: {
+        'workers.$[].time.$[i]._id': timeId,
+      },
+    },
+    {
+      arrayFilters: [{ 'i._id': timeId }],
+    }
+  )
+    .then(response => {
+      res.send(response)
+    })
+    .catch(err => {
+      console.log('', err)
+      res.status(500).send({
+        message: 'Failed! record cannot be updated.',
+        err,
+      })
+    })
+}
