@@ -597,7 +597,7 @@ exports.sendInvoice2 = (req, res, next) => {
 }
 
 exports.updateTime = (req, res, next) => {
-  const { estimateId, timeId } = req.params
+  const { estimateId, workerId, timeId } = req.params
   const { time, date } = req.body
   Estimate.updateOne(
     { _id: estimateId },
@@ -612,7 +612,24 @@ exports.updateTime = (req, res, next) => {
     }
   )
     .then(response => {
-      res.send(response)
+      Estimate.findById(estimateId).then(estimate => {
+        let time
+        estimate.workers.forEach(worker => {
+          if (worker.workerId._id == workerId) {
+            time = worker.time
+            User.findById(workerId).then(user => {
+              user.works.forEach(work => {
+                if (work.workId == estimateId) {
+                  work.time = time
+                  user.save().then(userSaved => {
+                    res.status(200).json({ estimate })
+                  })
+                }
+              })
+            })
+          }
+        })
+      })
     })
     .catch(err => {
       console.log('', err)
@@ -624,7 +641,7 @@ exports.updateTime = (req, res, next) => {
 }
 
 exports.deleteTime = (req, res, next) => {
-  const { estimateId, timeId } = req.params
+  const { estimateId, workerId, timeId } = req.params
   const { time, date } = req.body
   Estimate.updateOne(
     { _id: estimateId },
@@ -635,7 +652,24 @@ exports.deleteTime = (req, res, next) => {
     }
   )
     .then(response => {
-      res.send(response)
+      Estimate.findById(estimateId).then(estimate => {
+        let time
+        estimate.workers.forEach(worker => {
+          if (worker.workerId._id == workerId) {
+            time = worker.time
+            User.findById(workerId).then(user => {
+              user.works.forEach(work => {
+                if (work.workId == estimateId) {
+                  work.time = time
+                  user.save().then(userSaved => {
+                    res.status(200).json({ estimate })
+                  })
+                }
+              })
+            })
+          }
+        })
+      })
     })
     .catch(err => {
       console.log('', err)
