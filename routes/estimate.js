@@ -67,8 +67,8 @@ router.patch('/paidinvoice/:id', paidInvoice)
 router.patch('/addworkers/:id', addWorkers)
 router.patch('/addpm/:id', addPM)
 router.patch('/addtime/:id/:workerId', addTime)
-router.patch('/updatetime/:estimateId/:timeId', updateTime)
-router.patch('/deletetime/:estimateId/:timeId', deleteTime)
+router.patch('/updatetime/:estimateId/:workerId/:timeId', updateTime)
+router.patch('/deletetime/:estimateId/:workerId/:timeId', deleteTime)
 router.patch('/pay-invoice/:id/:invoiceId', acceptPayment)
 
 module.exports = router
