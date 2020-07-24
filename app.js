@@ -11,6 +11,8 @@ const session = require('cookie-session')
 const passport = require('./config/passport')
 const compression = require('compression')
 
+const emitter = require('events')
+
 const worker = require('./worker/queueArgyle')
 
 //local
@@ -29,7 +31,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    poolSize: 5, // Maintain up to 2 socket connections
+    poolSize: 5, // Maintain up to 5 socket connections
     socketTimeoutMS: 300002, // Close sockets after 45 seconds of inactivity
   })
   .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
@@ -38,6 +40,8 @@ const app_name = require('./package.json').name
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`)
 
 const app = express()
+
+emitter.setMaxListeners(0)
 
 app.use(
   cors({
