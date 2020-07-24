@@ -10,9 +10,6 @@ const cors = require('cors')
 const session = require('cookie-session')
 const passport = require('./config/passport')
 const compression = require('compression')
-
-const emitter = require('events')
-
 const worker = require('./worker/queueArgyle')
 
 //local
@@ -40,9 +37,6 @@ const app_name = require('./package.json').name
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`)
 
 const app = express()
-
-emitter.setMaxListeners(0)
-
 app.use(
   cors({
     credentials: true,
