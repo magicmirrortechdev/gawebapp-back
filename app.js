@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 const logger = require('morgan')
 const path = require('path')
 const cors = require('cors')
-const session = require('express-session')
+const session = require('cookie-session')
 const passport = require('./config/passport')
 const compression = require('compression')
 
