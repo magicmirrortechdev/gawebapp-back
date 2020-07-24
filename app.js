@@ -23,8 +23,16 @@ const worker = require('./worker/queueArgyle')
 //worker.start('W7Josg.fLykxw:lZzlEJw-VacfxEX3', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared')
 
 mongoose
-    .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-    .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .connect(process.env.DB, {
+    keepAlive: true,
+    keepAliveInitialDelay: 300000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    poolSize: 5, // Maintain up to 2 socket connections
+    socketTimeoutMS: 300002, // Close sockets after 45 seconds of inactivity
+  })
+  .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
 
 const app_name = require('./package.json').name
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`)
@@ -32,19 +40,19 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 const app = express()
 
 app.use(
-    cors({
-        credentials: true,
-        origin: [process.env.FRONTENDPOINT, process.env.REDIRECT_ENDPOINT],
-    })
+  cors({
+    credentials: true,
+    origin: [process.env.FRONTENDPOINT, process.env.REDIRECT_ENDPOINT],
+  })
 )
 
 app.use(
-    session({
-        resave: false,
-        saveUninitialized: true,
-        secret: process.env.SECRET,
-        cookie: { maxAge: 1000 * 60 * 60 },
-    })
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SECRET,
+    cookie: { maxAge: 1000 * 60 * 60 },
+  })
 )
 
 app.use(passport.initialize())
