@@ -388,7 +388,7 @@ exports.filterDate = async (req, res, next) => {
 
   const resultWorkers = await User.aggregate([
     {
-      $match: { role: { $in: ['WORKER', 'PROJECT MANAGER'] } },
+      $match: { role: { $in: ['WORKER', 'PROJECT MANAGER', 'ADMIN'] } },
     },
     {
       $project: {
