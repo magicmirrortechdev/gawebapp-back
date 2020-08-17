@@ -392,6 +392,7 @@ exports.filterDate = async (req, res, next) => {
     },
     {
       $project: {
+        role: 1,
         name: 1,
         effective: 1,
         payment: 1,
