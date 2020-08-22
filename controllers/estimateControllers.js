@@ -354,14 +354,16 @@ exports.addTime = (req, res, next) => {
 }
 
 exports.acceptPayment = (req, res, next) => {
-  const { id } = req.params
+  const { id, invoiceId } = req.params
   const { paid, date } = req.body
   const query = {
     invoices: {
-      $elemMatch: { _id: id },
+      $elemMatch: { _id: invoiceId },
     },
   }
   Estimate.findOneAndUpdate(query, { query, $push: { 'invoices.$.payment': { paid, date } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       res.status(200).json({ estimate })
     })
