@@ -20,7 +20,6 @@ exports.createEstimate = async (req, res, next) => {
       emailEstimate: emailUser,
       clientId: newClient._id,
       jobName: `${name} - ${address}`,
-      items: { subtotal: items.rate * items.quantity },
       subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
     })
       .then(estimate => res.status(200).json({ estimate }))
@@ -50,7 +49,7 @@ exports.createJob = async (req, res, next) => {
   if (clientDb === null) {
     const newClient = await Client.create({ name, email: emailUser })
 
-    Estimate.create({
+    const estimate = await Estimate.create({
       ...req.body,
       addressEstimate: address,
       nameEstimate: name,
@@ -63,10 +62,14 @@ exports.createJob = async (req, res, next) => {
       dateStart,
       dateEnd,
     })
+
+    Estimate.findById(estimate._id)
+      .populate('clientId')
+      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   } else if (clientDb) {
-    Estimate.create({
+    const estimate = await Estimate.create({
       ...req.body,
       addressEstimate: address,
       nameEstimate: name,
@@ -79,6 +82,9 @@ exports.createJob = async (req, res, next) => {
       dateStart,
       dateEnd,
     })
+    Estimate.findById(estimate._id)
+      .populate('clientId')
+      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   }
@@ -87,6 +93,7 @@ exports.createJob = async (req, res, next) => {
 exports.getAllEstimates = (req, res, next) => {
   Estimate.find({ type: 'Estimate' })
     .populate('clientId')
+    .sort({ nameEstimate: 1 })
     .then(estimates => res.status(200).json({ estimates }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -99,6 +106,7 @@ exports.getUserEstimate = (req, res, next) => {
     },
   }
   Estimate.find(query)
+    .sort({ nameEstimate: 1 })
     .then(estimates => {
       res.status(200).json({ estimates })
     })
@@ -115,6 +123,7 @@ exports.getAllJobs = (req, res, next) => {
   Estimate.find({ isJob: true })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -129,6 +138,7 @@ exports.getJobsUser = (req, res, next) => {
   Estimate.find(query)
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -136,6 +146,7 @@ exports.getJobsOpen = (req, res, next) => {
   Estimate.find({ isJob: true, status: 'Approve' })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -144,6 +155,7 @@ exports.getJobsClose = (req, res, next) => {
   Estimate.find({ isJob: true, status: 'Closed' })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -173,9 +185,12 @@ exports.convertInvoice = async (req, res, next) => {
     },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
+
 exports.createInvoice = async (req, res, next) => {
   const { id } = req.params
   const { date, description, total } = req.body
@@ -196,6 +211,8 @@ exports.createInvoice = async (req, res, next) => {
     },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -209,6 +226,8 @@ exports.convertJob = (req, res, next) => {
   if (dia < 10) dia = '0' + dia //agrega cero si es menor de 10
   if (mes < 10) mes = '0' + mes //agrega cero si es menor de 10
   Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.render('approve.hbs'))
     .catch(err => res.status(500).json({ err }))
 }
@@ -240,6 +259,8 @@ exports.addExpense = async (req, res, next) => {
     { $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } } },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(user => res.status(200).json({ estimate, user }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -285,6 +306,7 @@ exports.estimateUpdate = (req, res, next) => {
     { ...req.body, addressEstimate: address, nameEstimate: name, emailEstimate: emailUser },
     { new: true }
   )
+    .populate('clientId')
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -355,8 +377,10 @@ exports.updateInvoice = (req, res, next) => {
   }
   const { date, description, total } = req.body
   Estimate.findOneAndUpdate(query, { query, $set: { 'invoices.$': { date, description, total } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
-      res.status(200).json(estimate)
+      res.status(200).json({ estimate })
     })
     .catch(err => res.status(500).json({ err }))
 }
@@ -499,13 +523,15 @@ exports.filterDate = async (req, res, next) => {
 }
 
 exports.deleteInvoice = (req, res, next) => {
-  const { id, estimateId } = req.params
+  const { id } = req.params
   const query = {
     invoices: {
       $elemMatch: { _id: id },
     },
   }
   Estimate.findOneAndUpdate(query, { query, $pull: { invoices: { _id: id } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       res.status(200).json({ estimate })
     })
