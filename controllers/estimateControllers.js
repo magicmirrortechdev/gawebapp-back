@@ -254,13 +254,14 @@ exports.addExpense = async (req, res, next) => {
     { $push: { expenses: { date, vendor, category, description, img, total, workerId } } },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
   User.findByIdAndUpdate(
     workerId,
     { $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } } },
     { new: true }
   )
-    .populate('clientId')
-    .populate({ path: 'workerId' })
+
     .then(user => res.status(200).json({ estimate, user }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -268,11 +269,12 @@ exports.addWorkers = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
   Estimate.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
-    .then(estimate =>
+    .then(async estimateRes => {
+      const estimate = await Estimate.findById(estimateRes._id)
       User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
         .then(user => res.status(200).json({ estimate, user }))
         .catch(err => res.status(500).json({ err }))
-    )
+    })
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -394,15 +396,16 @@ exports.updateExpense = (req, res, next) => {
       $elemMatch: { _id: expenseId },
     },
   }
-  const { date, vendor, category, description, img, total } = req.body
+  const { date, vendor, category, description, img, total, workerId } = req.body
   const date2 = new Date(date)
   Estimate.findOneAndUpdate(
     query,
-    { query, $set: { 'expenses.$': { date: date2, vendor, category, description, img, total } } },
+    { query, $set: { 'expenses.$': { date: date2, workerId, vendor, category, description, img, total } } },
     { new: true }
   )
-    .then(estimate => {
-      res.status(200).json(estimate)
+    .then(async estimateRes => {
+      const estimate = await Estimate.findById(estimateRes._id)
+      res.status(200).json({ estimate })
     })
     .catch(err => res.status(500).json({ err }))
 }
