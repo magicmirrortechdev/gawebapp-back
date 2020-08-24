@@ -47,6 +47,11 @@ exports.logout = (req, res, next) => {
 
 exports.getAllUsers = (req, res, next) => {
   User.find()
+    .populate({
+      path: 'works.workId',
+      select: 'expenses jobName dateStart dateEnd',
+    })
+    .sort({ name: 1 })
     .then(users => res.status(200).json({ users }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -57,6 +62,7 @@ exports.workerUsers = (req, res, next) => {
       path: 'works.workId',
       select: 'expenses jobName dateStart dateEnd',
     })
+    .sort({ name: 1 })
     .then(users => {
       res.status(200).json({ users })
     })

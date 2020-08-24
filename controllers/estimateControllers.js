@@ -20,7 +20,6 @@ exports.createEstimate = async (req, res, next) => {
       emailEstimate: emailUser,
       clientId: newClient._id,
       jobName: `${name} - ${address}`,
-      items: { subtotal: items.rate * items.quantity },
       subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
     })
       .then(estimate => res.status(200).json({ estimate }))
@@ -50,7 +49,7 @@ exports.createJob = async (req, res, next) => {
   if (clientDb === null) {
     const newClient = await Client.create({ name, email: emailUser })
 
-    Estimate.create({
+    const estimate = await Estimate.create({
       ...req.body,
       addressEstimate: address,
       nameEstimate: name,
@@ -63,10 +62,14 @@ exports.createJob = async (req, res, next) => {
       dateStart,
       dateEnd,
     })
+
+    Estimate.findById(estimate._id)
+      .populate('clientId')
+      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   } else if (clientDb) {
-    Estimate.create({
+    const estimate = await Estimate.create({
       ...req.body,
       addressEstimate: address,
       nameEstimate: name,
@@ -79,6 +82,9 @@ exports.createJob = async (req, res, next) => {
       dateStart,
       dateEnd,
     })
+    Estimate.findById(estimate._id)
+      .populate('clientId')
+      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   }
@@ -87,6 +93,8 @@ exports.createJob = async (req, res, next) => {
 exports.getAllEstimates = (req, res, next) => {
   Estimate.find({ type: 'Estimate' })
     .populate('clientId')
+    .populate({ path: 'workerId' })
+    .sort({ nameEstimate: 1 })
     .then(estimates => res.status(200).json({ estimates }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -99,6 +107,9 @@ exports.getUserEstimate = (req, res, next) => {
     },
   }
   Estimate.find(query)
+    .populate('clientId')
+    .populate({ path: 'workerId' })
+    .sort({ nameEstimate: 1 })
     .then(estimates => {
       res.status(200).json({ estimates })
     })
@@ -115,6 +126,7 @@ exports.getAllJobs = (req, res, next) => {
   Estimate.find({ isJob: true })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -129,6 +141,7 @@ exports.getJobsUser = (req, res, next) => {
   Estimate.find(query)
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -136,6 +149,7 @@ exports.getJobsOpen = (req, res, next) => {
   Estimate.find({ isJob: true, status: 'Approve' })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -144,6 +158,7 @@ exports.getJobsClose = (req, res, next) => {
   Estimate.find({ isJob: true, status: 'Closed' })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -151,6 +166,8 @@ exports.getJobsClose = (req, res, next) => {
 exports.deleteAll = (req, res, next) => {
   const { id } = req.params
   Estimate.findByIdAndDelete(id)
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -173,9 +190,12 @@ exports.convertInvoice = async (req, res, next) => {
     },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
+
 exports.createInvoice = async (req, res, next) => {
   const { id } = req.params
   const { date, description, total } = req.body
@@ -196,6 +216,8 @@ exports.createInvoice = async (req, res, next) => {
     },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -209,12 +231,16 @@ exports.convertJob = (req, res, next) => {
   if (dia < 10) dia = '0' + dia //agrega cero si es menor de 10
   if (mes < 10) mes = '0' + mes //agrega cero si es menor de 10
   Estimate.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.render('approve.hbs'))
     .catch(err => res.status(500).json({ err }))
 }
 exports.closeJob = (req, res, next) => {
   const { id } = req.params
   Estimate.findByIdAndUpdate(id, { status: 'Closed' }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -222,6 +248,8 @@ exports.closeJob = (req, res, next) => {
 exports.decline = (req, res, next) => {
   const { id } = req.params
   Estimate.findByIdAndUpdate(id, { status: 'Decline' }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -235,11 +263,14 @@ exports.addExpense = async (req, res, next) => {
     { $push: { expenses: { date, vendor, category, description, img, total, workerId } } },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
   User.findByIdAndUpdate(
     workerId,
     { $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } } },
     { new: true }
   )
+
     .then(user => res.status(200).json({ estimate, user }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -247,11 +278,12 @@ exports.addWorkers = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
   Estimate.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
-    .then(estimate =>
+    .then(async estimateRes => {
+      const estimate = await Estimate.findById(estimateRes._id).populate('clientId').populate({ path: 'workerId' })
       User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
         .then(user => res.status(200).json({ estimate, user }))
         .catch(err => res.status(500).json({ err }))
-    )
+    })
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -259,11 +291,12 @@ exports.addPM = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
   Estimate.findByIdAndUpdate(id, { $push: { projectManager: { projectId: id2 } } }, { new: true })
-    .then(estimate =>
+    .then(async estimateRes => {
+      const estimate = await Estimate.findById(estimateRes._id).populate('clientId').populate({ path: 'workerId' })
       User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
         .then(user => res.status(200).json({ estimate, user }))
         .catch(err => res.status(500).json({ err }))
-    )
+    })
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -271,6 +304,7 @@ exports.getOneEstimate = async (req, res, next) => {
   const { id } = req.params
   Estimate.findById(id)
     .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -285,6 +319,8 @@ exports.estimateUpdate = (req, res, next) => {
     { ...req.body, addressEstimate: address, nameEstimate: name, emailEstimate: emailUser },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -292,6 +328,8 @@ exports.estimateUpdate = (req, res, next) => {
 exports.paidInvoice = (req, res, next) => {
   const { id } = req.params
   Estimate.findByIdAndUpdate(id, { status: 'Paid' }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -309,6 +347,8 @@ exports.addTime = (req, res, next) => {
     { query, $push: { 'workers.$.time': { hours: time, date }, 'workers.$.date': date } },
     { new: true }
   )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       User.findById(workerId).exec(function (err, data) {
         var arreglo = data.works
@@ -332,14 +372,16 @@ exports.addTime = (req, res, next) => {
 }
 
 exports.acceptPayment = (req, res, next) => {
-  const { id } = req.params
+  const { id, invoiceId } = req.params
   const { paid, date } = req.body
   const query = {
     invoices: {
-      $elemMatch: { _id: id },
+      $elemMatch: { _id: invoiceId },
     },
   }
   Estimate.findOneAndUpdate(query, { query, $push: { 'invoices.$.payment': { paid, date } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       res.status(200).json({ estimate })
     })
@@ -355,8 +397,10 @@ exports.updateInvoice = (req, res, next) => {
   }
   const { date, description, total } = req.body
   Estimate.findOneAndUpdate(query, { query, $set: { 'invoices.$': { date, description, total } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
-      res.status(200).json(estimate)
+      res.status(200).json({ estimate })
     })
     .catch(err => res.status(500).json({ err }))
 }
@@ -368,15 +412,16 @@ exports.updateExpense = (req, res, next) => {
       $elemMatch: { _id: expenseId },
     },
   }
-  const { date, vendor, category, description, img, total } = req.body
+  const { date, vendor, category, description, img, total, workerId } = req.body
   const date2 = new Date(date)
   Estimate.findOneAndUpdate(
     query,
-    { query, $set: { 'expenses.$': { date: date2, vendor, category, description, img, total } } },
+    { query, $set: { 'expenses.$': { date: date2, workerId, vendor, category, description, img, total } } },
     { new: true }
   )
-    .then(estimate => {
-      res.status(200).json(estimate)
+    .then(async estimateRes => {
+      const estimate = await Estimate.findById(estimateRes._id).populate('clientId').populate({ path: 'workerId' })
+      res.status(200).json({ estimate })
     })
     .catch(err => res.status(500).json({ err }))
 }
@@ -499,13 +544,15 @@ exports.filterDate = async (req, res, next) => {
 }
 
 exports.deleteInvoice = (req, res, next) => {
-  const { id, estimateId } = req.params
+  const { id } = req.params
   const query = {
     invoices: {
       $elemMatch: { _id: id },
     },
   }
   Estimate.findOneAndUpdate(query, { query, $pull: { invoices: { _id: id } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       res.status(200).json({ estimate })
     })
@@ -521,6 +568,8 @@ exports.deleteWorker = (req, res, next) => {
     },
   }
   Estimate.findOneAndUpdate(query, { query, $pull: { workers: { _id: workerId } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       User.findById(worker).exec(function (err, data) {
         var arreglo = data.works
@@ -551,6 +600,8 @@ exports.deleteExpense = (req, res, next) => {
     },
   }
   Estimate.findOneAndUpdate(query, { query, $pull: { expenses: { _id: expenseId } } }, { new: true })
+    .populate('clientId')
+    .populate({ path: 'workerId' })
     .then(estimate => {
       res.status(200).json({ estimate })
     })
@@ -613,24 +664,27 @@ exports.updateTime = (req, res, next) => {
     }
   )
     .then(response => {
-      Estimate.findById(estimateId).then(estimate => {
-        let time
-        estimate.workers.forEach(worker => {
-          if (worker.workerId._id == workerId) {
-            time = worker.time
-            User.findById(workerId).then(user => {
-              user.works.forEach(work => {
-                if (work.workId == estimateId) {
-                  work.time = time
-                  user.save().then(userSaved => {
-                    res.status(200).json({ estimate })
-                  })
-                }
+      Estimate.findById(estimateId)
+        .populate('clientId')
+        .populate({ path: 'workerId' })
+        .then(estimate => {
+          let time
+          estimate.workers.forEach(worker => {
+            if (worker.workerId._id == workerId) {
+              time = worker.time
+              User.findById(workerId).then(user => {
+                user.works.forEach(work => {
+                  if (work.workId == estimateId) {
+                    work.time = time
+                    user.save().then(userSaved => {
+                      res.status(200).json({ estimate })
+                    })
+                  }
+                })
               })
-            })
-          }
+            }
+          })
         })
-      })
     })
     .catch(err => {
       console.log('', err)
@@ -653,24 +707,27 @@ exports.deleteTime = (req, res, next) => {
     }
   )
     .then(response => {
-      Estimate.findById(estimateId).then(estimate => {
-        let time
-        estimate.workers.forEach(worker => {
-          if (worker.workerId._id == workerId) {
-            time = worker.time
-            User.findById(workerId).then(user => {
-              user.works.forEach(work => {
-                if (work.workId == estimateId) {
-                  work.time = time
-                  user.save().then(userSaved => {
-                    res.status(200).json({ estimate })
-                  })
-                }
+      Estimate.findById(estimateId)
+        .populate('clientId')
+        .populate({ path: 'workerId' })
+        .then(estimate => {
+          let time
+          estimate.workers.forEach(worker => {
+            if (worker.workerId._id == workerId) {
+              time = worker.time
+              User.findById(workerId).then(user => {
+                user.works.forEach(work => {
+                  if (work.workId == estimateId) {
+                    work.time = time
+                    user.save().then(userSaved => {
+                      res.status(200).json({ estimate })
+                    })
+                  }
+                })
               })
-            })
-          }
+            }
+          })
         })
-      })
     })
     .catch(err => {
       console.log('', err)
