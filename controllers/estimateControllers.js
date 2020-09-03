@@ -94,7 +94,10 @@ exports.getAllEstimates = (req, res, next) => {
   Estimate.find({ type: 'Estimate' })
     .populate('clientId')
     .populate({ path: 'workerId' })
+    .populate({ path: 'workers.workerId' })
+    .populate({ path: 'expenses.workerId' })
     .sort({ nameEstimate: 1 })
+    .lean()
     .then(estimates => res.status(200).json({ estimates }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -667,6 +670,9 @@ exports.updateTime = (req, res, next) => {
       Estimate.findById(estimateId)
         .populate('clientId')
         .populate({ path: 'workerId' })
+        .populate({ path: 'workers.workerId' })
+        .populate({ path: 'expenses.workerId' })
+        .lean()
         .then(estimate => {
           let time
           estimate.workers.forEach(worker => {
@@ -710,6 +716,9 @@ exports.deleteTime = (req, res, next) => {
       Estimate.findById(estimateId)
         .populate('clientId')
         .populate({ path: 'workerId' })
+        .populate({ path: 'workers.workerId' })
+        .populate({ path: 'expenses.workerId' })
+        .lean()
         .then(estimate => {
           let time
           estimate.workers.forEach(worker => {

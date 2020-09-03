@@ -9,8 +9,8 @@ const path = require('path')
 const cors = require('cors')
 const session = require('cookie-session')
 const passport = require('./config/passport')
-const compression = require('compression')
 const worker = require('./worker/queueArgyle')
+const compression = require('compression')
 
 //local
 //worker.start('k6lRPA.z2LVhA:YzbUwSWg9GeiAU29', 'LOCAL:payments', 'LOCAL', 'us-east-1-a-queue.ably.io:5671/shared');
@@ -79,5 +79,9 @@ app.use('/', estimate)
 require('./routes/forgotPassword')(app)
 require('./routes/resetPassword')(app)
 require('./routes/updatePasswordViaEmail')(app)
+
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening at http://localhost:${process.env.PORT}`)
+})
 
 module.exports = app
