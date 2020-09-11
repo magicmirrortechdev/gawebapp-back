@@ -9,8 +9,8 @@ const path = require('path')
 const cors = require('cors')
 const session = require('cookie-session')
 const passport = require('./config/passport')
-const compression = require('compression')
 const worker = require('./worker/queueArgyle')
+const compression = require('compression')
 
 //local
 //worker.start('k6lRPA.z2LVhA:YzbUwSWg9GeiAU29', 'LOCAL:payments', 'LOCAL', 'us-east-1-a-queue.ably.io:5671/shared');
