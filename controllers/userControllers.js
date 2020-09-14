@@ -49,7 +49,10 @@ exports.getAllUsers = (req, res, next) => {
   User.find()
     .populate({
       path: 'works.workId',
-      select: 'expenses jobName dateStart dateEnd',
+      select: 'expenses jobName dateStart dateEnd workers',
+    })
+    .populate({
+      path: 'workers.workerId',
     })
     .sort({ name: 1 })
     .lean()

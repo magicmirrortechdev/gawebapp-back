@@ -93,6 +93,8 @@ exports.createJob = async (req, res, next) => {
 exports.getAllEstimates = (req, res, next) => {
   Estimate.find({ type: 'Estimate' })
     .populate('clientId')
+    .populate('expenses')
+    .populate('invoices')
     .populate({ path: 'workerId' })
     .populate({ path: 'workers.workerId' })
     .populate({ path: 'expenses.workerId' })
