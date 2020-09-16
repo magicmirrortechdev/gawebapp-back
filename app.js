@@ -40,6 +40,7 @@ const app = express()
 app.use(
   cors({
     credentials: true,
+    exposedHeaders: 'Version',
     origin: [process.env.FRONTENDPOINT, process.env.REDIRECT_ENDPOINT],
   })
 )
@@ -74,7 +75,7 @@ const estimate = require('./routes/estimate')
 const version = 'V 2.6.4'
 
 app.use(function (req, res, next) {
-  res.setHeader('version', version)
+  res.header('Version', version)
   next()
 })
 
