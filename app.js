@@ -71,6 +71,12 @@ const index = require('./routes/index')
 const auth = require('./routes/auth')
 const client = require('./routes/client')
 const estimate = require('./routes/estimate')
+const version = 'V 2.6.4'
+
+app.use(function (req, res, next) {
+  res.setHeader('version', version)
+  next()
+})
 
 app.use('/', index)
 app.use('/', auth)
