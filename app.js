@@ -16,7 +16,7 @@ const compression = require('compression')
 //worker.start('k6lRPA.z2LVhA:YzbUwSWg9GeiAU29', 'LOCAL:payments', 'LOCAL', 'us-east-1-a-queue.ably.io:5671/shared');
 
 //staging
-//worker.start('k6lRPA.cucUtg:XLmTdAyYrblIBpKP', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared');
+worker.start('k6lRPA.cucUtg:XLmTdAyYrblIBpKP', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared')
 
 //production
 //worker.start('W7Josg.fLykxw:lZzlEJw-VacfxEX3', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared')
@@ -72,7 +72,7 @@ const index = require('./routes/index')
 const auth = require('./routes/auth')
 const client = require('./routes/client')
 const estimate = require('./routes/estimate')
-const version = 'V 2.6.4'
+const version = 'V 2.6.5'
 
 app.use(function (req, res, next) {
   res.header('Version', version)
