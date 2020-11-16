@@ -117,6 +117,7 @@ exports.getUserEstimate = (req, res, next) => {
     .populate('invoices')
     .populate({ path: 'workerId' })
     .populate({ path: 'workers.workerId' })
+    .populate({ path: 'expenses.workerId' })
     .sort({ nameEstimate: 1 })
     .lean()
     .then(estimates => {
