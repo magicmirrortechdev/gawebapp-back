@@ -113,6 +113,8 @@ exports.getUserEstimate = (req, res, next) => {
   }
   Estimate.find(query)
     .populate('clientId')
+    .populate('expenses')
+    .populate('invoices')
     .populate({ path: 'workerId' })
     .populate({ path: 'workers.workerId' })
     .sort({ nameEstimate: 1 })
