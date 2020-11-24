@@ -1,4 +1,4 @@
-const User = require('../denormalized_models/User')
+const User = require('../models/UserV2')
 
 exports.signup = (req, res, next) => {
   User.register({ ...req.body }, req.body.password)

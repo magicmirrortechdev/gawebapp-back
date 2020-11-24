@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 const PLM = require('passport-local-mongoose')
 
-const userSchema = new Schema(
+const userV2Schema = new Schema(
   {
     name: String,
     role: String,
@@ -28,4 +28,4 @@ const userSchema = new Schema(
 )
 
 userSchema.plugin(PLM, { usernameField: 'email' })
-module.exports = model('User', userSchema)
+module.exports = model('User', userV2Schema)

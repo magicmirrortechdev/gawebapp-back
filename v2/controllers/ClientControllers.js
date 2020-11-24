@@ -1,4 +1,4 @@
-const Client = require('../denormalized_models/Client')
+const Client = require('../models/ClientV2')
 
 exports.createClient = async (req, res, next) => {
   const emailUser = req.body.email

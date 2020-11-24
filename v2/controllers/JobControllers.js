@@ -1,4 +1,4 @@
-const Job = require('../denormalized_models/Job')
+const Job = require('../models/JobsV2')
 
 exports.createJob = (req, res, next) => {
   Job.create({ ...req.body })

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const timeSchema = new Schema(
+const timeV2Schema = new Schema(
   {
     jobId: {
       type: Schema.Types.ObjectId,
@@ -23,4 +23,4 @@ const timeSchema = new Schema(
   }
 )
 
-module.exports = model('Time', timeSchema)
+module.exports = model('Time', timeV2Schema)

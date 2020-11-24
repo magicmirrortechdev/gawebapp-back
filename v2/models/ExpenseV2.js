@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const expenseSchema = new Schema(
+const expenseV2Schema = new Schema(
   {
     jobId: {
       type: Schema.Types.ObjectId,
@@ -23,4 +23,4 @@ const expenseSchema = new Schema(
   }
 )
 
-module.exports = model('Expense', expenseSchema)
+module.exports = model('Expense', expenseV2Schema)

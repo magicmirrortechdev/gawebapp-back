@@ -1,4 +1,4 @@
-const Expense = require('../denormalized_models/Expense')
+const Expense = require('../models/ExpenseV2')
 
 exports.createExpense = (req, res, next) => {
   Expense.create({ ...req.body })

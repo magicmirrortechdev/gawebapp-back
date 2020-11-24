@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const jobSchema = new Schema(
+const jobV2Schema = new Schema(
   {
     dateCreate: String,
     clientId: {
@@ -31,4 +31,4 @@ const jobSchema = new Schema(
   }
 )
 
-module.exports = model('Job', jobSchema)
+module.exports = model('Job', jobV2Schema)

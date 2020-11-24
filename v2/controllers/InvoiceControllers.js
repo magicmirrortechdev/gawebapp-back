@@ -1,4 +1,4 @@
-const Invoice = require('../denormalized_models/Invoice')
+const Invoice = require('../models/InvoiceV2')
 
 exports.createInvoice = (req, res, next) => {
   Invoice.create({ ...req.body })

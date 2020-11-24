@@ -1,4 +1,4 @@
-const Time = require('../denormalized_models/Time')
+const Time = require('../models/TimeV2')
 
 exports.createTime = (req, res, next) => {
   const { jobId, userId, date, vendor, category, description, image, total } = req.body

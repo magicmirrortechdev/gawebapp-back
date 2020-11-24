@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const invoiceSchema = new Schema(
+const invoiceV2Schema = new Schema(
   {
     jobId: {
       type: Schema.Types.ObjectId,
@@ -36,4 +36,4 @@ const invoiceSchema = new Schema(
   }
 )
 
-module.exports = model('Invoice', invoiceSchema)
+module.exports = model('Invoice', invoiceV2Schema)
