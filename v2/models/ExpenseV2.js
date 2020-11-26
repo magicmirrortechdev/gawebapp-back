@@ -10,7 +10,7 @@ const expenseV2Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    date: String,
+    date: Date,
     vendor: String,
     category: String,
     description: String,

@@ -15,12 +15,21 @@ exports.getAllExpenses = (req, res, next) => {
     .catch(err => res.status(500).json({ err }))
 }
 
-exports.getOneExpense = (req, res, next) => {
+exports.addExpense = async (req, res, next) => {
   const { id } = req.params
-  Expense.findById(id)
-    .populate('jobId')
-    .populate('userId')
-    .then(expense => res.status(200).json({ expense }))
+  const { date, vendor, category, description, img, total, workerId } = req.body
+
+  const estimate = await Estimate.findByIdAndUpdate(
+    id,
+    { $push: { expenses: { date, vendor, category, description, img, total, workerId } } },
+    { new: true }
+  )
+    .populate('clientId')
+    .populate({ path: 'workerId' })
+  Expense.create(workerId, {
+    $push: { expenses: { jobName: estimate.jobName, date, vendor, category, description, img, total } },
+  })
+    .then(user => res.status(200).json({ estimate, user }))
     .catch(err => res.status(500).json({ err }))
 }
 

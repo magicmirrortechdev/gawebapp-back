@@ -1,0 +1,409 @@
+[
+  {
+    "_id": ObjectId("5ec81c346c512700173d9aa4"),
+    "estimatesId": [],
+    "name": "Jonathan Faircloth",
+    "email": "jonathan.a.faircloth@gmail.com",
+    "createdAt": ISODate("2020-05-22T18:38:44.826Z"),
+    "updatedAt": ISODate("2020-05-22T18:38:44.826Z")
+  },
+  {
+    "_id": ObjectId("5ece920826c6e300175e4784"),
+    "estimatesId": [],
+    "name": "Green Acorn - Pearl St",
+    "email": "meredith@greenacorn.com",
+    "createdAt": ISODate("2020-05-27T16:15:04.110Z"),
+    "updatedAt": ISODate("2020-05-27T16:15:04.110Z")
+  },
+  {
+    "_id": ObjectId("5ece93b626c6e300175e4786"),
+    "estimatesId": [],
+    "name": "Sara Gregory",
+    "email": "sara_gregory@msn.com",
+    "createdAt": ISODate("2020-05-27T16:22:14.516Z"),
+    "updatedAt": ISODate("2020-05-27T16:22:14.516Z")
+  },
+  {
+    "_id": ObjectId("5ed10f18b8ae900017dd4d08"),
+    "estimatesId": [],
+    "name": "Admin",
+    "email": "info@greenacorn.com",
+    "createdAt": ISODate("2020-05-29T13:33:12.820Z"),
+    "updatedAt": ISODate("2020-05-29T13:33:12.820Z")
+  },
+  {
+    "_id": ObjectId("5ed833134e76b300175fefbe"),
+    "estimatesId": [],
+    "name": "Michele Harrison",
+    "email": "michelesharrison@yahoo.com",
+    "createdAt": ISODate("2020-06-03T23:32:35.235Z"),
+    "updatedAt": ISODate("2020-06-03T23:32:35.235Z")
+  },
+  {
+    "_id": ObjectId("5ed833a54e76b300175fefc0"),
+    "estimatesId": [],
+    "name": "Tom Pownall",
+    "createdAt": ISODate("2020-06-03T23:35:01.297Z"),
+    "updatedAt": ISODate("2020-06-03T23:35:01.297Z")
+  },
+  {
+    "_id": ObjectId("5ed834194e76b300175fefc3"),
+    "estimatesId": [],
+    "name": "Jim Hall",
+    "email": "carolinahalls2@gmail.com",
+    "createdAt": ISODate("2020-06-03T23:36:57.735Z"),
+    "updatedAt": ISODate("2020-06-03T23:36:57.735Z")
+  },
+  {
+    "_id": ObjectId("5ed835f64e76b300175fefd0"),
+    "estimatesId": [],
+    "name": "Brian Miles",
+    "email": "brian.miles@sas.com",
+    "createdAt": ISODate("2020-06-03T23:44:54.537Z"),
+    "updatedAt": ISODate("2020-06-03T23:44:54.537Z")
+  },
+  {
+    "_id": ObjectId("5edd42bb96d89e0017430656"),
+    "estimatesId": [],
+    "name": "A touch of Color",
+    "email": "sales@theraleighpaintcontractor.com",
+    "createdAt": ISODate("2020-06-07T19:40:43.988Z"),
+    "updatedAt": ISODate("2020-06-07T19:40:43.988Z")
+  },
+  {
+    "_id": ObjectId("5edfad3f03e1030017149005"),
+    "estimatesId": [],
+    "name": "Deidra Joyner",
+    "email": "ladydeejay10@yahoo.com",
+    "createdAt": ISODate("2020-06-09T15:39:43.377Z"),
+    "updatedAt": ISODate("2020-06-09T15:39:43.377Z")
+  },
+  {
+    "_id": ObjectId("5edfe42303e1030017149023"),
+    "estimatesId": [],
+    "name": "Jeff Bertram ",
+    "email": "jescbe@gmail.com",
+    "createdAt": ISODate("2020-06-09T19:33:55.208Z"),
+    "updatedAt": ISODate("2020-06-09T19:33:55.208Z")
+  },
+  {
+    "_id": ObjectId("5ee0ea7f44f355001778e3f7"),
+    "estimatesId": [],
+    "name": "Ahaji Amos",
+    "email": "amos@amos.com",
+    "createdAt": ISODate("2020-06-10T14:13:19.550Z"),
+    "updatedAt": ISODate("2020-06-10T14:13:19.550Z")
+  },
+  {
+    "_id": ObjectId("5ee14e1e44f355001778e3fb"),
+    "estimatesId": [],
+    "name": "Sue Hamlin",
+    "email": "suebham@gmail.com",
+    "createdAt": ISODate("2020-06-10T21:18:22.270Z"),
+    "updatedAt": ISODate("2020-06-10T21:18:22.270Z")
+  },
+  {
+    "_id": ObjectId("5ee764e852ee870017866344"),
+    "estimatesId": [],
+    "name": "Will Charland",
+    "email": "wcharland@gmail.com",
+    "createdAt": ISODate("2020-06-15T12:09:12.316Z"),
+    "updatedAt": ISODate("2020-06-15T12:09:12.316Z")
+  },
+  {
+    "_id": ObjectId("5ee782c152ee87001786634c"),
+    "estimatesId": [],
+    "name": "Stori Bartle",
+    "email": "sibartle@yahoo.com",
+    "createdAt": ISODate("2020-06-15T14:16:33.130Z"),
+    "updatedAt": ISODate("2020-06-15T14:16:33.130Z")
+  },
+  {
+    "_id": ObjectId("5eea7b497b348f00170d6ba1"),
+    "estimatesId": [],
+    "name": "Ginny Mann",
+    "email": "vcmann3@gmail.com",
+    "createdAt": ISODate("2020-06-17T20:21:29.570Z"),
+    "updatedAt": ISODate("2020-06-17T20:21:29.570Z")
+  },
+  {
+    "_id": ObjectId("5eeb6e0fcf735900179b2f84"),
+    "estimatesId": [],
+    "name": "Nikki Mauro",
+    "email": "nikkimauro725@gmail.com",
+    "createdAt": ISODate("2020-06-18T13:37:19.061Z"),
+    "updatedAt": ISODate("2020-06-18T13:37:19.061Z")
+  },
+  {
+    "_id": ObjectId("5eebf7c8cf735900179b2f8a"),
+    "estimatesId": [],
+    "name": "John an d Diane Wright",
+    "email": "jwright214@gmail.com",
+    "createdAt": ISODate("2020-06-18T23:24:56.267Z"),
+    "updatedAt": ISODate("2020-06-18T23:24:56.267Z")
+  },
+  {
+    "_id": ObjectId("5eecca2e56f68e00179feb87"),
+    "estimatesId": [],
+    "name": "Ryan Faircloth",
+    "email": "ryanunc1@gmail.com",
+    "createdAt": ISODate("2020-06-19T14:22:38.104Z"),
+    "updatedAt": ISODate("2020-06-19T14:22:38.104Z")
+  },
+  {
+    "_id": ObjectId("5eed508a56f68e00179feba5"),
+    "estimatesId": [],
+    "name": "Robert Haire",
+    "email": "jrhaire65@icloud.com",
+    "createdAt": ISODate("2020-06-19T23:55:54.436Z"),
+    "updatedAt": ISODate("2020-06-19T23:55:54.436Z")
+  },
+  {
+    "_id": ObjectId("5ef1f3b105e8770017d37319"),
+    "estimatesId": [],
+    "name": "Devon Jarvis",
+    "email": "devonwjarvis@gmail.com",
+    "createdAt": ISODate("2020-06-23T12:21:05.302Z"),
+    "updatedAt": ISODate("2020-06-23T12:21:05.302Z")
+  },
+  {
+    "_id": ObjectId("5ef7a987d7ee4000172f53dd"),
+    "estimatesId": [],
+    "name": "Jim Doble",
+    "email": "jim.doble@gmail.com",
+    "createdAt": ISODate("2020-06-27T20:18:15.046Z"),
+    "updatedAt": ISODate("2020-06-27T20:18:15.046Z")
+  },
+  {
+    "_id": ObjectId("5f0239e0fc307300173345aa"),
+    "estimatesId": [],
+    "name": "Larry Rappl",
+    "email": "lrappl@bellsouth.net",
+    "createdAt": ISODate("2020-07-05T20:36:48.857Z"),
+    "updatedAt": ISODate("2020-07-05T20:36:48.857Z")
+  },
+  {
+    "_id": ObjectId("5f023b28fc307300173345b1"),
+    "estimatesId": [],
+    "name": "Ann Thompson",
+    "email": "ascot1964@att.net",
+    "createdAt": ISODate("2020-07-05T20:42:16.234Z"),
+    "updatedAt": ISODate("2020-07-05T20:42:16.234Z")
+  },
+  {
+    "_id": ObjectId("5f023b72fc307300173345b3"),
+    "estimatesId": [],
+    "name": "David Hughes",
+    "email": "davidh423@gmail.com",
+    "createdAt": ISODate("2020-07-05T20:43:30.660Z"),
+    "updatedAt": ISODate("2020-07-05T20:43:30.660Z")
+  },
+  {
+    "_id": ObjectId("5f023c88fc307300173345b5"),
+    "estimatesId": [],
+    "name": "Maya McNeilly",
+    "email": "maya.mcneilly@earthlink.net",
+    "createdAt": ISODate("2020-07-05T20:48:08.026Z"),
+    "updatedAt": ISODate("2020-07-05T20:48:08.026Z")
+  },
+  {
+    "_id": ObjectId("5f03b032f441540017cf8427"),
+    "estimatesId": [],
+    "name": "Mark Loftus",
+    "email": "mark@greenacorn.com",
+    "createdAt": ISODate("2020-07-06T23:13:54.966Z"),
+    "updatedAt": ISODate("2020-07-06T23:13:54.966Z")
+  },
+  {
+    "_id": ObjectId("5f085ada2a6bbf00176950c6"),
+    "estimatesId": [],
+    "name": "Cathy Munn",
+    "email": "clm@unity.ncsu.edu",
+    "createdAt": ISODate("2020-07-10T12:11:06.079Z"),
+    "updatedAt": ISODate("2020-07-10T12:11:06.079Z")
+  },
+  {
+    "_id": ObjectId("5f0dd5e196df9100179baab8"),
+    "estimatesId": [],
+    "name": "Pat Moore",
+    "email": "patmoore5916@gmail.com",
+    "createdAt": ISODate("2020-07-14T15:57:21.464Z"),
+    "updatedAt": ISODate("2020-07-14T15:57:21.464Z")
+  },
+  {
+    "_id": ObjectId("5f0dfabf2e0707001766bdfe"),
+    "estimatesId": [],
+    "name": "Nathan Glines",
+    "email": "nateglines@gmail.com",
+    "createdAt": ISODate("2020-07-14T18:34:39.139Z"),
+    "updatedAt": ISODate("2020-07-14T18:34:39.139Z")
+  },
+  {
+    "_id": ObjectId("5f163bd86668e60017602419"),
+    "estimatesId": [],
+    "name": "Marcus Estremer",
+    "email": "melarcus427@gmail.com",
+    "createdAt": ISODate("2020-07-21T00:50:32.417Z"),
+    "updatedAt": ISODate("2020-07-21T00:50:32.417Z")
+  },
+  {
+    "_id": ObjectId("5f163c296668e6001760241b"),
+    "estimatesId": [],
+    "name": "Tatia Markland",
+    "email": "tatiamarkland@gmail.com",
+    "createdAt": ISODate("2020-07-21T00:51:53.643Z"),
+    "updatedAt": ISODate("2020-07-21T00:51:53.643Z")
+  },
+  {
+    "_id": ObjectId("5f163cb36668e60017602421"),
+    "estimatesId": [],
+    "name": "Kaci Torres",
+    "email": "krtorres@gmail.com",
+    "createdAt": ISODate("2020-07-21T00:54:11.053Z"),
+    "updatedAt": ISODate("2020-07-21T00:54:11.053Z")
+  },
+  {
+    "_id": ObjectId("5f163cf76668e60017602423"),
+    "estimatesId": [],
+    "name": "Pat Holloway",
+    "email": "phholloway32@gmail.com",
+    "createdAt": ISODate("2020-07-21T00:55:19.284Z"),
+    "updatedAt": ISODate("2020-07-21T00:55:19.284Z")
+  },
+  {
+    "_id": ObjectId("5f163d406668e60017602425"),
+    "estimatesId": [],
+    "name": "Kelly Rillo",
+    "email": "keldo175@msn.com",
+    "createdAt": ISODate("2020-07-21T00:56:32.688Z"),
+    "updatedAt": ISODate("2020-07-21T00:56:32.688Z")
+  },
+  {
+    "_id": ObjectId("5f1724517dbef5001734f3ca"),
+    "estimatesId": [],
+    "name": "Test Client - Latest Client Added",
+    "email": "",
+    "address": "",
+    "contact": "",
+    "phone": null,
+    "mobile": null,
+    "website": "",
+    "tax": null,
+    "customPayment": "",
+    "notes": "",
+    "createdAt": ISODate("2020-07-21T17:22:25.202Z"),
+    "updatedAt": ISODate("2020-07-21T17:22:25.202Z")
+  },
+  {
+    "_id": ObjectId("5f21f13f4d948a0017da31aa"),
+    "estimatesId": [],
+    "name": "Joe Roselli",
+    "email": "jroselli3@gmail.com",
+    "createdAt": ISODate("2020-07-29T21:59:27.214Z"),
+    "updatedAt": ISODate("2020-07-29T21:59:27.214Z")
+  },
+  {
+    "_id": ObjectId("5f2207184d948a0017da31b2"),
+    "estimatesId": [],
+    "name": "Janet Wendel",
+    "email": "jlpwendel@gmail.com",
+    "createdAt": ISODate("2020-07-29T23:32:40.904Z"),
+    "updatedAt": ISODate("2020-07-29T23:32:40.904Z")
+  },
+  {
+    "_id": ObjectId("5f29603018ff470017d13664"),
+    "estimatesId": [],
+    "name": "Candice Gillespie",
+    "email": "candy.derr@gmail.com",
+    "createdAt": ISODate("2020-08-04T13:18:40.200Z"),
+    "updatedAt": ISODate("2020-08-04T13:18:40.200Z")
+  },
+  {
+    "_id": ObjectId("5f2d5f6b36d3de00176592ce"),
+    "estimatesId": [],
+    "name": "Cathy Greenwood",
+    "email": "cgreenwood5@gmail.com",
+    "createdAt": ISODate("2020-08-07T14:04:27.949Z"),
+    "updatedAt": ISODate("2020-08-07T14:04:27.949Z")
+  },
+  {
+    "_id": ObjectId("5f2d5fcd36d3de00176592d0"),
+    "estimatesId": [],
+    "name": "Jack Wilkinson",
+    "email": "wilkinsonjack80@gmail.com",
+    "createdAt": ISODate("2020-08-07T14:06:05.155Z"),
+    "updatedAt": ISODate("2020-08-07T14:06:05.155Z")
+  },
+  {
+    "_id": ObjectId("5f2d7b6236d3de00176592d9"),
+    "estimatesId": [],
+    "name": "Brian Cookson",
+    "email": "brianpcookson@hotmail.com",
+    "createdAt": ISODate("2020-08-07T16:03:46.783Z"),
+    "updatedAt": ISODate("2020-08-07T16:03:46.783Z")
+  },
+  {
+    "_id": ObjectId("5f31585a09a2a30017645f92"),
+    "estimatesId": [],
+    "name": "Christopher Ford",
+    "email": "cjf716@gmail.com",
+    "createdAt": ISODate("2020-08-10T14:23:22.521Z"),
+    "updatedAt": ISODate("2020-08-10T14:23:22.521Z")
+  },
+  {
+    "_id": ObjectId("5f3db6b7259e1b00172094f4"),
+    "estimatesId": [],
+    "name": "Dave Lewis",
+    "email": "djlewisncsu@gmail.com",
+    "createdAt": ISODate("2020-08-19T23:33:11.011Z"),
+    "updatedAt": ISODate("2020-08-19T23:33:11.011Z")
+  },
+  {
+    "_id": ObjectId("5f4e8ac4de38250017674abd"),
+    "estimatesId": [],
+    "name": "Green Acorn Properties - 1300 Ewing Drive",
+    "email": "craig@greenacorn.com",
+    "createdAt": ISODate("2020-09-01T17:54:12.840Z"),
+    "updatedAt": ISODate("2020-09-01T17:54:12.840Z")
+  },
+  {
+    "_id": ObjectId("5f738333f542820017348cd1"),
+    "estimatesId": [],
+    "name": "Test",
+    "email": "test@test.com",
+    "createdAt": ISODate("2020-09-29T18:55:47.777Z"),
+    "updatedAt": ISODate("2020-09-29T18:55:47.777Z")
+  },
+  {
+    "_id": ObjectId("5f75f2fdd01550001730bf82"),
+    "estimatesId": [],
+    "name": "Vicki Meigs-Kahlenberg",
+    "email": "vickimeigskahlenberg@gmail.com",
+    "createdAt": ISODate("2020-10-01T15:17:17.704Z"),
+    "updatedAt": ISODate("2020-10-01T15:17:17.704Z")
+  },
+  {
+    "_id": ObjectId("5f7e285c1aa9410017f69d66"),
+    "estimatesId": [],
+    "name": "Connie Dolecheck",
+    "email": "cdolecheck@yahoo.com",
+    "createdAt": ISODate("2020-10-07T20:43:08.633Z"),
+    "updatedAt": ISODate("2020-10-07T20:43:08.633Z")
+  },
+  {
+    "_id": ObjectId("5f98576ee109fe0017e02b3a"),
+    "estimatesId": [],
+    "name": "Admin",
+    "email": "admin@greenacorn.com",
+    "createdAt": ISODate("2020-10-27T17:22:54.599Z"),
+    "updatedAt": ISODate("2020-10-27T17:22:54.599Z")
+  },
+  {
+    "_id": ObjectId("5f9967d41af15c00171f146f"),
+    "estimatesId": [],
+    "name": "Jonathan & Britni Faircloth - Add On",
+    "email": "britnicd@yahoo.com",
+    "createdAt": ISODate("2020-10-28T12:45:08.292Z"),
+    "updatedAt": ISODate("2020-10-28T12:45:08.292Z")
+  }
+]

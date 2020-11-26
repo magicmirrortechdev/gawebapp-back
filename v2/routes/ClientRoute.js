@@ -1,13 +1,12 @@
 const { Router } = require('express')
 const router = Router()
-const passport = require('../config/passport')
 const {
   createClient,
   getAllClients,
   oneClient,
   updateClient,
   deleteClient,
-} = require('../controllers/clientControllers')
+} = require('../controllers/ClientControllers')
 
 router.post('/createclient', createClient)
 router.get('/checkclients', getAllClients)

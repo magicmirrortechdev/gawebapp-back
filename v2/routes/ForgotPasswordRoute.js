@@ -1,8 +1,7 @@
 const crypto = require('crypto')
 require('dotenv').config()
-const User = require('../models/User')
-
 const nodemailer = require('nodemailer')
+const User = require('../models/UserV2')
 
 const URL = {
   staging: 'https://gaweb.netlify.app',

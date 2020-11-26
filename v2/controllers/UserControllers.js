@@ -72,3 +72,22 @@ exports.deleteWorker = (req, res, next) => {
     .then(user => res.status(200).json({ user }))
     .catch(err => res.status(500).json({ err }))
 }
+
+exports.workerUsers = (req, res, next) => {
+  User.find({ role: { $in: ['WORKER', 'PROJECT MANAGER', 'ADMIN'] } })
+    .populate({
+      path: 'works.workId',
+      select: 'expenses jobName dateStart dateEnd',
+    })
+    .sort({ name: 1 })
+    .then(users => {
+      res.status(200).json({ users })
+    })
+    .catch(err => res.status(500).json({ err }))
+}
+
+exports.pmUsers = (req, res, next) => {
+  User.find({ role: 'PROJECT MANAGER' })
+    .then(users => res.status(200).json({ users }))
+    .catch(err => res.status(500).json({ err }))
+}

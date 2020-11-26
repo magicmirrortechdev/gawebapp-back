@@ -1,7 +1,8 @@
-const { Schema, model } = require('mongoose');
-const PLM = require('passport-local-mongoose');
+const { Schema, model } = require('mongoose')
+const PLM = require('passport-local-mongoose')
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     email: String,
     name: String,
     address: String,
@@ -14,26 +15,31 @@ const userSchema = new Schema({
     payment: Number,
     effective: Number,
     level: {
-        type: Number,
-        enum: [1, 2, 3, 4, 5],
-        default: 1
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
+      default: 1,
     },
     role: {
-        type: String,
-        enum: ['WORKER', 'ADMIN', 'PROJECT MANAGER'],
-        default: 'WORKER'
+      type: String,
+      enum: ['WORKER', 'ADMIN', 'PROJECT MANAGER'],
+      default: 'WORKER',
     },
-    works: [{
+    works: [
+      {
         workId: {
-            type: Schema.Types.ObjectId,
-            ref: "Estimate"
+          type: Schema.Types.ObjectId,
+          ref: 'Estimate',
         },
-        time: [{
+        time: [
+          {
             hours: Number,
-            date: Date
-        }]
-    }],
-    expenses: [{
+            date: Date,
+          },
+        ],
+      },
+    ],
+    expenses: [
+      {
         jobName: String,
         date: Date,
         vendor: String,
@@ -41,15 +47,17 @@ const userSchema = new Schema({
         description: String,
         img: String,
         total: Number,
-        estimateId: String
-    }],
+        estimateId: String,
+      },
+    ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-
-}, {
+  },
+  {
     timestamps: true,
-    versionKey: false
-});
+    versionKey: false,
+  }
+)
 
-userSchema.plugin(PLM, { usernameField: 'email' });
-module.exports = model('User', userSchema);
+userSchema.plugin(PLM, { usernameField: 'email' })
+module.exports = model('users_', userSchema)

@@ -2,7 +2,14 @@ const { Schema, model } = require('mongoose')
 
 const jobV2Schema = new Schema(
   {
-    dateCreate: String,
+    dateStart: {
+      type: String,
+      default: 'Update this field',
+    },
+    dateEnd: {
+      type: String,
+      default: 'Update this field',
+    },
     clientId: {
       type: Schema.Types.ObjectId,
       ref: 'Client',

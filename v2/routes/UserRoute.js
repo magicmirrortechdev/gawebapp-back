@@ -1,10 +1,9 @@
 const { Router } = require('express')
 const router = Router()
-const passport = require('../config/passport')
+const passport = require('../../config/passport')
 const {
   signup,
   login,
-  addHours,
   logout,
   oneWorker,
   deleteWorker,
@@ -13,7 +12,9 @@ const {
   workerUsers,
   pmUsers,
   getAllUsers,
-} = require('../controllers/userControllers')
+  addWorkers,
+  addPM,
+} = require('../controllers/UserControllers')
 
 router.post('/signup', signup)
 router.post('/login', passport.authenticate('local'), login)
@@ -24,7 +25,6 @@ router.get('/projectm', pmUsers)
 router.get('/workerdetail/:id', oneWorker)
 router.patch('/updateworker/:id', updateWorker)
 router.delete('/deleteworker/:id', deleteWorker)
-
 router.get('/logout', logout)
 
 router.get('/profile', isAuth, (req, res, next) => {
