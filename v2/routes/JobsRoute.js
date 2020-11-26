@@ -4,6 +4,7 @@ const {
   createEstimate,
   getJobsUser,
   getUserEstimate,
+  getAllEstimates,
   deleteWorker,
   createJob,
   closeJob,
@@ -21,6 +22,7 @@ const {
 
 router.post('/addestimate', createEstimate)
 router.post('/createjob', createJob)
+router.get('/checkestimates/', getAllEstimates)
 router.get('/checkestimates/:id', getUserEstimate)
 router.get('/checkjobs', getAllJobs)
 router.get('/checkjobs/:id', getJobsUser)

@@ -152,6 +152,16 @@ exports.createJob = async (req, res, next) => {
   }
 }
 
+exports.getAllEstimates = (req, res, next) => {
+  Job.find({})
+    .populate('clientId')
+    .populate({ path: 'workers.workerId' })
+    .sort({ nameEstimate: 1 })
+    .lean()
+    .then(estimates => res.status(200).json({ estimates }))
+    .catch(err => res.status(500).json({ err }))
+}
+
 exports.getUserEstimate = (req, res, next) => {
   const { id } = req.params
   const query = {
