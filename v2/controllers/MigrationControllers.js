@@ -10,49 +10,47 @@ const JobV2 = require('../models/JobsV2')
 const Estimate = require('../../models/Estimate')
 
 exports.migration = async (req, res, next) => {
-  /*
-    await ClientV2.deleteMany({})
-
-    const clients = await Client.find().lean()
-    clients.forEach(async client => {
-        let name = client.name.split(' ')
-        const data = {
-            email: client.email,
-            firstName: name[0],
-            lastName: client.name.replace(name[0], ''),
-            address: client.address,
-            phone: client.phone,
-        }
-        console.log("data>>", data)
-        await ClientV2.create(data)
-    })
-    */
-
-  /*
-    await UserV2.deleteMany({})
-    const users = await User.find().lean()
-    users.forEach(async user => {
-        const data = {
-            name: user.name,
-            role: user.role,
-            email: user.email,
-            address: user.address,
-            phone: user.phone,
-            activity: user.activity,
-            type: user.type,
-            payRate: user.payment,
-            effectiveRate: user.effective,
-            resetPasswordToken: user.resetPasswordToken,
-            resetPasswordExpires: user.resetPasswordExpires
-        }
-        await UserV2.create(data)
-    })
-    */
-
+  //await ClientV2.deleteMany({})
+  //await UserV2.deleteMany({})
   await InvoiceV2.deleteMany({})
   await ExpenseV2.deleteMany({})
   await TimeV2.deleteMany({})
   await JobV2.deleteMany({})
+
+  /*
+  const clients = await Client.find().lean()
+  clients.forEach(async client => {
+      let name = client.name.split(' ')
+      const data = {
+          email: client.email,
+          firstName: name[0],
+          lastName: client.name.replace(name[0], ''),
+          address: client.address,
+          phone: client.phone,
+      }
+      await ClientV2.create(data)
+  })
+
+  const users = await User.find()
+  users.forEach(async user => {
+    const data = {
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        address: user.address,
+        phone: user.phone,
+        activity: user.activity,
+        type: user.type,
+        payRate: user.payment,
+        effectiveRate: user.effective,
+        resetPasswordToken: user.resetPasswordToken,
+        resetPasswordExpires: user.resetPasswordExpires,
+        level: user.level
+    }
+    await UserV2.register(data, 'GreenAcorn2020')
+  })
+  */
+
   const estimates = await Estimate.find()
     .populate('clientId')
     .populate('expenses')
@@ -68,6 +66,12 @@ exports.migration = async (req, res, next) => {
     for (const worker of estimate.workers) {
       if (worker.workerId) {
         const user = await UserV2.findOne({ email: worker.workerId.email })
+        workers.push({ workerId: user })
+      }
+    }
+    for (const project of estimate.projectManager) {
+      if (project.projectId) {
+        const user = await UserV2.findOne({ email: project.projectId.email })
         workers.push({ workerId: user })
       }
     }
@@ -92,10 +96,10 @@ exports.migration = async (req, res, next) => {
     for (const expense of estimate.expenses) {
       if (expense.workerId) {
         const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
-        const user = await UserV2.findOne({ email: expense.workerId.email })
+        const userV2 = await UserV2.findOne({ email: expense.workerId.email })
         const expenseData = {
           jobId: job._id,
-          userId: user._id,
+          userId: userV2._id,
           date: expense.date,
           vendor: expense.vendor,
           category: expense.category,
@@ -108,21 +112,22 @@ exports.migration = async (req, res, next) => {
     }
 
     for (const invoice of estimate.invoices) {
+      const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
+      let user = null
       if (invoice.workerId) {
-        const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
-        const user = await UserV2.findOne({ email: invoice.workerId.email })
-        const invoiceData = {
-          jobId: job._id,
-          userId: user._id,
-          invoiceDate: invoice.date,
-          invoiceTotal: invoice.total,
-          invoiceDescription: invoice.description,
-          isSent: invoice.status === 'Sent' ? true : false,
-          isPaid: invoice.status === 'Paid' ? true : false,
-          payments: invoice.payment,
-        }
-        await InvoiceV2.create(invoiceData)
+        user = await UserV2.findOne({ email: invoice.workerId.email })
       }
+      const invoiceData = {
+        jobId: job._id,
+        userId: user != null ? user._id : null,
+        invoiceDate: invoice.date,
+        invoiceTotal: invoice.total,
+        invoiceDescription: invoice.description,
+        isSent: invoice.status === 'Sent' ? true : false,
+        isPaid: invoice.status === 'Paid' ? true : false,
+        payments: invoice.payment,
+      }
+      await InvoiceV2.create(invoiceData)
     }
 
     for (const worker of estimate.workers) {
@@ -141,6 +146,5 @@ exports.migration = async (req, res, next) => {
       }
     }
   }
-
   res.status(201).json({ ok: 1 })
 }

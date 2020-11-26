@@ -1,4 +1,6 @@
 const User = require('../models/UserV2')
+const { createToken } = require('../../config/jwt')
+const { sendEmail } = require('../../config/nodemailer')
 
 exports.signup = (req, res, next) => {
   User.register({ ...req.body }, req.body.password)

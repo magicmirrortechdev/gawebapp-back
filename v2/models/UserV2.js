@@ -9,6 +9,7 @@ const userV2Schema = new Schema(
     address: String,
     phone: Number,
     activity: String,
+    level: Number,
     type: {
       type: String,
       enum: ['1099', 'Employee'],
