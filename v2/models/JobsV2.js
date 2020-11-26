@@ -10,6 +10,8 @@ const jobV2Schema = new Schema(
       type: String,
       default: 'Update this field',
     },
+    dateCreate: String,
+    status: String,
     clientId: {
       type: Schema.Types.ObjectId,
       ref: 'Client',
@@ -17,6 +19,7 @@ const jobV2Schema = new Schema(
     jobName: String,
     jobAddress: String,
     items: [{ itemName: String, itemDescription: String, quantity: Number, rate: Number, subtotal: Number }],
+    estimateDiscount: Number,
     estimateSubtotal: Number,
     estimateTax: Number,
     estimateTotal: Number,

@@ -83,6 +83,7 @@ exports.migration = async (req, res, next) => {
       jobName: estimate.nameEstimate,
       jobAddress: estimate.addressEstimate,
       items: estimate.items,
+      estimateDiscount: estimate.discount,
       estimateSubtotal: estimate.subtotal,
       estimateTax: estimate.tax,
       estimateTotal: estimate.total,
@@ -90,6 +91,10 @@ exports.migration = async (req, res, next) => {
       isAccepted: estimate.status === 'Approve' ? true : false,
       isJob: estimate.isJob,
       workers: workers,
+      status: estimate.status,
+      dateCreate: estimate.dateCreate,
+      createdAt: estimate.createdAt,
+      updatedAt: estimate.updatedAt,
     }
     await JobV2.create(job)
 
