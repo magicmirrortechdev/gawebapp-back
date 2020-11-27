@@ -83,6 +83,7 @@ exports.migration = async (req, res, next) => {
       jobName: estimate.nameEstimate,
       jobAddress: estimate.addressEstimate,
       items: estimate.items,
+      estimatePaid: estimate.paid,
       estimateDiscount: estimate.discount,
       estimateSubtotal: estimate.subtotal,
       estimateTax: estimate.tax,
