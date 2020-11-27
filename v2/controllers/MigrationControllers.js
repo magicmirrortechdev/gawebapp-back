@@ -123,6 +123,15 @@ exports.migration = async (req, res, next) => {
       if (invoice.workerId) {
         user = await UserV2.findOne({ email: invoice.workerId.email })
       }
+
+      let payments = []
+      for (const payment of invoice.payment) {
+        payments.push({
+          paidAmount: payment.paid,
+          paidDate: payment.date,
+        })
+      }
+
       const invoiceData = {
         jobId: job._id,
         userId: user != null ? user._id : null,
@@ -131,7 +140,7 @@ exports.migration = async (req, res, next) => {
         invoiceDescription: invoice.description,
         isSent: invoice.status === 'Sent' ? true : false,
         isPaid: invoice.status === 'Paid' ? true : false,
-        payments: invoice.payment,
+        payments: payments,
       }
       await InvoiceV2.create(invoiceData)
     }
