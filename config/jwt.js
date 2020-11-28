@@ -1,6 +1,6 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
-const User = require('../v2/models/UserV2')
+const UserV2 = require('../v2/models/UserV2')
 
 exports.createToken = user => {
   return jwt
@@ -21,7 +21,7 @@ exports.verifyToken = (req, res, next) => {
   if (!headload || !signature) return res.status(401).json({ msg: 'Te falta algo para realizar esta acción' })
   jwt.verify(headload + signature, process.env.SECRET, (err, decoded) => {
     if (err) return res.status(401).json({ msg: 'Unauthorized, missing token' })
-    User.findById(decoded.userId)
+    UserV2.findById(decoded.userId)
       .then(user => {
         req.user = user
         next()

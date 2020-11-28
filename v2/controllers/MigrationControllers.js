@@ -138,6 +138,7 @@ exports.migration = async (req, res, next) => {
         invoiceDate: invoice.date,
         invoiceTotal: invoice.total,
         invoiceDescription: invoice.description,
+        invoiceStatus: invoice.status,
         isSent: invoice.status === 'Sent' ? true : false,
         isPaid: invoice.status === 'Paid' ? true : false,
         payments: payments,

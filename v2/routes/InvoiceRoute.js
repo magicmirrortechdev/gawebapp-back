@@ -11,9 +11,9 @@ const {
 
 router.get('/getInvoices/:id', getInvoices)
 router.patch('/convertinvoice/:id', createInvoice)
-router.patch('/invoicedelete/:estimateId/:id', deleteInvoice)
-router.patch('/invoiceupdate/:estimateId/:invoiceId', updateInvoice)
+router.patch('/invoicedelete/:id', deleteInvoice)
+router.patch('/invoiceupdate/:id', updateInvoice)
 router.post('/sendinvoice', sendInvoice2)
-router.patch('/pay-invoice/:id/:invoiceId', acceptPayment)
+router.patch('/pay-invoice/:id', acceptPayment)
 
 module.exports = router

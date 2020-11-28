@@ -1,9 +1,9 @@
-const User = require('../models/UserV2')
+const UserV2 = require('../models/UserV2')
 const { createToken } = require('../../config/jwt')
 const { sendEmail } = require('../../config/nodemailer')
 
 exports.signup = (req, res, next) => {
-  User.register({ ...req.body }, req.body.password)
+  UserV2.register({ ...req.body }, req.body.password)
     .then(user => {
       res.status(201).json({ user })
     })
@@ -12,7 +12,7 @@ exports.signup = (req, res, next) => {
 
 exports.createUser = (req, res, next) => {
   const { name, email, msg, password } = req.body
-  User.register({ ...req.body }, req.body.password)
+  UserV2.register({ ...req.body }, req.body.password)
     .then(user => {
       sendEmail(email, name, msg, password)
         .then(info => {
@@ -47,7 +47,7 @@ exports.logout = (req, res, next) => {
 }
 
 exports.getAllUsers = (req, res, next) => {
-  User.find()
+  UserV2.find()
     .lean()
     .then(users => res.status(200).json({ users }))
     .catch(err => res.status(500).json({ err }))
@@ -55,14 +55,14 @@ exports.getAllUsers = (req, res, next) => {
 
 exports.oneWorker = (req, res, next) => {
   const { id } = req.params
-  User.findById(id)
+  UserV2.findById(id)
     .then(user => res.status(200).json({ user }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.updateWorker = (req, res, next) => {
   const { id } = req.params
-  User.findByIdAndUpdate(id, { ...req.body }, { new: true })
+  UserV2.findByIdAndUpdate(id, { ...req.body }, { new: true })
     .then(user => res.status(200).json({ user }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -70,13 +70,13 @@ exports.updateWorker = (req, res, next) => {
 exports.deleteWorker = (req, res, next) => {
   const { id } = req.params
   console.log(id)
-  User.findByIdAndDelete(id)
+  UserV2.findByIdAndDelete(id)
     .then(user => res.status(200).json({ user }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.workerUsers = (req, res, next) => {
-  User.find({ role: { $in: ['WORKER', 'PROJECT MANAGER', 'ADMIN'] } })
+  UserV2.find({ role: { $in: ['WORKER', 'PROJECT MANAGER', 'ADMIN'] } })
     .populate({
       path: 'works.workId',
       select: 'expenses jobName dateStart dateEnd',
@@ -89,7 +89,7 @@ exports.workerUsers = (req, res, next) => {
 }
 
 exports.pmUsers = (req, res, next) => {
-  User.find({ role: 'PROJECT MANAGER' })
+  UserV2.find({ role: 'PROJECT MANAGER' })
     .then(users => res.status(200).json({ users }))
     .catch(err => res.status(500).json({ err }))
 }
