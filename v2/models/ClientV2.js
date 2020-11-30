@@ -7,6 +7,12 @@ const clientV2Schema = new Schema(
     lastName: String,
     address: String,
     phone: Number,
+    contact: String,
+    customPayment: String,
+    mobile: String,
+    notes: String,
+    tax: Number,
+    website: String,
   },
   {
     timestamps: true,

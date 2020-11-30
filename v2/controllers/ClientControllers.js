@@ -14,7 +14,7 @@ exports.createClient = async (req, res, next) => {
 
 exports.getAllClients = (req, res, next) => {
   Client.find()
-    .sort({ name: 1 })
+    .sort({ firstName: 1 })
     .lean()
     .then(clients => res.status(200).json({ clients }))
     .catch(err => res.status(500).json({ err }))

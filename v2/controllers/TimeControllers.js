@@ -10,8 +10,6 @@ exports.createTime = (req, res, next) => {
 exports.getAllTimes = (req, res, next) => {
   Time.find()
     .lean()
-    .populate('jobId')
-    .populate('userId')
     .then(times => res.status(200).json({ times }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -19,8 +17,6 @@ exports.getAllTimes = (req, res, next) => {
 exports.getOneTime = (req, res, next) => {
   const { id } = req.params
   Time.findById(id)
-    .populate('jobId')
-    .populate('userId')
     .then(time => res.status(200).json({ time }))
     .catch(err => res.status(500).json({ err }))
 }

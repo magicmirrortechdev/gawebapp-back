@@ -48,6 +48,7 @@ exports.logout = (req, res, next) => {
 
 exports.getAllUsers = (req, res, next) => {
   UserV2.find()
+    .sort({ name: 1 })
     .lean()
     .then(users => res.status(200).json({ users }))
     .catch(err => res.status(500).json({ err }))
