@@ -31,6 +31,6 @@ exports.updateTime = async (req, res, next) => {
 exports.deleteTime = (req, res, next) => {
   const { id } = req.params
   Time.findByIdAndDelete(id)
-    .then(time => res.status(200).json({ time }))
+    .then(time => res.status(200).json({ ok: 1 }))
     .catch(err => res.status(500).json({ err }))
 }
