@@ -15,6 +15,7 @@ const invoiceV2Schema = new Schema(
     invoiceDescription: String,
     isSent: Boolean,
     isPaid: Boolean,
+    invoiceStatus: String,
     payments: [
       {
         argyleChargeId: {

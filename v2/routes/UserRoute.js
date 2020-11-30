@@ -12,8 +12,6 @@ const {
   workerUsers,
   pmUsers,
   getAllUsers,
-  addWorkers,
-  addPM,
 } = require('../controllers/UserControllers')
 
 router.post('/signup', signup)
@@ -28,7 +26,7 @@ router.delete('/deleteworker/:id', deleteWorker)
 router.get('/logout', logout)
 
 router.get('/profile', isAuth, (req, res, next) => {
-  User.findById(req.user._id)
+  UserV2.findById(req.user._id)
     .then(user => res.status(200).json({ user }))
     .catch(err => res.status(500).json({ err }))
 })

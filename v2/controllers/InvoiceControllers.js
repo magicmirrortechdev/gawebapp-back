@@ -1,4 +1,6 @@
 const Invoice = require('../models/InvoiceV2')
+const User = require('../models/UserV2')
+const { sendInvoice } = require('../../config/nodemailer')
 
 exports.createInvoice = async (req, res, next) => {
   const { id } = req.params
@@ -20,17 +22,19 @@ exports.createInvoice = async (req, res, next) => {
     },
     { new: true }
   )
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => res.status(200).json({ estimate }))
+    .then(estimate => res.status(200).json({ invoice }))
     .catch(err => res.status(500).json({ err }))
 }
 
-exports.getAllInvoices = (req, res, next) => {
-  Invoice.find()
+exports.getInvoices = async (req, res, next) => {
+  const { id } = req.params
+  const user = await User.findById(id)
+  let data = {}
+  if (user.level !== 4) {
+    data = { userId: id }
+  }
+  Invoice.find(data)
     .lean()
-    .populate('jobId')
-    .populate('userId')
     .then(invoices => res.status(200).json({ invoices }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -96,16 +100,15 @@ exports.sendInvoice2 = (req, res, next) => {
 }
 
 exports.acceptPayment = (req, res, next) => {
-  const { id, invoiceId } = req.params
+  const { id } = req.params
   const { paid, date } = req.body
   const query = {
-    _id: invoiceId,
+    _id: id,
   }
-  Invoice.findOneAndUpdate(query, { query, $push: { '$.payment': { paid, date } } }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => {
-      res.status(200).json({ estimate })
+
+  Invoice.findOneAndUpdate(query, { $push: { payments: { paidAmount: paid, paidDate: date } } }, { new: true })
+    .then(invoice => {
+      res.status(200).json({ invoice })
     })
     .catch(err => res.status(500).json({ err }))
 }

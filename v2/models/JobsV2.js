@@ -20,6 +20,7 @@ const jobV2Schema = new Schema(
     jobAddress: String,
     items: [{ itemName: String, itemDescription: String, quantity: Number, rate: Number, subtotal: Number }],
     estimateDiscount: Number,
+    estimatePaid: Number,
     estimateSubtotal: Number,
     estimateTax: Number,
     estimateTotal: Number,
