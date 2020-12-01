@@ -10,46 +10,46 @@ const JobV2 = require('../models/JobsV2')
 const Estimate = require('../../models/Estimate')
 
 exports.migration = async (req, res, next) => {
-  //await ClientV2.deleteMany({})
-  //await UserV2.deleteMany({})
+  await ClientV2.deleteMany({})
+  await UserV2.deleteMany({})
   await InvoiceV2.deleteMany({})
   await ExpenseV2.deleteMany({})
   await TimeV2.deleteMany({})
   await JobV2.deleteMany({})
 
-  /*
   const clients = await Client.find().lean()
-  clients.forEach(async client => {
-      let name = client.name.split(' ')
-      const data = {
-          email: client.email,
-          firstName: name[0],
-          lastName: client.name.replace(name[0], ''),
-          address: client.address,
-          phone: client.phone,
-      }
-      await ClientV2.create(data)
-  })
+  for (const client of clients) {
+    let name = client.name.split(' ')
+    const data = {
+      email: client.email,
+      firstName: name[0],
+      lastName: client.name.replace(name[0], ''),
+      address: client.address,
+      phone: client.phone,
+    }
+    await ClientV2.create(data)
+  }
 
   const users = await User.find()
-  users.forEach(async user => {
+  for (const user of users) {
     const data = {
-        name: user.name,
-        role: user.role,
-        email: user.email,
-        address: user.address,
-        phone: user.phone,
-        activity: user.activity,
-        type: user.type,
-        payRate: user.payment,
-        effectiveRate: user.effective,
-        resetPasswordToken: user.resetPasswordToken,
-        resetPasswordExpires: user.resetPasswordExpires,
-        level: user.level
+      name: user.name,
+      role: user.role,
+      email: user.email,
+      address: user.address,
+      phone: user.phone,
+      mobile: user.mobile,
+      activity: user.activity,
+      type: user.type,
+      payRate: user.payment,
+      effectiveRate: user.effective,
+      resetPasswordToken: user.resetPasswordToken,
+      resetPasswordExpires: user.resetPasswordExpires,
+      level: user.level,
+      contactName: user.contact,
     }
     await UserV2.register(data, 'GreenAcorn2020')
-  })
-  */
+  }
 
   const estimates = await Estimate.find()
     .populate('clientId')
@@ -80,7 +80,7 @@ exports.migration = async (req, res, next) => {
       dateStart: estimate.dateStart,
       dateEnd: estimate.dateEnd,
       clientId: clientV2,
-      jobName: estimate.nameEstimate,
+      jobName: estimate.jobName,
       jobAddress: estimate.addressEstimate,
       items: estimate.items,
       estimatePaid: estimate.paid,
@@ -88,6 +88,7 @@ exports.migration = async (req, res, next) => {
       estimateSubtotal: estimate.subtotal,
       estimateTax: estimate.tax,
       estimateTotal: estimate.total,
+      estimateName: estimate.nameEstimate,
       isSent: estimate.status === 'Sent' ? true : false,
       isAccepted: estimate.status === 'Approve' ? true : false,
       isJob: estimate.isJob,
@@ -101,7 +102,7 @@ exports.migration = async (req, res, next) => {
 
     for (const expense of estimate.expenses) {
       if (expense.workerId) {
-        const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
+        const job = await JobV2.findOne({ jobName: estimate.jobName })
         const userV2 = await UserV2.findOne({ email: expense.workerId.email })
         const expenseData = {
           jobId: job._id,
@@ -118,7 +119,7 @@ exports.migration = async (req, res, next) => {
     }
 
     for (const invoice of estimate.invoices) {
-      const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
+      const job = await JobV2.findOne({ jobName: estimate.jobName })
       let user = null
       if (invoice.workerId) {
         user = await UserV2.findOne({ email: invoice.workerId.email })
@@ -148,7 +149,7 @@ exports.migration = async (req, res, next) => {
 
     for (const worker of estimate.workers) {
       if (worker.workerId && worker.time) {
-        const job = await JobV2.findOne({ jobName: estimate.nameEstimate })
+        const job = await JobV2.findOne({ jobName: estimate.jobName })
         const user = await UserV2.findOne({ email: worker.workerId.email })
         for (const time of worker.time) {
           const timeData = {

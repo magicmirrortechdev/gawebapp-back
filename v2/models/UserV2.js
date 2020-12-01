@@ -6,8 +6,10 @@ const userV2Schema = new Schema(
     name: String,
     role: String,
     email: String,
+    contactName: String,
     address: String,
     phone: Number,
+    mobile: Number,
     activity: String,
     level: Number,
     type: {
