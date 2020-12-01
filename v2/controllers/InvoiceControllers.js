@@ -30,7 +30,7 @@ exports.getInvoices = async (req, res, next) => {
   const { id } = req.params
   const user = await User.findById(id)
   let data = {}
-  if (user.level !== 4) {
+  if (user && user.level !== 4) {
     data = { userId: id }
   }
   Invoice.find(data)

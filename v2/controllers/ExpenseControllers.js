@@ -1,4 +1,5 @@
 const Expense = require('../models/ExpenseV2')
+const User = require('../models/UserV2')
 
 exports.createExpense = (req, res, next) => {
   Expense.create({ ...req.body })
@@ -6,11 +7,15 @@ exports.createExpense = (req, res, next) => {
     .catch(err => res.status(500).json({ err }))
 }
 
-exports.getAllExpenses = (req, res, next) => {
-  Expense.find()
+exports.getAllExpenses = async (req, res, next) => {
+  const { id } = req.params
+  const user = await User.findById(id)
+  let data = {}
+  if (user && user.level !== 4) {
+    data = { userId: id }
+  }
+  Expense.find(data)
     .lean()
-    .populate('jobId')
-    .populate('userId')
     .then(expenses => res.status(200).json({ expenses }))
     .catch(err => res.status(500).json({ err }))
 }
