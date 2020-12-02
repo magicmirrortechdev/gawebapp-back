@@ -9,8 +9,11 @@ exports.createExpense = (req, res, next) => {
 
 exports.getAllExpenses = async (req, res, next) => {
   const { id } = req.params
-  const user = await User.findById(id)
   let data = {}
+  let user = null
+  if (id) {
+    user = await User.findById(id)
+  }
   if (user && user.level !== 4) {
     data = { userId: id }
   }

@@ -1,4 +1,5 @@
 const Time = require('../models/TimeV2')
+const User = require('../models/UserV2')
 
 exports.createTime = (req, res, next) => {
   const { jobId, userId, date, vendor, category, description, image, total } = req.body
@@ -7,8 +8,17 @@ exports.createTime = (req, res, next) => {
     .catch(err => res.status(500).json({ err }))
 }
 
-exports.getAllTimes = (req, res, next) => {
-  Time.find()
+exports.getAllTimes = async (req, res, next) => {
+  const { id } = req.params
+  let data = {}
+  let user = null
+  if (id) {
+    user = await User.findById(id)
+  }
+  if (user && user.level !== 4) {
+    data = { userId: id }
+  }
+  Time.find(data)
     .lean()
     .then(times => res.status(200).json({ times }))
     .catch(err => res.status(500).json({ err }))
