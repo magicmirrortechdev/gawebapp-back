@@ -25,6 +25,7 @@ const jobV2Schema = new Schema(
     estimateTax: Number,
     estimateTotal: Number,
     estimateName: String,
+    comments: String,
     isSent: Boolean,
     isAccepted: Boolean,
     isJob: Boolean,

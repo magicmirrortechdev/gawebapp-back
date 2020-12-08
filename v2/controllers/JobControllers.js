@@ -1,5 +1,6 @@
 const Job = require('../models/JobsV2')
 const User = require('../models/UserV2')
+const Client = require('../models/ClientV2')
 
 exports.createJob = (req, res, next) => {
   Job.create({ ...req.body })
@@ -10,8 +11,6 @@ exports.createJob = (req, res, next) => {
 exports.getAllJobs = (req, res, next) => {
   Job.find()
     .lean()
-    .populate('clientId')
-    .populate({ path: 'workers.workerId' })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -19,8 +18,6 @@ exports.getAllJobs = (req, res, next) => {
 exports.getOneJob = (req, res, next) => {
   const { id } = req.params
   Job.findById(id)
-    .populate('clientId')
-    .populate({ path: 'workers.workerId' })
     .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -28,16 +25,12 @@ exports.getOneJob = (req, res, next) => {
 exports.getSentJobs = (req, res, next) => {
   Job.find({ isSent: true })
     .lean()
-    .populate('jobId')
-    .populate('userId')
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
 exports.getAcceptedJobs = (req, res, next) => {
   Job.find({ isAccepted: true })
     .lean()
-    .populate('clientId')
-    .populate({ path: 'workers.workerId' })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -45,8 +38,6 @@ exports.getAcceptedJobs = (req, res, next) => {
 exports.getIsJob = (req, res, next) => {
   Job.find({ isJob: true })
     .lean()
-    .populate('clientId')
-    .populate({ path: 'workers.workerId' })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -54,14 +45,14 @@ exports.getIsJob = (req, res, next) => {
 exports.updateJob = async (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndUpdate(id, { ...req.body }, { new: true })
-    .then(Job => res.status(200).json({ Job }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.deleteJob = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndDelete(id)
-    .then(Job => res.status(200).json({ Job }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -72,30 +63,46 @@ exports.createEstimate = async (req, res, next) => {
   const clientDb = await Client.findOne({ email: emailUser })
   const items = req.body.items
 
-  if (clientDb === null) {
-    const newClient = await Client.create({ name, email: emailUser })
+  const subTotal = items.reduce((acc, current, i) => acc + current.subtotal, 0)
+  const total = subTotal + (req.body.estimateTax * subTotal) / 100 - req.body.estimateDiscount - req.body.estimatePaid
 
-    Estimate.create({
+  const firstName = name.split(' ')[0]
+  const lastName = name.replace(firstName, '').trim()
+  if (clientDb === null) {
+    const newClient = await Client.create({ firstName, lastName, email: emailUser })
+
+    Job.create({
       ...req.body,
-      addressEstimate: address,
-      nameEstimate: name,
+      jobAddress: address,
+      estimateName: name,
       emailEstimate: emailUser,
       clientId: newClient._id,
       jobName: `${name} - ${address}`,
-      subtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
+      isSent: false,
+      isAccepted: false,
+      isJob: false,
+      status: 'Unsent',
+      estimateSubtotal: subTotal,
+      estimateTotal: total,
     })
-      .then(estimate => res.status(200).json({ estimate }))
+      .then(job => res.status(200).json({ job }))
       .catch(err => res.status(500).json({ err }))
   } else if (clientDb) {
-    Estimate.create({
+    Job.create({
       ...req.body,
-      addressEstimate: address,
-      nameEstimate: name,
+      jobAddress: address,
+      estimateName: name,
       emailEstimate: emailUser,
       clientId: clientDb._id,
       jobName: `${name} - ${address}`,
+      isSent: false,
+      isAccepted: false,
+      isJob: false,
+      status: 'Unsent',
+      estimateSubtotal: items.reduce((acc, current, i) => acc + current.subtotal, 0),
+      estimateTotal: total,
     })
-      .then(estimate => res.status(200).json({ estimate }))
+      .then(job => res.status(200).json({ job }))
       .catch(err => res.status(500).json({ err }))
   }
 }
@@ -154,7 +161,7 @@ exports.createJob = async (req, res, next) => {
 
 exports.getAllEstimates = (req, res, next) => {
   Job.find({})
-    .sort({ jobName: 1 })
+    .sort({ createdAt: -1 })
     .lean()
     .then(estimates => res.status(200).json({ estimates }))
     .catch(err => res.status(500).json({ err }))
@@ -168,7 +175,7 @@ exports.getUserEstimate = (req, res, next) => {
     },
   }
   Job.find(query)
-    .sort({ jobName: 1 })
+    .sort({ createdAt: -1 })
     .then(estimates => {
       res.status(200).json({ estimates })
     })

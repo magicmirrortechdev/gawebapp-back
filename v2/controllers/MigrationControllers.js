@@ -94,6 +94,7 @@ exports.migration = async (req, res, next) => {
       isJob: estimate.isJob,
       workers: workers,
       status: estimate.status,
+      comments: estimate.comments,
       dateCreate: estimate.dateCreate,
       createdAt: estimate.createdAt,
       updatedAt: estimate.updatedAt,
