@@ -2,8 +2,8 @@ const Time = require('../models/TimeV2')
 const User = require('../models/UserV2')
 
 exports.createTime = (req, res, next) => {
-  const { jobId, userId, date, vendor, category, description, image, total } = req.body
-  Time.create({ jobId, userId, date, vendor, category, description, image, total })
+  const { jobId, userId, date, vendor, category, description, image, hours } = req.body
+  Time.create({ jobId, userId, date, vendor, category, description, image, hours })
     .then(time => res.status(200).json({ time }))
     .catch(err => res.status(500).json({ err }))
 }

@@ -4,7 +4,7 @@ const { getAllTimes, createTime, updateTime, deleteTime, getOneTime } = require(
 
 router.get('/gettimes/:id', getAllTimes)
 router.patch('/addtime/', createTime)
-router.patch('/updatetime/:timeId', updateTime)
-router.patch('/deletetime/:timeId', deleteTime)
+router.patch('/updatetime/:id', updateTime)
+router.patch('/deletetime/:id', deleteTime)
 
 module.exports = router

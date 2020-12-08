@@ -4,7 +4,7 @@ const { getAllExpenses, createExpense, updateExpense, deleteExpense } = require(
 
 router.get('/getexpenses/:id', getAllExpenses)
 router.patch('/addexpense/', createExpense)
-router.patch('/expenseupdate/:estimateId/:expenseId', updateExpense)
-router.patch('/expensedelete/:estimateId/:expenseId', deleteExpense)
+router.patch('/expenseupdate/:id', updateExpense)
+router.patch('/expensedelete/:id', deleteExpense)
 
 module.exports = router

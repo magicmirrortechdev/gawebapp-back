@@ -9,6 +9,11 @@ exports.createExpense = (req, res, next) => {
 
 exports.getAllExpenses = async (req, res, next) => {
   const { id } = req.params
+
+  if (id === 'undefined') {
+    res.status(200).json({})
+  }
+
   let data = {}
   let user = null
   if (id) {
