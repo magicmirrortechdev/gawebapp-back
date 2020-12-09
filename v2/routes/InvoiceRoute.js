@@ -3,6 +3,7 @@ const router = Router()
 const {
   getInvoices,
   createInvoice,
+  convertInvoice,
   deleteInvoice,
   updateInvoice,
   sendInvoice2,
@@ -10,7 +11,8 @@ const {
 } = require('../controllers/InvoiceControllers')
 
 router.get('/getInvoices/:id', getInvoices)
-router.patch('/convertinvoice/:id', createInvoice)
+router.post('/addinvoice/', createInvoice)
+router.patch('/convertinvoice/:id', convertInvoice)
 router.patch('/invoicedelete/:id', deleteInvoice)
 router.patch('/invoiceupdate/:id', updateInvoice)
 router.post('/sendinvoice', sendInvoice2)

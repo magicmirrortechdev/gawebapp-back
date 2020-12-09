@@ -216,26 +216,20 @@ exports.convertJob = (req, res, next) => {
   if (dia < 10) dia = '0' + dia //agrega cero si es menor de 10
   if (mes < 10) mes = '0' + mes //agrega cero si es menor de 10
   Job.findByIdAndUpdate(id, { isJob: true, status: 'Approve', dateStart: `${ano}-${mes}-${dia}` }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => res.render('approve.hbs'))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.decline = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndUpdate(id, { status: 'Decline' }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => res.status(200).json({ estimate }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.deleteAll = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndDelete(id)
-    .populate('clientId')
-    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
