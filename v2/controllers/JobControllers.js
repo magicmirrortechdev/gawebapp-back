@@ -296,8 +296,6 @@ exports.estimateUpdate = (req, res, next) => {
 exports.paidInvoice = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndUpdate(id, { status: 'Paid' }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
     .then(estimate => res.status(200).json({ estimate }))
     .catch(err => res.status(500).json({ err }))
 }
@@ -311,13 +309,11 @@ exports.deleteWorker = (req, res, next) => {
     },
   }
   Job.findOneAndUpdate(query, { query, $pull: { workers: { _id: workerId } } }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => {
+    .then(job => {
       User.findById(worker).exec(function (err, data) {
         var arreglo = data.works
         for (var i = 0; i < arreglo.length; i++) {
-          if (estimate._id != null && arreglo[i].workId.toString() == estimate._id.toString()) {
+          if (job._id != null && arreglo[i].workId.toString() == job._id.toString()) {
             arreglo.pull(arreglo[i]._id)
           }
         }
@@ -325,7 +321,7 @@ exports.deleteWorker = (req, res, next) => {
         data
           .save()
           .then(function (savedPost) {
-            res.status(200).json({ estimate })
+            res.status(200).json({ job })
           })
           .catch(function (err) {
             res.status(500).send(err)
