@@ -1,6 +1,7 @@
 const Job = require('../models/JobsV2')
 const User = require('../models/UserV2')
 const Client = require('../models/ClientV2')
+const { sendEstimate } = require('../../config/nodemailer')
 
 exports.createJob = (req, res, next) => {
   Job.create({ ...req.body })
@@ -260,12 +261,12 @@ exports.addPM = (req, res, next) => {
     .catch(err => res.status(500).json({ err }))
 }
 
-exports.sendEstimate = (req, res, next) => {
+exports.sendEstimateC = (req, res, next) => {
   const { name, items, total, comments, tags, address, estimateId } = req.body
 
   sendEstimate(name, items, total, comments, tags, address, estimateId)
     .then(info => {
-      Estimate.findByIdAndUpdate(estimateId, { status: 'Sent' }, { new: true })
+      Job.findByIdAndUpdate(estimateId, { status: 'Sent' }, { new: true })
         .then(estimate => {
           res.send('Email sent')
         })

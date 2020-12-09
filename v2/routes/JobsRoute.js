@@ -8,7 +8,7 @@ const {
   deleteWorker,
   createJob,
   closeJob,
-  sendEstimate,
+  sendEstimateC,
   getOneJob,
   addPM,
   addWorkers,
@@ -32,7 +32,7 @@ router.get('/convertjob/:id', convertJob)
 
 router.patch('/estimatedecline/:id', decline)
 router.delete('/estimatedelete/:id', deleteAll)
-router.post('/sendestimate', sendEstimate)
+router.post('/sendestimate', sendEstimateC)
 router.get('/estimatedetail/:id', getOneJob)
 router.patch('/estimateupdate/:id', estimateUpdate)
 router.patch('/addworkers/:id', addWorkers)
