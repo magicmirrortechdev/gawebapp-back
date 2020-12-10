@@ -239,25 +239,15 @@ exports.addWorkers = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
   Job.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
-    .then(async estimateRes => {
-      const estimate = await Job.findById(estimateRes._id).populate('clientId').populate({ path: 'workerId' })
-      User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
-        .then(user => res.status(200).json({ estimate, user }))
-        .catch(err => res.status(500).json({ err }))
-    })
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.addPM = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
-  Job.findByIdAndUpdate(id, { $push: { projectManager: { projectId: id2 } } }, { new: true })
-    .then(async estimateRes => {
-      const estimate = await Job.findById(estimateRes._id).populate('clientId').populate({ path: 'workerId' })
-      User.findByIdAndUpdate(id2, { $push: { works: { workId: id } } }, { new: true })
-        .then(user => res.status(200).json({ estimate, user }))
-        .catch(err => res.status(500).json({ err }))
-    })
+  Job.findByIdAndUpdate(id, { $push: { workers: { projectId: id2 } } }, { new: true })
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
