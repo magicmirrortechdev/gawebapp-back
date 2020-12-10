@@ -246,7 +246,7 @@ exports.addWorkers = (req, res, next) => {
 exports.addPM = (req, res, next) => {
   const { id } = req.params
   const { id2 } = req.body
-  Job.findByIdAndUpdate(id, { $push: { workers: { projectId: id2 } } }, { new: true })
+  Job.findByIdAndUpdate(id, { $push: { workers: { workerId: id2 } } }, { new: true })
     .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
