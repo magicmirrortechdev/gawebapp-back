@@ -26,8 +26,8 @@ const optionsMongoose = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  poolSize: 5, // Maintain up to 5 socket connections
-  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  poolSize: 20, // Maintain up to 5 socket connections
+  socketTimeoutMS: 300000, // Close sockets after 45 seconds of inactivity
 }
 
 mongoose
