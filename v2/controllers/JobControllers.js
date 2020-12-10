@@ -134,8 +134,6 @@ exports.createJob = async (req, res, next) => {
     })
 
     Job.findById(estimate._id)
-      .populate('clientId')
-      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   } else if (clientDb) {
@@ -153,8 +151,6 @@ exports.createJob = async (req, res, next) => {
       dateEnd,
     })
     Job.findById(estimate._id)
-      .populate('clientId')
-      .populate({ path: 'workerId' })
       .then(estimate => res.status(200).json({ estimate }))
       .catch(err => res.status(500).json({ err }))
   }
@@ -192,8 +188,6 @@ exports.getJobsUser = (req, res, next) => {
     },
   }
   Job.find(query)
-    .populate('clientId')
-    .populate({ path: 'workerId' })
     .sort({ jobName: 1 })
     .then(jobs => res.status(200).json({ jobs }))
     .catch(err => res.status(500).json({ err }))
@@ -202,9 +196,7 @@ exports.getJobsUser = (req, res, next) => {
 exports.closeJob = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndUpdate(id, { status: 'Closed' }, { new: true })
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => res.status(200).json({ estimate }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -231,7 +223,7 @@ exports.decline = (req, res, next) => {
 exports.deleteAll = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndDelete(id)
-    .then(estimate => res.status(200).json({ estimate }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -257,7 +249,7 @@ exports.sendEstimateC = (req, res, next) => {
   sendEstimate(name, items, total, comments, tags, address, estimateId)
     .then(info => {
       Job.findByIdAndUpdate(estimateId, { status: 'Sent' }, { new: true })
-        .then(estimate => {
+        .then(job => {
           res.send('Email sent')
         })
         .catch(err => res.status(500).json({ err }))
@@ -269,24 +261,17 @@ exports.sendEstimateC = (req, res, next) => {
 
 exports.estimateUpdate = (req, res, next) => {
   const { id } = req.params
-  const emailUser = req.body.email
   const name = req.body.name
   const address = req.body.address
-  Job.findByIdAndUpdate(
-    id,
-    { ...req.body, addressEstimate: address, nameEstimate: name, emailEstimate: emailUser },
-    { new: true }
-  )
-    .populate('clientId')
-    .populate({ path: 'workerId' })
-    .then(estimate => res.status(200).json({ estimate }))
+  Job.findByIdAndUpdate(id, { ...req.body, jobAddress: address, estimateName: name }, { new: true })
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
 exports.paidInvoice = (req, res, next) => {
   const { id } = req.params
   Job.findByIdAndUpdate(id, { status: 'Paid' }, { new: true })
-    .then(estimate => res.status(200).json({ estimate }))
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
 
@@ -299,24 +284,6 @@ exports.deleteWorker = (req, res, next) => {
     },
   }
   Job.findOneAndUpdate(query, { query, $pull: { workers: { _id: workerId } } }, { new: true })
-    .then(job => {
-      User.findById(worker).exec(function (err, data) {
-        var arreglo = data.works
-        for (var i = 0; i < arreglo.length; i++) {
-          if (job._id != null && arreglo[i].workId.toString() == job._id.toString()) {
-            arreglo.pull(arreglo[i]._id)
-          }
-        }
-
-        data
-          .save()
-          .then(function (savedPost) {
-            res.status(200).json({ job })
-          })
-          .catch(function (err) {
-            res.status(500).send(err)
-          })
-      })
-    })
+    .then(job => res.status(200).json({ job }))
     .catch(err => res.status(500).json({ err }))
 }
