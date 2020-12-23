@@ -3,12 +3,6 @@ const User = require('../models/UserV2')
 const Client = require('../models/ClientV2')
 const { sendEstimate } = require('../../config/nodemailer')
 
-exports.createJob = (req, res, next) => {
-  Job.create({ ...req.body })
-    .then(job => res.status(200).json({ job }))
-    .catch(err => res.status(500).json({ err }))
-}
-
 exports.getAllJobs = (req, res, next) => {
   Job.find()
     .lean()
