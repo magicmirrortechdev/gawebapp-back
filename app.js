@@ -69,7 +69,7 @@ app.use(bodyParser.json({ limit: '1000mb', extended: true }))
 app.use(cookieParser())
 app.use(logger('dev'))
 
-const version = 'V 2.7.1'
+const version = 'V 2.7.0'
 app.use(function (req, res, next) {
   res.header('Version', version)
   next()
