@@ -5,36 +5,22 @@ const moment = require('moment')
 const { sendInvoice } = require('../../config/nodemailer')
 
 exports.createInvoice = async (req, res, next) => {
-  const { id } = req.params
-  const { date, description, total } = req.body
-  var fecha = new Date()
-  var mes = fecha.getMonth() + 1
-  var dia = fecha.getDate()
-  var ano = fecha.getFullYear()
-  if (dia < 10) dia = '0' + dia //agrega cero si es menor de 10
-  if (mes < 10) mes = '0' + mes //agrega cero si es menor de 10
+  const { _id, date, description, total, workerId } = req.body
 
-  Job.findByIdAndUpdate(
-    id,
-    {
-      isJob: true,
-      status: 'Approve',
-      dateStart: `${ano}-${mes}-${dia}`,
-    },
-    { new: true }
-  )
-    .then(async job => {
-      const data = {
-        jobId: job._id,
-        clientId: req.body.clientId,
-        invoiceDate: date,
-        invoiceTotal: req.body.estimateTotal,
-        invoiceDescription: req.body.description,
-        isSent: false,
-        isPaid: false,
-        invoiceStatus: 'Unpaid',
-      }
-      const invoice = await Invoice.create(data)
+  const data = {
+    jobId: _id,
+    userId: workerId,
+    invoiceDate: date,
+    invoiceTotal: total,
+    invoiceDescription: description,
+    isSent: false,
+    isPaid: false,
+    invoiceStatus: 'Unpaid',
+    payments: [],
+  }
+
+  Invoice.create(data)
+    .then(invoice => {
       res.status(200).json({ invoice })
     })
     .catch(err => res.status(500).json({ err }))
