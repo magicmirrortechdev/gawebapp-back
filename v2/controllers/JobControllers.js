@@ -110,8 +110,10 @@ exports.createJob = async (req, res, next) => {
   const dateEnd = req.body.dateEnd
   const clientDb = await Client.findOne({ email: emailUser })
 
+  const firstName = name.split(' ')[0]
+  const lastName = name.replace(firstName, '').trim()
   if (clientDb === null) {
-    const newClient = await Client.create({ name, email: emailUser })
+    const newClient = await Client.create({ firstName, lastName, email: emailUser })
 
     const estimate = await Job.create({
       ...req.body,
