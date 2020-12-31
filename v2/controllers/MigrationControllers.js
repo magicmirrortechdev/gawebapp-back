@@ -10,13 +10,14 @@ const JobV2 = require('../models/JobsV2')
 const Estimate = require('../../models/Estimate')
 
 exports.migration = async (req, res, next) => {
-  await ClientV2.deleteMany({})
-  await UserV2.deleteMany({})
+  //await ClientV2.deleteMany({})
+  //await UserV2.deleteMany({})
   await InvoiceV2.deleteMany({})
   await ExpenseV2.deleteMany({})
   await TimeV2.deleteMany({})
   await JobV2.deleteMany({})
 
+  /*
   const clients = await Client.find().lean()
   for (const client of clients) {
     let name = client.name.split(' ')
@@ -50,6 +51,7 @@ exports.migration = async (req, res, next) => {
     }
     await UserV2.register(data, 'GreenAcorn2020')
   }
+  */
 
   const estimates = await Estimate.find()
     .populate('clientId')
