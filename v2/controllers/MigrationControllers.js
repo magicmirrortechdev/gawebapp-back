@@ -104,10 +104,14 @@ exports.migration = async (req, res, next) => {
     await JobV2.create(job)
 
     for (const expense of estimate.expenses) {
+      const job = await JobV2.findOne({ jobName: estimate.jobName })
+      let userV2
       if (expense.workerId) {
-        const job = await JobV2.findOne({ jobName: estimate.jobName })
-        const userV2 = await UserV2.findOne({ email: expense.workerId.email })
-        const expenseData = {
+         userV2 = await UserV2.findOne({ email: expense.workerId.email })
+      }else {
+         userV2 = await UserV2.findOne({ email: "ryan@greenacorn.com" })
+      }
+      const expenseData = {
           jobId: job._id,
           userId: userV2._id,
           date: expense.date,
@@ -118,7 +122,6 @@ exports.migration = async (req, res, next) => {
           total: expense.total,
         }
         await ExpenseV2.create(expenseData)
-      }
     }
 
     for (const invoice of estimate.invoices) {
@@ -126,6 +129,8 @@ exports.migration = async (req, res, next) => {
       let user = null
       if (invoice.workerId) {
         user = await UserV2.findOne({ email: invoice.workerId.email })
+      }else{
+        user = await UserV2.findOne({ email: "ryan@greenacorn.com" })
       }
 
       let payments = []
