@@ -20,17 +20,18 @@ const compression = require('compression')
 
 //production
 //worker.start('W7Josg.fLykxw:lZzlEJw-VacfxEX3', 'GA:payments', 'GA', 'us-east-1-a-queue.ably.io:5671/shared')
+const optionsMongoose = {
+  keepAlive: true,
+  keepAliveInitialDelay: 300000,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  poolSize: 20, // Maintain up to 5 socket connections
+  socketTimeoutMS: 300000, // Close sockets after 45 seconds of inactivity
+}
 
 mongoose
-  .connect(process.env.DB, {
-    keepAlive: true,
-    keepAliveInitialDelay: 300000,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    poolSize: 5, // Maintain up to 5 socket connections
-    socketTimeoutMS: 300002, // Close sockets after 45 seconds of inactivity
-  })
+  .connect(process.env.DBV2, optionsMongoose)
   .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
 
 const app_name = require('./package.json').name
@@ -68,23 +69,31 @@ app.use(bodyParser.json({ limit: '1000mb', extended: true }))
 app.use(cookieParser())
 app.use(logger('dev'))
 
-const index = require('./routes/index')
-const auth = require('./routes/auth')
-const client = require('./routes/client')
-const estimate = require('./routes/estimate')
-const version = 'V 2.6.5'
-
+const version = 'V 2.7.2'
 app.use(function (req, res, next) {
   res.header('Version', version)
   next()
 })
 
-app.use('/', index)
-app.use('/', auth)
-app.use('/', client)
-app.use('/', estimate)
-require('./routes/forgotPassword')(app)
-require('./routes/resetPassword')(app)
-require('./routes/updatePasswordViaEmail')(app)
+const indexV2 = require('./v2/routes/indexRoute')
+const userV2 = require('./v2/routes/UserRoute')
+const expenseV2 = require('./v2/routes/ExpenseRoute')
+const clientV2 = require('./v2/routes/ClientRoute')
+const jobV2 = require('./v2/routes/JobsRoute')
+const invoiceV2 = require('./v2/routes/InvoiceRoute')
+const timeV2 = require('./v2/routes/TimeRoute')
+const migration = require('./v2/routes/MigrationRoute')
+
+app.use('/v2', indexV2)
+app.use('/v2/migration', migration)
+app.use('/v2/user', userV2)
+app.use('/v2/time', timeV2)
+app.use('/v2/expense', expenseV2)
+app.use('/v2/client', clientV2)
+app.use('/v2/job', jobV2)
+app.use('/v2/invoice', invoiceV2)
+require('./v2/routes/ForgotPasswordRoute')(app)
+require('./v2/routes/ResetPasswordRoute')(app)
+require('./v2/routes/UpdatePasswordViaEmailRoute')(app)
 
 module.exports = app

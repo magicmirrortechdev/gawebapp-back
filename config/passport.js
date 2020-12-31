@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const passport = require('passport');
+const UserV2 = require('../v2/models/UserV2')
+const passport = require('passport')
 
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(UserV2.createStrategy())
+passport.serializeUser(UserV2.serializeUser())
+passport.deserializeUser(UserV2.deserializeUser())
 
-module.exports = passport;
+module.exports = passport
