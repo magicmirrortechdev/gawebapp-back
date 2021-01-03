@@ -10,13 +10,14 @@ const JobV2 = require('../models/JobsV2')
 const Estimate = require('../../models/Estimate')
 
 exports.migration = async (req, res, next) => {
-  await ClientV2.deleteMany({})
-  await UserV2.deleteMany({})
+  //await ClientV2.deleteMany({})
+  //await UserV2.deleteMany({})
   await InvoiceV2.deleteMany({})
   await ExpenseV2.deleteMany({})
   await TimeV2.deleteMany({})
   await JobV2.deleteMany({})
 
+  /*
   const clients = await Client.find().lean()
   for (const client of clients) {
     let name = client.name.split(' ')
@@ -50,6 +51,7 @@ exports.migration = async (req, res, next) => {
     }
     await UserV2.register(data, 'GreenAcorn2020')
   }
+  */
 
   const estimates = await Estimate.find()
     .populate('clientId')
@@ -102,10 +104,14 @@ exports.migration = async (req, res, next) => {
     await JobV2.create(job)
 
     for (const expense of estimate.expenses) {
+      const job = await JobV2.findOne({ jobName: estimate.jobName })
+      let userV2
       if (expense.workerId) {
-        const job = await JobV2.findOne({ jobName: estimate.jobName })
-        const userV2 = await UserV2.findOne({ email: expense.workerId.email })
-        const expenseData = {
+         userV2 = await UserV2.findOne({ email: expense.workerId.email })
+      }else {
+         userV2 = await UserV2.findOne({ email: "ryan@greenacorn.com" })
+      }
+      const expenseData = {
           jobId: job._id,
           userId: userV2._id,
           date: expense.date,
@@ -114,9 +120,8 @@ exports.migration = async (req, res, next) => {
           description: expense.description,
           image: expense.img,
           total: expense.total,
-        }
-        await ExpenseV2.create(expenseData)
       }
+      await ExpenseV2.create(expenseData)
     }
 
     for (const invoice of estimate.invoices) {
@@ -124,6 +129,8 @@ exports.migration = async (req, res, next) => {
       let user = null
       if (invoice.workerId) {
         user = await UserV2.findOne({ email: invoice.workerId.email })
+      }else{
+        user = await UserV2.findOne({ email: "ryan@greenacorn.com" })
       }
 
       let payments = []
