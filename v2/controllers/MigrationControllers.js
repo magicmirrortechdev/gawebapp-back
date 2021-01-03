@@ -120,8 +120,8 @@ exports.migration = async (req, res, next) => {
           description: expense.description,
           image: expense.img,
           total: expense.total,
-        }
-        await ExpenseV2.create(expenseData)
+      }
+      await ExpenseV2.create(expenseData)
     }
 
     for (const invoice of estimate.invoices) {
